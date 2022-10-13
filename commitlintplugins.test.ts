@@ -4,11 +4,11 @@ function runCommitLintOnMsg(inputMsg: string) {
     return spawnSync('npx', ['commitlint', '--verbose'], { input: inputMsg });
 }
 
-test('body-begins-upper-ends-dot1', () => {
-    let commitMsgWithLowerStart =
+test('body-prose1', () => {
+    let commitMsgWithLowercaseBodyStart =
         "foo: this is only a title" + "\n\n" + "bla blah bla.";
-    let bodyBeginsUpperEndsDot1 = runCommitLintOnMsg(commitMsgWithLowerStart);
-    expect(bodyBeginsUpperEndsDot1.status).not.toBe(0);
+    let bodyProse = runCommitLintOnMsg(commitMsgWithLowercaseBodyStart);
+    expect(bodyProse.status).not.toBe(0);
 });
 
 test('body-max-line-length1', () => {
