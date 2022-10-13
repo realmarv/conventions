@@ -61,7 +61,7 @@ module.exports = {
 
         {
             rules: {
-                'body-begins-upper-ends-dot': ({body}: {body:any}) => {
+                'body-prose': ({body}: {body:any}) => {
                     let offence = false;
 
                     // does msg have a body?
