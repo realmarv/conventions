@@ -5,6 +5,13 @@ function runCommitLintOnMsg(inputMsg: string) {
 }
 
 
+test('allow-PascalCase-after-colon-in-title', () => {
+    let commitMsgWithPascalCaseAfterColon = "foo/bar: PascalCase bla blah";
+    let allowPascalCaseAfterColon1 = runCommitLintOnMsg(commitMsgWithPascalCaseAfterColon);
+    expect(allowPascalCaseAfterColon1.status).toBe(0);
+});
+
+
 test('body-max-line-length1', () => {
     let tenChars = "1234 67890";
     let sixtyChars = tenChars + tenChars + tenChars + tenChars + tenChars + tenChars;
