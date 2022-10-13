@@ -68,7 +68,9 @@ module.exports = {
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
                         
-                        for (let par of bodyStr.split('\n\n')){
+                        for (let par of bodyStr.trim().split('\n\n')){
+                            par = par.trim()
+                            
                             if (!(par[0].toUpperCase() === par[0])){
                                 offence = true;
                             }
