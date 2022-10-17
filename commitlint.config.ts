@@ -73,7 +73,7 @@ module.exports = {
                             par = par.trim();
 
                             let startWithUppercase = (par[0].toUpperCase() === par[0]) && (par[0].toLowerCase() !== par[0]);
-                            let endsWithDot = (par[par.length - 1] !== '.')
+                            let endsWithDot = par[par.length - 1] === '.';
                             
 
                             if (!startWithUppercase || !endsWithDot){
