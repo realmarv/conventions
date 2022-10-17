@@ -70,7 +70,7 @@ module.exports = {
                         let bodyStr = convertAnyToString(body, "body");
                         
                         for (let par of bodyStr.trim().split('\n\n')){
-                            par = par.trim();
+                            par = par.trim().replace(/```[^]*```/g, '');
 
                             let firstIsUpperCase = par[0].toUpperCase() == par[0];
                             let firstIsLowerCase = par[0].toLowerCase() == par[0];
