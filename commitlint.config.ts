@@ -70,10 +70,16 @@ module.exports = {
                         let bodyStr = convertAnyToString(body, "body");
                         
                         for (let par of bodyStr.trim().split('\n\n')){
-                            par = par.trim()
-                            
-                            if (!(par[0].toUpperCase() === par[0])){
-                                offence = true;
+                            par = par.trim();
+
+                            let startWithUppercase = (par[0].toUpperCase() === par[0]) && (par[0].toLowerCase() !== par[0]);
+
+                            if (!startWithUppercase){
+                                let line = bodyStr.split(/\r?\n/)[0];
+                                let containsASpace = line.indexOf(" ") >= 0;
+                                if (containsASpace){
+                                    offence = true;
+                                }
                             }
 
                             if (!(par[par.length - 1] === '.')){
