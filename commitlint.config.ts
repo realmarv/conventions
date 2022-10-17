@@ -71,23 +71,24 @@ module.exports = {
                         
                         for (let par of bodyStr.trim().split('\n\n')){
                             par = par.trim();
-
+                            console.log(par);
                             let firstIsUpperCase = par[0].toUpperCase() == par[0];
                             let firstIsLowerCase = par[0].toLowerCase() == par[0];
                             let startWithLowerCase = firstIsLowerCase && (!firstIsUpperCase)
 
                             let endsWithDot = par[par.length - 1] === '.';
-                  
+                            
                             if (startWithLowerCase || !endsWithDot){
                                 offence = true;
 
                                 let line = bodyStr.split(/\r?\n/)[0];
+                                console.log(line);
                                 // it's a URL
                                 let containsASpace = line.indexOf(" ") >= 0;
-
+                                
                                 // it's a footer reference, i.e. [1] someUrl://foo/bar/baz
                                 let startsWithRef = (line[0] === "[" && line.indexOf("] ") > 0);
-
+                                console.log((!containsASpace) || startsWithRef);
                                 if ((!containsASpace) || startsWithRef){
                                     offence = false;
                                 }   
