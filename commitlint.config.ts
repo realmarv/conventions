@@ -73,17 +73,18 @@ module.exports = {
                             par = par.trim();
 
                             let startWithUppercase = (par[0].toUpperCase() === par[0]) && (par[0].toLowerCase() !== par[0]);
+                            let endsWithDot = (par[par.length - 1] !== '.')
+                            
 
-                            if (!startWithUppercase){
-                                let line = bodyStr.split(/\r?\n/)[0];
-                                let containsASpace = line.indexOf(" ") >= 0;
-                                if (containsASpace){
-                                    offence = true;
-                                }
-                            }
-
-                            if (!(par[par.length - 1] === '.')){
+                            if (!startWithUppercase || !endsWithDot){
                                 offence = true;
+
+                                let line = bodyStr.split(/\r?\n/)[0];
+                                // it's a URL
+                                let containsASpace = line.indexOf(" ") >= 0;
+                                if (!containsASpace){
+                                    offence = false;
+                                }   
                             }
                         }
                                         
