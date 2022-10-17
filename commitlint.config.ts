@@ -81,7 +81,7 @@ module.exports = {
                             if (startWithLowerCase || !endsWithDot){
                                 offence = true;
 
-                                let line = bodyStr.split(/\r?\n/)[0];
+                                let line = bodyStr.split(/\r?\n/)[0].trim();
                                 // it's a URL
                                 let containsASpace = line.indexOf(" ") >= 0;
 
