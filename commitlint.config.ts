@@ -76,9 +76,9 @@ module.exports = {
                             let firstIsLowerCase = par[0].toLowerCase() == par[0];
                             let startWithLowerCase = firstIsLowerCase && (!firstIsUpperCase);
 
-                            let endsWithDot = par[par.length - 1] === '.';
+                            let endsWithDotOrColon = par[par.length - 1] === '.' || par[par.length - 1] === ':';
                             
-                            if (startWithLowerCase || !endsWithDot){
+                            if (startWithLowerCase || !endsWithDotOrColon){
                                 let line = par.split(/\r?\n/)[0];
                                 
                                 // it's a URL
