@@ -86,7 +86,7 @@ module.exports = {
                                 let containsASpace = line.indexOf(" ") >= 0;
 
                                 // it's a footer reference, i.e. [1] someUrl://foo/bar/baz
-                                let startsWithRef = (line[0] == "[" && line.indexOf("] ") > 0);
+                                let startsWithRef = (line[0] === "[" && line.indexOf("] ") > 0);
 
                                 if (!containsASpace || startsWithRef){
                                     offence = false;
