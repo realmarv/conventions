@@ -72,11 +72,13 @@ module.exports = {
                         for (let par of bodyStr.trim().split('\n\n')){
                             par = par.trim();
 
-                            let startWithUppercase = (par[0].toUpperCase() === par[0]) && (par[0].toLowerCase() !== par[0]);
+                            let firstIsUpperCase = par[0].toUpperCase() == par[0];
+                            let firstIsLowerCase = par[0].toLowerCase() == par[0];
+                            let startWithLowercase = firstIsLowerCase && (!firstIsUpperCase)
+
                             let endsWithDot = par[par.length - 1] === '.';
                             
-
-                            if (!startWithUppercase || !endsWithDot){
+                            if (startWithLowercase || !endsWithDot){
                                 offence = true;
 
                                 let line = bodyStr.split(/\r?\n/)[0];
