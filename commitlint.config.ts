@@ -79,8 +79,6 @@ module.exports = {
                             let endsWithDot = par[par.length - 1] === '.';
                             
                             if (startWithLowerCase || !endsWithDot){
-                                offence = true;
-
                                 let line = par.split(/\r?\n/)[0];
                                 
                                 // it's a URL
@@ -91,9 +89,9 @@ module.exports = {
 
                                 let startWithFixesSentence = (line.indexOf("Fixes ") == 0);
 
-                                if (!containsASpace || startsWithRef || startWithFixesSentence){
-                                    offence = false;
-                                }   
+                                if (containsASpace && (!startsWithRef) && (!startWithFixesSentence)) {
+                                    offence = true;
+                                }
                             }
                         }
                                         
