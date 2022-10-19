@@ -80,7 +80,7 @@ test('replacement-suggestion1', () => {
     let expected_message = `You can replace "configuration" with "config" in the commit title to make it shorter.`
     // console.log('HERE ==========>' + replacementSuggestion1.stdout)
     expect(replacementSuggestion1.status).not.toBe(0);
-    expect((replacementSuggestion1.stdout + '').includes(expected_message))
+    expect((replacementSuggestion1.stdout + '').includes(expected_message)).toEqual(true)
 });
 
 
