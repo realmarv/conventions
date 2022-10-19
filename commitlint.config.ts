@@ -14,6 +14,7 @@ enum RuleStatus {
 }
 
 let bodyMaxLineLength = 64;
+let headerMaxLineLength = 50;
 
 function isBigBlock(line: string) {
     let bigBlockDelimiter = "```";
@@ -60,6 +61,22 @@ module.exports = {
 
         {
             rules: {
+                'header-max-length': ({header}: {header:any}) => {
+                    let headerStr = convertAnyToString(header, "header");
+                    let offence = false;
+
+                    let message = `Please do not exceed ${headerMaxLineLength} characters in title;`
+                    if (headerStr.length > 50) {
+                        offence = true;
+                        message = message + '\n' + `You can replace "configuration" with "config" in the commit title to make it shorter.`                
+                    }
+                    
+                    return [
+                        !offence,
+                        message
+                    ];
+                },
+
                 'type-space-after-colon': ({header}: {header:any}) => {
                     let headerStr = convertAnyToString(header, "header");
 
