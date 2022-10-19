@@ -30,7 +30,7 @@ module.exports = {
         'body-soft-max-line-length': [RuleStatus.Error, 'always'],
         'footer-leading-blank': [RuleStatus.Warning, 'always'],
         'footer-max-line-length': [RuleStatus.Error, 'always', 150],
-        'header-max-length': [RuleStatus.Error, 'always', 50],
+        'header-max-length-with-suggestions': [RuleStatus.Error, 'always'],
         'subject-full-stop': [RuleStatus.Error, 'never', '.'],
         'type-empty': [RuleStatus.Warning, 'never'],
         'type-space-after-colon': [RuleStatus.Error, 'always'],
@@ -63,7 +63,7 @@ module.exports = {
 
         {
             rules: {
-                'header-max-length': ({header}: {header:any}) => {
+                'header-max-length-with-suggestions': ({header}: {header:any}) => {
                     let headerStr = convertAnyToString(header, "header");
                     let offence = false;
 
