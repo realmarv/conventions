@@ -73,6 +73,17 @@ test('body-max-line-length6', () => {
 });
 
 
+test('replacement-suggestion1', () => {
+    let commitMsgWithThatExceedsHeaderMaxLength =
+        "foo: this is only a title with a configuration in it that exceeds header max length";
+    let replacementSuggestion1 = runCommitLintOnMsg(commitMsgWithThatExceedsHeaderMaxLength);
+    let expected_message = `You can replace "configuration" with "config" in the commit title to make it shorter.`
+    // console.log('HERE ==========>' + replacementSuggestion1.stdout)
+    expect(replacementSuggestion1.status).not.toBe(0);
+    expect((replacementSuggestion1.stdout + '').includes(expected_message))
+});
+
+
 test('subject-lowercase1', () => {
     let commitMsgWithUppercaseAfterColon = "foo: Bar baz";
     let subjectLowerCase1 = runCommitLintOnMsg(commitMsgWithUppercaseAfterColon);
