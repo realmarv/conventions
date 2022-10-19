@@ -138,4 +138,13 @@
 "value": "val",
 "variable": "var",
 "yes/no": "y/n",
-"no/yes": "y/n"}
+"no/yes": "y/n",
+"software": "sw",
+"1second": "1sec",
+"execute": "exec",
+"deprecated": "obsolete",
+"command line": "cmdline",
+"parenthesis": "paren",
+"parentheses": "parens",
+"macOS": "mac"
+}
