@@ -73,7 +73,7 @@ module.exports = {
          
                         Object.entries(abbr).forEach(([key, value]) => {  
                             if (headerStr.includes(key.toString())){
-                                message = message + '\n' + `You can replace "${key}" with "${value}" in the commit title to make it shorter.`;             
+                                message = message + '\n' + `We recommend replacing "${key}" with "${value}" in the commit title to make it shorter.`;             
                             }
                         })
                     }
