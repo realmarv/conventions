@@ -1,5 +1,3 @@
-import * as abbr from './abbreviations.json'
-
 // to convert from 'any' type
 function convertAnyToString(potentialString: any, paramName: string): string {
     if (potentialString === null || potentialString === undefined) {
