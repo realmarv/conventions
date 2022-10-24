@@ -152,6 +152,13 @@ test('prefer-slash-over-backslash2', () => {
 });
 
 
+test('reject-refs-in-urls1', () => {
+    let commitMsgWithRefInUrl = "foo: this is only a title" + "\n\n" + "http://blahblah.com#XYZ";
+    let rejectRefsInUrls1 = runCommitLintOnMsg(commitMsgWithRefInUrl);
+    expect(rejectRefsInUrls1.status).not.toBe(0);
+});
+
+
 test('subject-lowercase1', () => {
     let commitMsgWithUppercaseAfterColon = "foo: Bar baz";
     let subjectLowerCase1 = runCommitLintOnMsg(commitMsgWithUppercaseAfterColon);
