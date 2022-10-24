@@ -19,16 +19,10 @@ export abstract class Helpers {
     public static convertAnyToString(
         potentialString: any,
         paramName: string
-    ): string {
+    ): any {
         if (potentialString === null || potentialString === undefined) {
             // otherwise, String(null) might give us the stupid string "null"
-            throw new Error(
-                "Unexpected " +
-                    paramName +
-                    "===null or " +
-                    paramName +
-                    "===undefined happened"
-            );
+            return null;
         }
         return String(potentialString);
     }

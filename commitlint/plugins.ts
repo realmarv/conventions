@@ -1,5 +1,6 @@
 import { abbr } from "./abbreviations";
 import { Helpers } from "./helpers";
+const obviousWords = ["change", "update", "modify"];
 
 export abstract class Plugins {
     public static bodyProse(rawStr: string) {
@@ -269,6 +270,29 @@ export abstract class Plugins {
             !offence,
             `Please use full URLs instead of #XYZ refs.` +
                 Helpers.errMessageSuffix,
+        ];
+    }
+
+    public static rejectObviousWords(headerStr: string, bodyStr: string) {
+        let offence = false;
+
+        let colonFirstIndex = headerStr.indexOf(":");
+        let titleStartIndex = Math.max(0, colonFirstIndex + 1);
+        let title = headerStr
+            .substring(titleStartIndex, headerStr.length)
+            .trim();
+        let titleWords = title.split(" ");
+        let firstWordInTitle = titleWords[0];
+
+        if (firstWordInTitle === "update") {
+            offence = titleWords.length > 1 && bodyStr === null;
+        } else {
+            offence = obviousWords.includes(firstWordInTitle);
+        }
+
+        return [
+            !offence,
+            `Please don't use obvious words such as ${firstWordInTitle} in the commit title`,
         ];
     }
 

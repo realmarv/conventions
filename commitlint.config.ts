@@ -43,6 +43,7 @@ module.exports = {
         "too-many-spaces": [RuleConfigSeverity.Error, "always"],
         "commit-hash-alone": [RuleConfigSeverity.Error, "always"],
         "title-uppercase": [RuleConfigSeverity.Error, "always"],
+        "reject-obvious-words": [RuleConfigSeverity.Error, "always"],
     },
     plugins: [
         // TODO (ideas for more rules):
@@ -66,6 +67,21 @@ module.exports = {
                 "commit-hash-alone": ({ raw }: { raw: any }) => {
                     let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.commitHashAlone(rawStr);
+                },
+
+                "reject-obvious-words": ({
+                    header,
+                    body,
+                }: {
+                    header: any;
+                    body: any;
+                }) => {
+                    let headerStr = Helpers.convertAnyToString(
+                        header,
+                        "header"
+                    );
+                    let bodyStr = Helpers.convertAnyToString(body, "header");
+                    return Plugins.rejectObviousWords(headerStr, bodyStr);
                 },
 
                 "empty-wip": ({ header }: { header: any }) => {
