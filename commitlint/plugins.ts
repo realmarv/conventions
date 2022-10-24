@@ -1,4 +1,5 @@
 import { abbr } from "./abbreviations";
+import { obviousWords } from "./obviouswords";
 import { Helpers } from "./helpers";
 
 export abstract class Plugins {
@@ -269,6 +270,23 @@ export abstract class Plugins {
             !offence,
             `Please use full URLs instead of #XYZ refs.` +
                 Helpers.errMessageSuffix,
+        ];
+    }
+
+    public static rejectObviousWords(headerStr: string) {
+        let offence = false;
+
+        let colonFirstIndex = headerStr.indexOf(":");
+        let titleStartIndex = Math.max(0, colonFirstIndex + 1);
+        let title = headerStr
+            .substring(titleStartIndex, headerStr.length)
+            .trim();
+        let firstWordInTitle = title.split(" ")[0];
+        offence = obviousWords.includes(firstWordInTitle);
+
+        return [
+            !offence,
+            `Please don't use obvious words such as ${firstWordInTitle} in the commit title`,
         ];
     }
 
