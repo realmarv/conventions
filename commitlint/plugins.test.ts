@@ -666,6 +666,7 @@ test("default-revert-message1", () => {
     let defaultRevertMessage1 = runCommitLintOnMsg(
         commitMsgWithoutDefaultRevertMessage
     );
+
     expect(defaultRevertMessage1.status).not.toBe(0);
 });
 
@@ -677,6 +678,7 @@ test("default-revert-message2", () => {
     let defaultRevertMessage2 = runCommitLintOnMsg(
         commitMsgWithDefaultRevertMessage
     );
+
     expect(defaultRevertMessage2.status).toBe(0);
 });
 

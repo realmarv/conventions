@@ -260,6 +260,44 @@ export abstract class Plugins {
         ];
     }
 
+    public static defaultRevertMessage(
+        headerStr: string,
+        bodyStr: string | null,
+        when = "never"
+    ) {
+        let offence = false;
+        let isRevertCommitMessage = headerStr.toLowerCase().includes("revert");
+        console.log("----");
+        console.log("headerStr: " + headerStr);
+        console.log("bodyStr:" + bodyStr);
+        console.log("----");
+        if (isRevertCommitMessage) {
+            let isDefaultRevertHeader =
+                headerStr.match(/^[Rr]evert ".+"$/) !== null;
+
+            if (isDefaultRevertHeader) {
+                if (bodyStr !== null) {
+                    let lines = bodyStr.split("\n");
+                    offence =
+                        // 40 is the length of git commit hash in the following regex pattern.
+                        lines.length == 1 &&
+                        lines[0].match(/^This reverts commit [^ ]{40}\.$/) !==
+                            null;
+                } else {
+                    offence = true;
+                }
+            }
+
+            const negated = when === "never";
+            offence = negated ? offence : !offence;
+        }
+        console.log("offence:" + offence);
+        return [
+            !offence,
+            `Please explain why you're reverting` + Helpers.errMessageSuffix,
+        ];
+    }
+
     public static titleUppercase(headerStr: string) {
         let firstWord = headerStr.split(" ")[0];
         let offence =
