@@ -43,7 +43,12 @@ module.exports = {
         "too-many-spaces": [RuleConfigSeverity.Error, "always"],
         "commit-hash-alone": [RuleConfigSeverity.Error, "always"],
         "title-uppercase": [RuleConfigSeverity.Error, "always"],
+        "default-revert-message": [RuleConfigSeverity.Error, "never"],
     },
+
+    // Commitlint automatically ignores some kinds of commits like Revert commit messages.
+    // We need to set this value to false to apply our rules on these messages.
+    defaultIgnores: false,
     plugins: [
         // TODO (ideas for more rules):
         // * Detect if paragraphs in body have been cropped too shortly (less than 64 chars), and suggest same auto-wrap command that body-soft-max-line-length suggests, since it unwraps and wraps (both).
@@ -59,7 +64,7 @@ module.exports = {
         {
             rules: {
                 "body-prose": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.bodyProse(rawStr);
                 },
 
@@ -92,12 +97,12 @@ module.exports = {
                 },
 
                 "footer-notes-misplacement": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.footerNotesMisplacement(rawStr);
                 },
 
                 "footer-references-existence": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.footerReferencesExistence(rawStr);
                 },
 
@@ -114,8 +119,23 @@ module.exports = {
                 },
 
                 "proper-issue-refs": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.properIssueRefs(rawStr);
+                },
+
+                "default-revert-message": ({
+                    header,
+                    body,
+                }: {
+                    header: any;
+                    body: any;
+                }) => {
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
+                    let headerStr = Helpers.convertAnyToString(
+                        header,
+                        "header"
+                    );
+                    return Plugins.defaultRevertMessage(headerStr, bodyStr);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
@@ -169,7 +189,7 @@ module.exports = {
                     _: any,
                     maxLineLength: number
                 ) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.bodySoftMaxLineLength(rawStr, maxLineLength);
                 },
 
