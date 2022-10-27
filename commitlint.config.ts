@@ -47,11 +47,15 @@ module.exports = {
         "too-many-spaces": [RuleConfigSeverity.Error, "always"],
         "commit-hash-alone": [RuleConfigSeverity.Error, "always"],
         "title-uppercase": [RuleConfigSeverity.Error, "always"],
+        "default-revert-message": [RuleConfigSeverity.Error, "never"],
     },
+
+    // Commitlint automatically ignores some kinds of commits like Revert commit messages.
+    // We need to set this value to false to apply our rules on these messages.
+    defaultIgnores: false,
     plugins: [
         // TODO (ideas for more rules):
         // * Detect if paragraphs in body have been cropped too shortly (less than 64 chars), and suggest same auto-wrap command that body-soft-max-line-length suggests, since it unwraps and wraps (both).
-        // * Detect reverts which have not been elaborated.
         // * Reject some stupid obvious words: change, update, modify (if first word after colon, error; otherwise warning).
         // * Think of how to reject this shitty commit message: https://github.com/nblockchain/NOnion/pull/34/commits/9ffcb373a1147ed1c729e8aca4ffd30467255594
         // * Title should not have dot at the end.
@@ -150,6 +154,25 @@ module.exports = {
                     ).trim();
 
                     return Plugins.properIssueRefs(rawStr);
+                },
+
+                "default-revert-message": ({
+                    header,
+                    body,
+                }: {
+                    header: any;
+                    body: any;
+                }) => {
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
+                    let headerUncastedStr = Helpers.convertAnyToString(
+                        header,
+                        "header"
+                    );
+                    let headerStr = Helpers.assertNotNull(
+                        headerUncastedStr,
+                        notNullStringErrorMessage("header")
+                    );
+                    return Plugins.defaultRevertMessage(headerStr, bodyStr);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
