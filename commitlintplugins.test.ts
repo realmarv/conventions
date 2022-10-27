@@ -282,7 +282,7 @@ test('revert-commit2', () => {
         "This reverts commit 0272f587c7eece147e8d1756116b0b43e11c34ac.\n\n" +
         "some explanation.";
     let revertCommit2 = runCommitLintOnMsg(revertCommitMsgWithParagraphStartingWithLowercase);
-    expect(revertCommit2.status).toBe(0);
+    expect(revertCommit2.status).not.toBe(0);
 });
 
 
