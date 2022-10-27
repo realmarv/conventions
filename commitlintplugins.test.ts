@@ -267,12 +267,22 @@ test('header-max-length-with-suggestions4', () => {
 
 
 test('revert-commit1', () => {
-    let commitMsgWithTrailingWhiteSpaceInTitleEnd =
+    let revertCommitMsg =
         'Revert "add abbreviations.ts"\n\n' + 
         "This reverts commit 0272f587c7eece147e8d1756116b0b43e11c34ac.\n\n" +
-        "Some explanation";
-    let trailingWhitespace2 = runCommitLintOnMsg(commitMsgWithTrailingWhiteSpaceInTitleEnd);
-    expect(trailingWhitespace2.status).toBe(0);
+        "Some explanation.";
+    let revertCommit1 = runCommitLintOnMsg(revertCommitMsg);
+    expect(revertCommit1.status).toBe(0);
+});
+
+
+test('revert-commit2', () => {
+    let revertCommitMsgWithParagraphStartingWithLowercase =
+        'Revert "add abbreviations.ts"\n\n' + 
+        "This reverts commit 0272f587c7eece147e8d1756116b0b43e11c34ac.\n\n" +
+        "some explanation.";
+    let revertCommit2 = runCommitLintOnMsg(revertCommitMsgWithParagraphStartingWithLowercase);
+    expect(revertCommit2.status).toBe(0);
 });
 
 
