@@ -266,6 +266,16 @@ test('header-max-length-with-suggestions4', () => {
 });
 
 
+test('revert-commit1', () => {
+    let commitMsgWithTrailingWhiteSpaceInTitleEnd =
+        'Revert "add abbreviations.ts"\n\n' + 
+        "This reverts commit 0272f587c7eece147e8d1756116b0b43e11c34ac.\n\n" +
+        "Some explanation";
+    let trailingWhitespace2 = runCommitLintOnMsg(commitMsgWithTrailingWhiteSpaceInTitleEnd);
+    expect(trailingWhitespace2.status).toBe(0);
+});
+
+
 test('subject-lowercase1', () => {
     let commitMsgWithUppercaseAfterColon = "foo: Bar baz";
     let subjectLowerCase1 = runCommitLintOnMsg(commitMsgWithUppercaseAfterColon);
