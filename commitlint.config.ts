@@ -362,7 +362,10 @@ module.exports = {
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
                         let bodyStr = rawStr.substring(lineBreakIndex);
 
+
                         bodyStr = removeAllCodeBlocks(bodyStr).trim();
+                        console.log('========>bodyStr:' + bodyStr + '<=========bodyStr')
+
                         for (let paragraph of bodyStr.trim().split('\n\n')){
 
                             console.log('paragraph:' + paragraph + '<========')
