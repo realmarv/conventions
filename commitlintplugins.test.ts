@@ -100,7 +100,8 @@ failed error. Since we need to catch it, as a result of
 replacing generic try-with which lead to a red CI in the
 PR, we had to define its special excpetion and catch that:
 
-\`\`\`The active test run was aborted. Reason: Test host process crashed : Unhandled exception. System.Exception: Key handshake failed!
+\`\`\`
+The active test run was aborted. Reason: Test host process crashed : Unhandled exception. System.Exception: Key handshake failed!
 
    at NOnion.TorHandshakes.NTorHandshake.NOnion-TorHandshakes-IHandshake-GenerateKdfResult(ICreatedCell serverSideData) in /home/runner/work/NOnion/NOnion/NOnion/TorHandshakes/NTorHandshake.fs:line 112
    at <StartupCode$NOnion>.$TorCircuit.handleIncomingCell@348-1.Invoke(Unit unitVar) in /home/runner/work/NOnion/NOnion/NOnion/Network/TorCircuit.fs:line 352
