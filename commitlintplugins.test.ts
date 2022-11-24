@@ -93,8 +93,7 @@ test('body-prose9', () => {
 
 test('body-prose10', () => {
     let commitMsgWithLargeBody =
-`
-Network,TorHandshakes: handle handshake fail
+`Network,TorHandshakes: handle handshake fail
 
 Previously, TorHandshakes used failwith to raise handshake
 failed error. Since we need to catch it, as a result of
