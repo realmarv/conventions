@@ -643,13 +643,16 @@ module.exports = {
                     ];
                 },
 
-                'body-soft-max-line-length': ({body}: {body:any}) => {
+                'body-soft-max-line-length': ({raw}: {raw:any}) => {
                     let offence = false;
 
-                    // does msg have a body?
-                    if (body !== null) {
-                        let bodyStr = convertAnyToString(body, "body");
-
+                    let rawStr = convertAnyToString(raw, "raw").trim();
+                    let lineBreakIndex = rawStr.indexOf('\n');
+                    
+                    if (lineBreakIndex >= 0){
+                        // Extracting bodyStr from rawStr rather than using body directly is a 
+                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
+                        let bodyStr = rawStr.substring(lineBreakIndex);
                         let lines = bodyStr.split(/\r?\n/);
                         let inBigBlock = false;
                         for (let line of lines) {
@@ -673,6 +676,7 @@ module.exports = {
                             }
                         }
                     }
+
 
                     // taken from https://stackoverflow.com/a/66433444/544947 and https://unix.stackexchange.com/a/25208/56844
                     function getUnixCommand(fmtOption: string){
