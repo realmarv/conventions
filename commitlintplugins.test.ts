@@ -125,7 +125,8 @@ The active test run was aborted. Reason: Test host process crashed : Unhandled e
 
    at System.Threading.QueueUserWorkItemCallback.Execute()
 
-   at System.Threading.ThreadPoolWorkQueue.Dispatch()\`\`\`
+   at System.Threading.ThreadPoolWorkQueue.Dispatch()
+\`\`\`
 `
     let bodyProse10 = runCommitLintOnMsg(commitMsgWithLargeBody);
     console.log('==========>' + bodyProse10.stdout)
