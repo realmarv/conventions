@@ -655,6 +655,7 @@ module.exports = {
                     // does msg have a body?
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
+                        bodyStr = removeAllCodeBlocks(bodyStr)
 
                         let lines = bodyStr.split(/\r?\n/);
                         let inBigBlock = false;
