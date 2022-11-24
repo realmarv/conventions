@@ -353,6 +353,8 @@ module.exports = {
                     let offence = false;
 
                     let rawStr = convertAnyToString(raw, "raw").trim();
+                    console.log('raw:' + rawStr)
+
                     let lineBreakIndex = rawStr.indexOf('\n');
 
                     if (lineBreakIndex >= 0){
