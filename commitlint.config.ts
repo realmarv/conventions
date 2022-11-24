@@ -696,7 +696,7 @@ module.exports = {
 
                 'trailing-whitespace': ({raw}: {raw:any}) => {
                     let rawStr = convertAnyToString(raw, "raw");
-
+                    rawStr = removeAllCodeBlocks(rawStr)
                     let offence = false;
                     let lines = rawStr.split(/\r?\n/);
                     let inBigBlock = false;
