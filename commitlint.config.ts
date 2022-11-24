@@ -656,7 +656,7 @@ module.exports = {
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
                         bodyStr = removeAllCodeBlocks(bodyStr)
-
+                        console.log('==========>bodyStrInMaxLength' + bodyStr + '<========')
                         let lines = bodyStr.split(/\r?\n/);
                         let inBigBlock = false;
                         for (let line of lines) {
@@ -674,6 +674,7 @@ module.exports = {
                                 let lineIsFooterNote = isFooterNote(line);
 
                                 if ((!isUrl) && (!lineIsFooterNote)) {
+                                    console.log('========>line:'+line +'<=========')
                                     offence = true;
                                     break;
                                 }
