@@ -112,7 +112,7 @@ PR, we had to define its special excpetion and catch that:
 
    at <StartupCode$FSharp-Core>.$Mailbox.processFirstArrival@303-8.Invoke(AsyncActivation\`1 ctxt) in F:\\workspace\\_work\\1\\s\\src\\fsharp\\FSharp.Core\\mailbox.fs:line 303
 
-   at Microsoft.FSharp.Control.Trampoline.Execute(FSharpFunc\`2 firstAction) in F:\workspace\\_work\\1\\s\\src\\fsharp\\FSharp.Core\\async.fs:line 109
+   at Microsoft.FSharp.Control.Trampoline.Execute(FSharpFunc\`2 firstAction) in F:\\workspace\\_work\\1\\s\\src\\fsharp\\FSharp.Core\\async.fs:line 109
 
 --- End of stack trace from previous location where exception was thrown ---
 
