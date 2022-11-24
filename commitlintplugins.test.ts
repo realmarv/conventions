@@ -126,7 +126,7 @@ PR, we had to define its special excpetion and catch that:
    at System.Threading.ThreadPoolWorkQueue.Dispatch()\`\`\`
 `
     let bodyProse10 = runCommitLintOnMsg(commitMsgWithLargeBody);
-    console.log(bodyProse10.stdout)
+    console.log('==========>' + bodyProse10.stdout)
     expect(bodyProse10.status).toBe(0);
 });
 
