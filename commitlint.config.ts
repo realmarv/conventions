@@ -655,8 +655,10 @@ module.exports = {
                     // does msg have a body?
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
+                        console.log('==========>bodyStrInMaxLength1' + bodyStr + '<========')
+
                         bodyStr = removeAllCodeBlocks(bodyStr)
-                        console.log('==========>bodyStrInMaxLength' + bodyStr + '<========')
+                        console.log('==========>bodyStrInMaxLength2' + bodyStr + '<========')
                         let lines = bodyStr.split(/\r?\n/);
                         let inBigBlock = false;
                         for (let line of lines) {
