@@ -116,7 +116,7 @@ PR, we had to define its special excpetion and catch that:
 
 --- End of stack trace from previous location where exception was thrown ---
 
-   at Microsoft.FSharp.Control.AsyncPrimitives.Start@907-1.Invoke(ExceptionDispatchInfo edi) in F:\workspace\_work\\1\s\src\fsharp\FSharp.Core\async.fs:line 907
+   at Microsoft.FSharp.Control.AsyncPrimitives.Start@907-1.Invoke(ExceptionDispatchInfo edi) in F:\\workspace\\_work\\1\\s\\src\\fsharp\\FSharp.Core\\async.fs:line 907
 
    at Microsoft.FSharp.Control.Trampoline.Execute(FSharpFunc\`2 firstAction) in F:\\workspace\\_work\\1\\s\\src\\fsharp\\FSharp.Core\\async.fs:line 109
 
