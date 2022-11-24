@@ -365,6 +365,7 @@ module.exports = {
                         for (let paragraph of bodyStr.trim().split('\n\n')){
 
                             paragraph = removeAllCodeBlocks(paragraph).trim();
+                            console.log('paragraph:' + paragraph)
                             if (paragraph.length == 0)
                                 continue;
 
