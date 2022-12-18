@@ -94,8 +94,6 @@ test('body-prose9', () => {
 test('body-prose10', () => {
     let commitMsgWithLargeBody =
 `Network,TorHandshakes: handle handshake fail
-
-\`\`\`The active test run was aborted. Reason: Test host process crashed : Unhandled exception. System.Exception: Key handshake failed!\`\`\`
 `
     let bodyProse10 = runCommitLintOnMsg(commitMsgWithLargeBody);
     console.log('==========>' + bodyProse10.stdout)
