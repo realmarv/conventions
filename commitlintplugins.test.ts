@@ -102,8 +102,6 @@ PR, we had to define its special excpetion and catch that:
 
 \`\`\`The active test run was aborted. Reason: Test host process crashed : Unhandled exception. System.Exception: Key handshake failed!
 
-   at <StartupCode$NOnion>.$TorCircuit.clo@950-39.Invoke(AsyncActivation\`1 ctxt) in /home/runner/work/NOnion/NOnion/NOnion/Network/TorCircuit.fs:line 950
-
    at System.Threading.ThreadPoolWorkQueue.Dispatch()\`\`\`
 `
     let bodyProse10 = runCommitLintOnMsg(commitMsgWithLargeBody);
