@@ -94,7 +94,7 @@ test('body-prose9', () => {
 test('body-prose10', () => {
     let commitMsgWithLargeBody =
         "Network,TorHandshakes: handle handshake fail\n\n"+
-        "```The active test run was aborted. System.Exception: Key handshake failed!```"
+        "```\nThe active test run was aborted. System.Exception: Key handshake failed!\n```"
 
     let bodyProse10 = runCommitLintOnMsg(commitMsgWithLargeBody);
     console.log('==========>' + bodyProse10.stdout)
