@@ -101,6 +101,51 @@ test('body-prose10', () => {
     expect(bodyProse10.status).toBe(0);
 })
 
+
+test('body-prose11', () => {
+    let commitMsgWithLargeBody =
+`
+Backend/Ether: catch/retry new -32002 err code
+
+Fix cherry-picked from stable branch:
+
+CI on master branch caught this[1]:
+
+\`\`\`
+Unhandled Exception:
+System.AggregateException: One or more errors occurred. (Some problem when connecting to 'api.mycryptoapi.com/eth') ---> System.Exception: Some problem when connecting to 'api.mycryptoapi.com/eth' ---> System.Exception: RpcResponseException with RpcError Code <-32002> and Message 'rejected due to project ID settings' (rejected due to project ID settings) ---> JsonRpcSharp.Client.RpcResponseException: rejected due to project ID settings
+  at JsonRpcSharp.Client.ClientBase.HandleRpcError (JsonRpcSharp.Client.RpcMessages.RpcResponseMessage response) [0x00033] in <4c31088b87e449d8935ce2e038670d08>:0
+  at JsonRpcSharp.Client.ClientBase.SendInnerRequestAsync[T] (JsonRpcSharp.Client.RpcMessages.RpcRequestMessage reqMsg, System.String route, System.Threading.CancellationToken cancellationToken) [0x00089] in <4c31088b87e449d8935ce2e038670d08>:0
+  at JsonRpcSharp.Client.ClientBase.SendInnerRequestAsync[T] (JsonRpcSharp.Client.RpcRequest request, System.String route, System.Threading.CancellationToken cancellationToken) [0x000a3] in <4c31088b87e449d8935ce2e038670d08>:0
+  at JsonRpcSharp.Client.ClientBase.SendRequestAsync[T] (JsonRpcSharp.Client.RpcRequest request, System.String route, System.Threading.CancellationToken cancellationToken) [0x00127] in <4c31088b87e449d8935ce2e038670d08>:0
+   --- End of inner exception stack trace ---
+  at GWallet.Backend.Ether.Server.MaybeRethrowRpcResponseException (System.Exception ex) [0x001a9] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:224
+  at GWallet.Backend.Ether.Server.ReworkException (System.Exception ex) [0x0000e] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:299
+  at GWallet.Backend.Ether.Server+HandlePossibleEtherFailures@387-6[R].Invoke (System.Exception _arg2) [0x00002] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:392
+  at GWallet.Backend.Ether.Server+HandlePossibleEtherFailures@387-8[R].Invoke (System.Exception exn) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:387
+  at GWallet.Backend.Ether.Server+HandlePossibleEtherFailures@387-10[R].Invoke (System.Exception edi) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:387
+  at Microsoft.FSharp.Control.AsyncPrimitives.CallFilterThenInvoke[T] (Microsoft.FSharp.Control.AsyncActivation\`1[T] ctxt, Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] catchFilter, System.Runtime.ExceptionServices.ExceptionDispatchInfo edi) [0x00005] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:435
+  at Microsoft.FSharp.Control.Trampoline.Execute (Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] firstAction) [0x00020] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:109
+   --- End of inner exception stack trace ---
+  at GWallet.Backend.Ether.Server+Web3ServerToRetrievalFunc@406-2[R].Invoke (System.Exception _arg3) [0x00060] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:415
+  at GWallet.Backend.Ether.Server+Web3ServerToRetrievalFunc@406-5[R].Invoke (System.Exception exn) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:406
+  at GWallet.Backend.Ether.Server+Web3ServerToRetrievalFunc@406-7[R].Invoke (System.Exception edi) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:406
+  at Microsoft.FSharp.Control.AsyncPrimitives.CallFilterThenInvoke[T] (Microsoft.FSharp.Control.AsyncActivation\`1[T] ctxt, Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] catchFilter, System.Runtime.ExceptionServices.ExceptionDispatchInfo edi) [0x00005] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:435
+  at Microsoft.FSharp.Control.Trampoline.Execute (Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] firstAction) [0x00020] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:109
+--- End of stack trace from previous location where exception was thrown ---
+
+  at GWallet.Backend.FSharpUtil.ReRaise (System.Exception ex) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/FSharpUtil.fs:206
+...
+\`\`\`
+
+[1] https://github.com/nblockchain/geewallet/actions/runs/3507005645/jobs/5874411684
+`
+
+    let bodyProse11 = runCommitLintOnMsg(commitMsgWithLargeBody);
+    expect(bodyProse11.status).toBe(0);
+})
+
+
 test('body-max-line-length1', () => {
     let tenChars = "1234 67890";
     let sixtyChars = tenChars + tenChars + tenChars + tenChars + tenChars + tenChars;
