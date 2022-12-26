@@ -359,7 +359,7 @@ module.exports = {
                         // Extracting bodyStr from rawStr rather than using body directly is a
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
                         let bodyStr = rawStr.substring(lineBreakIndex);
-
+                        console.log('====>'+bodyStr+'<====')
                         bodyStr = removeAllCodeBlocks(bodyStr).trim();
                         
                         if (bodyStr !== ''){
