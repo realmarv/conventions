@@ -643,9 +643,9 @@ module.exports = {
                     ];
                 },
 
-                'body-soft-max-line-length': ({raw}: {raw:any}) => {
+                'body-soft-max-line-length': ({raw, footer}: {raw:any, footer:any}) => {
                     let offence = false;
-
+                    console.log('footer===>' + convertAnyToString(footer, "footer") + '<===')
                     let rawStr = convertAnyToString(raw, "raw").trim();
                     let lineBreakIndex = rawStr.indexOf('\n');
 
