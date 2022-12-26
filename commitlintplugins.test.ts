@@ -142,7 +142,7 @@ System.AggregateException: One or more errors occurred. (Some problem when conne
 `
 
     let bodyProse11 = runCommitLintOnMsg(commitMsgWithLargeBody);
-    console.log(bodyProse11.stdout)
+    console.log('=====>' + bodyProse11.stdout)
     expect(bodyProse11.status).toBe(0);
 })
 
