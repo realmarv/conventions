@@ -186,8 +186,8 @@ test('body-max-line-length8', () => {
         "Network,TorHandshakes: handle handshake fail\n\n" +
         "--- Line between dashes ---\n" +
         "A very long line. A very long line. A very long line. A very long line. A very long line. A very long line."
-
     let bodyMaxLineLength8 = runCommitLintOnMsg(commitMsgWithLargeBody);
+    console.log(bodyMaxLineLength8.stdout)
     expect(bodyMaxLineLength8.status).toBe(1);
 });
 
