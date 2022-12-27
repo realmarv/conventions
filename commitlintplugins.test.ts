@@ -124,14 +124,14 @@ System.AggregateException: One or more errors occurred. (Some problem when conne
   at GWallet.Backend.Ether.Server+HandlePossibleEtherFailures@387-6[R].Invoke (System.Exception _arg2) [0x00002] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:392
   at GWallet.Backend.Ether.Server+HandlePossibleEtherFailures@387-8[R].Invoke (System.Exception exn) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:387
   at GWallet.Backend.Ether.Server+HandlePossibleEtherFailures@387-10[R].Invoke (System.Exception edi) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:387
-  at Microsoft.FSharp.Control.AsyncPrimitives.CallFilterThenInvoke[T] (Microsoft.FSharp.Control.AsyncActivation\`1[T] ctxt, Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] catchFilter, System.Runtime.ExceptionServices.ExceptionDispatchInfo edi) [0x00005] in E:\\A\_work\\130\\s\\src\\fsharp\\FSharp.Core\\async.fs:435
-  at Microsoft.FSharp.Control.Trampoline.Execute (Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] firstAction) [0x00020] in E:\\A\\_work\\130\\s\\src\\fsharp\\FSharp.Core\\async.fs:109
+  at Microsoft.FSharp.Control.AsyncPrimitives.CallFilterThenInvoke[T] (Microsoft.FSharp.Control.AsyncActivation\`1[T] ctxt, Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] catchFilter, System.Runtime.ExceptionServices.ExceptionDispatchInfo edi) [0x00005] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:435
+  at Microsoft.FSharp.Control.Trampoline.Execute (Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] firstAction) [0x00020] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:109
    --- End of inner exception stack trace ---
   at GWallet.Backend.Ether.Server+Web3ServerToRetrievalFunc@406-2[R].Invoke (System.Exception _arg3) [0x00060] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:415
   at GWallet.Backend.Ether.Server+Web3ServerToRetrievalFunc@406-5[R].Invoke (System.Exception exn) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:406
   at GWallet.Backend.Ether.Server+Web3ServerToRetrievalFunc@406-7[R].Invoke (System.Exception edi) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/Ether/EtherServer.fs:406
-  at Microsoft.FSharp.Control.AsyncPrimitives.CallFilterThenInvoke[T] (Microsoft.FSharp.Control.AsyncActivation\`1[T] ctxt, Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] catchFilter, System.Runtime.ExceptionServices.ExceptionDispatchInfo edi) [0x00005] in E:\\A\_work\\130\\s\\src\\fsharp\\FSharp.Core\\async.fs:435
-  at Microsoft.FSharp.Control.Trampoline.Execute (Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] firstAction) [0x00020] in E:\\A\\_work\\130\\s\\src\\fsharp\\FSharp.Core\\async.fs:109
+  at Microsoft.FSharp.Control.AsyncPrimitives.CallFilterThenInvoke[T] (Microsoft.FSharp.Control.AsyncActivation\`1[T] ctxt, Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] catchFilter, System.Runtime.ExceptionServices.ExceptionDispatchInfo edi) [0x00005] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:435
+  at Microsoft.FSharp.Control.Trampoline.Execute (Microsoft.FSharp.Core.FSharpFunc\`2[T,TResult] firstAction) [0x00020] in E:\A\_work\130\s\src\fsharp\FSharp.Core\async.fs:109
 --- End of stack trace from previous location where exception was thrown ---
 
   at GWallet.Backend.FSharpUtil.ReRaise (System.Exception ex) [0x00000] in /Users/runner/work/geewallet/geewallet/src/GWallet.Backend/FSharpUtil.fs:206
@@ -142,7 +142,6 @@ System.AggregateException: One or more errors occurred. (Some problem when conne
 `
 
     let bodyProse11 = runCommitLintOnMsg(commitMsgWithLargeBody);
-    console.log('=====>' + bodyProse11.stdout)
     expect(bodyProse11.status).toBe(0);
 })
 

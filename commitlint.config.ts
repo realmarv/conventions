@@ -359,19 +359,11 @@ module.exports = {
                         // Extracting bodyStr from rawStr rather than using body directly is a
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
                         let bodyStr = rawStr.substring(lineBreakIndex);
-                        console.log('====>'+bodyStr+'<====')
+
                         bodyStr = removeAllCodeBlocks(bodyStr).trim();
                         
                         if (bodyStr !== ''){
-                            for (let paragraph of bodyStr.split('\n\n')){
-
-                                paragraph = paragraph.trim()
-
-                                if (paragraph === ''){
-                                    continue
-                                }
-
-                                console.log('==paragraph==>'+paragraph+'<==paragraph==')
+                            for (let paragraph of bodyStr.trim().split('\n\n')){
 
                                 let startWithLowerCase = isLowerCase(paragraph[0]);
 
@@ -489,7 +481,7 @@ module.exports = {
 
                 'footer-references-existence': ({body}: {body:any}) => {
                     let offence = false;
-                    console.log('==body==>'+body+'<==body==')
+
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
                         let lines = bodyStr.split(/\r?\n/);
