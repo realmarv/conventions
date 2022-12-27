@@ -364,7 +364,7 @@ module.exports = {
                         
                         if (bodyStr !== ''){
                             for (let paragraph of bodyStr.split('\n\n')){
-                                
+
                                 paragraph = paragraph.trim()
 
                                 if (paragraph === ''){
@@ -489,7 +489,7 @@ module.exports = {
 
                 'footer-references-existence': ({body}: {body:any}) => {
                     let offence = false;
-
+                    console.log('==body==>'+body+'<==body==')
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
                         let lines = bodyStr.split(/\r?\n/);
