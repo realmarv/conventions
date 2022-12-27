@@ -364,6 +364,7 @@ module.exports = {
                         
                         if (bodyStr !== ''){
                             for (let paragraph of bodyStr.trim().split('\n\n')){
+                                console.log('==paragraph==>'+paragraph+'<==paragraph==')
 
                                 let startWithLowerCase = isLowerCase(paragraph[0]);
 
