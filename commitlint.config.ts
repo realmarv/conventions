@@ -462,7 +462,7 @@ module.exports = {
 
                     if (body !== null) {
                         let bodyStr = convertAnyToString(body, "body");
-
+                        console.log('==body==>' + body + '<==body==')
                         let seenBody = false;
                         let seenFooter = false;
                         let lines = bodyStr.split(/\r?\n/);
