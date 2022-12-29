@@ -457,28 +457,29 @@ module.exports = {
                     ];
                 },
 
-                'footer-notes-misplacement': ({body}: {body:any}) => {
+                'footer-notes-misplacement': ({myNotes}: {myNotes:any}) => {
                     let offence = false;
 
-                    if (body !== null) {
-                        let bodyStr = convertAnyToString(body, "body");
-                        console.log('==body==>' + body + '<==body==')
-                        let seenBody = false;
-                        let seenFooter = false;
-                        let lines = bodyStr.split(/\r?\n/);
-                        for (let line of lines) {
-                            if (line.length === 0){
-                                continue;
-                            }
-                            seenBody = seenBody || !isFooterNote(line);
-                            seenFooter = seenFooter || isFooterNote(line);
-                            if (seenFooter && !isFooterNote(line)) {
-                                offence = true;
-                                break;
-                            }
+                    console.log('==Side Notes==>'+myNotes+'<==Side Notes==')
+                    // if (body !== null) {
+                    //     let bodyStr = convertAnyToString(body, "body");
+                    //     console.log('==body==>' + body + '<==body==')
+                    //     let seenBody = false;
+                    //     let seenFooter = false;
+                    //     let lines = bodyStr.split(/\r?\n/);
+                    //     for (let line of lines) {
+                    //         if (line.length === 0){
+                    //             continue;
+                    //         }
+                    //         seenBody = seenBody || !isFooterNote(line);
+                    //         seenFooter = seenFooter || isFooterNote(line);
+                    //         if (seenFooter && !isFooterNote(line)) {
+                    //             offence = true;
+                    //             break;
+                    //         }
                             
-                        }
-                    }
+                    //     }
+                    // }
                     return [
                         !offence,
                         `Footer messages must be placed after body paragraphs, please move any message that starts with a "[]" or "Fixes" to the end of the commmit message.`
