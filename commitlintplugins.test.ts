@@ -289,7 +289,7 @@ test('footer-notes-misplacement-4', () => {
     let commitMsgWithWrongFooter = 
         "foo: this is only a title\n\n" +
         "Bla bla blah[1]:\n\n" +
-        "```\nUnhandled Exception:\n- Something between dashes -\n```\n\n" +
+        "```\nUnhandled Exception:\n- Something between dashes \n```\n\n" +
         "[1] http://foo.bar/baz\n\n" +
         "Some other bla bla blah.\n\n" +
         "Fixes https://some/issue";
