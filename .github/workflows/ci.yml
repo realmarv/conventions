@@ -39,8 +39,6 @@ jobs:
           npx commitlint --version
       - name: Run tests to validate our plugins
         run: |
-          yarn init
-          yarn cache clean
           yarn jest
 
   sanitycheck:
