@@ -377,14 +377,14 @@ module.exports = {
 
                     let rawStr = convertAnyToString(raw, "raw").trim();
                     let lineBreakIndex = rawStr.indexOf('\n');
-
+                    console.log('here3')
                     if (lineBreakIndex >= 0){
                         // Extracting bodyStr from rawStr rather than using body directly is a
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
                         let bodyStr = rawStr.substring(lineBreakIndex);
 
                         bodyStr = removeAllCodeBlocks(bodyStr).trim();
-                        
+                        console.log('here2')
                         if (bodyStr !== ''){
                             for (let paragraph of bodyStr.split('\n\n')){
                                 
@@ -416,6 +416,7 @@ module.exports = {
                                             
                         }
                     }
+                    console.log('here1')
 
                     return [
                         !offence,
