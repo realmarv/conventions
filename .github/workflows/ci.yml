@@ -41,6 +41,7 @@ jobs:
           npx commitlint --version
       - name: Run tests to validate our plugins
         run: |
+          npm install --save-dev jest typescript ts-jest @types/jest
           npm install -g --save jest
           jest
 
