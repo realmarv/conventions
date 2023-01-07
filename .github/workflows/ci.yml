@@ -42,7 +42,7 @@ jobs:
       - name: Run tests to validate our plugins
         run: |
           npm install -g --save jest
-          yarn jest
+          jest
 
   sanitycheck:
     runs-on: ubuntu-22.04
