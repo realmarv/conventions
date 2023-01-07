@@ -43,7 +43,7 @@ jobs:
         run: |
           npm install --save-dev jest typescript ts-jest @types/jest
           npm install -g --save jest
-          jest
+          yarn jest
 
   sanitycheck:
     runs-on: ubuntu-22.04
