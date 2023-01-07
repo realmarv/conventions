@@ -332,7 +332,7 @@ function isCommitUrl(url: string) {
 }
 
 module.exports = {
-    parserPreset: 'conventional-changelog-conventionalcommits',
+    // parserPreset: 'conventional-changelog-conventionalcommits',
     rules: {
         'body-leading-blank': [RuleStatus.Warning, 'always'],
         'body-soft-max-line-length': [RuleStatus.Error, 'always'],
