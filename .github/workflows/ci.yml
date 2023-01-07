@@ -22,7 +22,7 @@ jobs:
 
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-          npm install conventional-changelog-conventionalcommits
+          npm install --save commitlint@next @commitlint/cli@next commitlint-plugin-cleanfeet conventional-changelog-conventionalcommits
       - name: Print versions
         run: |
           git --version
