@@ -39,7 +39,9 @@ jobs:
           npm --version
           npx commitlint --version
       - name: Run tests to validate our plugins
-        run: yarn jest
+        run: |
+          npm install -g --save --save-dev jest typescript ts-jest @types/jest
+          yarn jest
 
   sanitycheck:
     runs-on: ubuntu-22.04
