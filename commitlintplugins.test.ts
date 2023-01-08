@@ -15,7 +15,10 @@ test('body-prose1', () => {
 test('body-prose2', () => {
     let commitMsgWithNumbercaseBodyStart =
         "foo: this is only a title" + "\n\n" + "1234 bla blah bla.";
+    console.log('before commitlint')
     let bodyProse2 = runCommitLintOnMsg(commitMsgWithNumbercaseBodyStart);
+    console.log('after commitlint')
+    console.log(bodyProse2 + '')
     console.log('===>' + bodyProse2.stdout)
     expect(bodyProse2.status).toBe(0);
 });
