@@ -374,7 +374,7 @@ module.exports = {
             rules: {
                 'body-prose': ({raw}: {raw:any}) => {
                     let offence = false;
-
+                    console.log('==raw==>'+raw+'<==raw==')
                     let rawStr = convertAnyToString(raw, "raw").trim();
                     console.log('==rawStr==>'+rawStr+'<==rawStr==')
                     let lineBreakIndex = rawStr.indexOf('\n');
