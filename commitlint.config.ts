@@ -434,7 +434,7 @@ module.exports = {
                     let gitRepo = process.env['GITHUB_REPOSITORY'];
                     if (gitRepo !== undefined && urls !== null) {
                         for (let url of urls.entries()) {
-                            let urlStr = url[1].toString()
+                            let urlStr: any = url[1].toString()
                             if (isCommitUrl(urlStr) && urlStr.includes(gitRepo)) {
                                 offence = true;
                                 break;
