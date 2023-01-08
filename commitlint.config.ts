@@ -1,6 +1,6 @@
 // FIXME: move abbr below to separate file when we start using
 // the whole repo instead of just wget'ing this single file
-let abbr = {
+let abbr: any = {
     "1 second": "1sec",
     "1second": "1sec",
     "absolute": "abs",
@@ -197,10 +197,10 @@ enum RuleStatus {
     Error = 2,
 }
 
-let bodyMaxLineLength = 64;
-let headerMaxLineLength = 50;
+let bodyMaxLineLength: any = 64;
+let headerMaxLineLength: any = 50;
 
-function isValidUrl(text: string) {
+function isValidUrl(text: string): boolean {
     if (text.indexOf(" ") >= 0) {
         return false;
     }
@@ -214,64 +214,64 @@ function isValidUrl(text: string) {
     }
 }
 
-function assertUrl(url: string) {
+function assertUrl(url: string): any {
     if (!isValidUrl(url)) {
         throw Error('This function expects a url as input')   
     }
 }
 
-function assertCharacter(letter: string) {
+function assertCharacter(letter: string): any {
     if (letter.length !== 1) {
         throw Error('This function expects a character as input')
     }
 }
 
-function assertLine(line: string) {
+function assertLine(line: string): any {
     if (line.includes('\n')) {
         throw Error('This function expects a line as input')
     }
 }
 
-function assertWord(word: string) {
+function assertWord(word: string): any {
     if (word.includes('\n') || word.includes(' ')) {
         throw Error("This function expects a word as input.\n" +
                     "A word doesn't include line breaks and whitespaces.")
     }
 }
 
-function isBigBlock(line: string) {
+function isBigBlock(line: string): boolean {
     assertLine(line);
-    let bigBlockDelimiter = "```";
+    let bigBlockDelimiter: string = "```";
     return (line.length == bigBlockDelimiter.length) && (line.indexOf("```") == 0);
 }
 
-function isUpperCase(letter: string) {
+function isUpperCase(letter: string): boolean {
     assertCharacter(letter);
-    let isUpperCase = letter.toUpperCase() == letter;
-    let isLowerCase = letter.toLowerCase() == letter;
+    let isUpperCase: boolean = letter.toUpperCase() == letter;
+    let isLowerCase: boolean = letter.toLowerCase() == letter;
 
     return (isUpperCase && !isLowerCase);
 }
 
-function isLowerCase(letter: string) {
+function isLowerCase(letter: string): boolean {
     assertCharacter(letter);
-    let isUpperCase = letter.toUpperCase() == letter;
-    let isLowerCase = letter.toLowerCase() == letter;
+    let isUpperCase: boolean = letter.toUpperCase() == letter;
+    let isLowerCase: boolean = letter.toLowerCase() == letter;
 
     return (isLowerCase && !isUpperCase);
 }
 
-function isFooterReference(line: string) {
+function isFooterReference(line: string): boolean {
     assertLine(line);
     return (line[0] === "[" && line.indexOf("] ") > 0);
 }
 
-function isFixesSentence(line: string) {
+function isFixesSentence(line: string): boolean {
     assertLine(line);
     return (line.indexOf("Fixes ") == 0);
 }
 
-function isCoAuthoredByTag(line: string) {
+function isCoAuthoredByTag(line: string): boolean {
     assertLine(line);
     return (line.indexOf("Co-authored-by: ") == 0);
 }
@@ -283,17 +283,17 @@ function isFooterNote(line: string): boolean {
         isFixesSentence(line);
 }
 
-function numUpperCaseLetters(word: string) {
+function numUpperCaseLetters(word: string): number {
     assertWord(word)
     return word.length - word.replace(/[A-Z]/g, '').length;
 }
 
-function numNonAlphabeticalCharacters(word: string) {
+function numNonAlphabeticalCharacters(word: string): number {
     assertWord(word)
     return word.length - word.replace(/[^a-zA-Z]/g, '').length;
 }
 
-function isProperNoun(word: string) {
+function isProperNoun(word: string): boolean {
     assertWord(word)
     let numUpperCase = numUpperCaseLetters(word)
     let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
@@ -303,7 +303,7 @@ function isProperNoun(word: string) {
             (isLowerCase(word[0]) && (numUpperCase > 0))
 }
 
-function wordIsStartOfSentence(word: string) {
+function wordIsStartOfSentence(word: string): boolean {
     assertWord(word);
     if (isUpperCase(word[0])) {
         let numUpperCase = numUpperCaseLetters(word)
@@ -313,20 +313,20 @@ function wordIsStartOfSentence(word: string) {
     return false;
 }
 
-function includesHashtagRef(text: string) {
+function includesHashtagRef(text: string): boolean {
     return text.match(`#[0-9]+`) !== null;
 }
 
-function removeAllCodeBlocks(text: string) {
+function removeAllCodeBlocks(text: string): string {
     return text.replace(/```[^]*```/g, '');
 }
 
-function findUrls(text: string) {
+function findUrls(text: string): any {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.match(urlRegex);
 }
 
-function isCommitUrl(url: string) {
+function isCommitUrl(url: string): boolean {
     assertUrl(url)
     return url.includes('/commit/');
 }
@@ -373,16 +373,16 @@ module.exports = {
         {
             rules: {
                 'body-prose': ({raw}: {raw:any}) => {
-                    let offence = false;
+                    let offence: boolean = false;
                     console.log('==raw==>'+raw+'<==raw==')
-                    let rawStr = convertAnyToString(raw, "raw").trim();
+                    let rawStr: string = convertAnyToString(raw, "raw").trim();
                     console.log('==rawStr==>'+rawStr+'<==rawStr==')
-                    let lineBreakIndex = rawStr.indexOf('\n');
+                    let lineBreakIndex: number = rawStr.indexOf('\n');
                     console.log('here3')
                     if (lineBreakIndex >= 0){
                         // Extracting bodyStr from rawStr rather than using body directly is a
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
-                        let bodyStr = rawStr.substring(lineBreakIndex);
+                        let bodyStr: string = rawStr.substring(lineBreakIndex);
 
                         bodyStr = removeAllCodeBlocks(bodyStr).trim();
                         console.log('here2')
@@ -395,11 +395,11 @@ module.exports = {
                                     continue
                                 }
 
-                                let startWithLowerCase = isLowerCase(paragraph[0]);
+                                let startWithLowerCase: boolean = isLowerCase(paragraph[0]);
 
-                                let endsWithDotOrColon = paragraph[paragraph.length - 1] === '.' || paragraph[paragraph.length - 1] === ':';
+                                let endsWithDotOrColon: boolean = paragraph[paragraph.length - 1] === '.' || paragraph[paragraph.length - 1] === ':';
 
-                                let lines = paragraph.split(/\r?\n/);
+                                let lines: any = paragraph.split(/\r?\n/);
 
                                 if (startWithLowerCase) {
                                     if (!(lines.length == 1 && isValidUrl(lines[0]))) {
