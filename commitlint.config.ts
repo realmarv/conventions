@@ -376,6 +376,7 @@ module.exports = {
                     let offence = false;
 
                     let rawStr = convertAnyToString(raw, "raw").trim();
+                    console.log('==rawStr==>'+rawStr+'<==rawStr==')
                     let lineBreakIndex = rawStr.indexOf('\n');
                     console.log('here3')
                     if (lineBreakIndex >= 0){
