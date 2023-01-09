@@ -189,29 +189,6 @@ module.exports = {
 
         {
             rules: {
-                'commit-hash-alone': ({raw}: {raw:any}) => {
-                    let rawStr = convertAnyToString(raw, "raw");
-                    let offence = false;
-
-                    let urls = findUrls(rawStr)
-
-                    let gitRepo = process.env['GITHUB_REPOSITORY'];
-                    if (gitRepo !== undefined && urls !== null) {
-                        for (let url of urls.entries()) {
-                            let urlStr = url[1].toString()
-                            if (isCommitUrl(urlStr) && urlStr.includes(gitRepo)) {
-                                offence = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    return [
-                        !offence,
-                        `Please use the commit hash instead of the commit full URL`
-                    ];
-                },
-
                 'empty-wip': ({header}: {header:any}) => {
                     let headerStr = convertAnyToString(header, "header");
                     let offence = headerStr.toLowerCase() === "wip";
