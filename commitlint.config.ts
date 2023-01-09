@@ -189,57 +189,6 @@ module.exports = {
 
         {
             rules: {
-                'body-prose': ({raw}: {raw:any}) => {
-                    let offence = false;
-
-                    let rawStr = convertAnyToString(raw, "raw").trim();
-                    let lineBreakIndex = rawStr.indexOf('\n');
-
-                    if (lineBreakIndex >= 0){
-                        // Extracting bodyStr from rawStr rather than using body directly is a
-                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
-                        let bodyStr = rawStr.substring(lineBreakIndex);
-
-                        bodyStr = removeAllCodeBlocks(bodyStr).trim();
-                        
-                        if (bodyStr !== ''){
-                            for (let paragraph of bodyStr.split('\n\n')){
-                                
-                                paragraph = paragraph.trim()
-
-                                if (paragraph === ''){
-                                    continue
-                                }
-
-                                let startWithLowerCase = isLowerCase(paragraph[0]);
-
-                                let endsWithDotOrColon = paragraph[paragraph.length - 1] === '.' || paragraph[paragraph.length - 1] === ':';
-
-                                let lines = paragraph.split(/\r?\n/);
-
-                                if (startWithLowerCase) {
-                                    if (!(lines.length == 1 && isValidUrl(lines[0]))) {
-                                        offence = true;
-                                    }
-                                }
-
-                                if (!endsWithDotOrColon &&
-                                    !isValidUrl(lines[lines.length - 1]) &&
-                                    !isFooterNote(lines[lines.length - 1])) {
-
-                                    offence = true;
-                                }
-                            }
-                                            
-                        }
-                    }
-
-                    return [
-                        !offence,
-                        `Please begin a paragraph with uppercase letter and end it with a dot`
-                    ];
-                },
-
                 'commit-hash-alone': ({raw}: {raw:any}) => {
                     let rawStr = convertAnyToString(raw, "raw");
                     let offence = false;
