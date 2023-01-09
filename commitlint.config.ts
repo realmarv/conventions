@@ -490,58 +490,6 @@ module.exports = {
                     ];
                 },
 
-                'body-soft-max-line-length': ({raw}: {raw:any}) => {
-                    let offence = false;
-
-                    let rawStr = convertAnyToString(raw, "raw").trim();
-                    let lineBreakIndex = rawStr.indexOf('\n');
-
-                    if (lineBreakIndex >= 0){
-                        // Extracting bodyStr from rawStr rather than using body directly is a
-                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
-                        let bodyStr = rawStr.substring(lineBreakIndex);
-
-                        bodyStr = removeAllCodeBlocks(bodyStr).trim();
-                        
-                        if (bodyStr !== ''){
-                            let lines = bodyStr.split(/\r?\n/);
-                            let inBigBlock = false;
-                            for (let line of lines) {
-                                if (isBigBlock(line)) {
-                                    inBigBlock = !inBigBlock;
-                                    continue;
-                                }
-                                if (inBigBlock) {
-                                    continue;
-                                }
-                                if (line.length > bodyMaxLineLength) {
-
-                                    let isUrl = isValidUrl(line);
-
-                                    let lineIsFooterNote = isFooterNote(line);
-
-                                    if ((!isUrl) && (!lineIsFooterNote)) {
-                                        offence = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // taken from https://stackoverflow.com/a/66433444/544947 and https://unix.stackexchange.com/a/25208/56844
-                    function getUnixCommand(fmtOption: string){
-                        return `git log --format=%B -n 1 $(git log -1 --pretty=format:"%h") | cat - > log.txt ; fmt -w 1111 -s log.txt > ulog.txt && fmt -w 64 -s ${fmtOption} ulog.txt > wlog.txt && git commit --amend -F wlog.txt`;
-                    }
-
-                    return [
-                        !offence,
-                        `Please do not exceed ${bodyMaxLineLength} characters in the lines of the commit message's body; we recommend this unix command (for editing the last commit message): \n` +
-                        `For Linux users: ${getUnixCommand('-u')}\n` +
-                        `For macOS users: ${getUnixCommand('')}`
-                    ];
-                },
-
                 'trailing-whitespace': ({raw}: {raw:any}) => {
                     let rawStr = convertAnyToString(raw, "raw");
 
