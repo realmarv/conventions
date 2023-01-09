@@ -490,41 +490,6 @@ module.exports = {
                     ];
                 },
 
-                'trailing-whitespace': ({raw}: {raw:any}) => {
-                    let rawStr = convertAnyToString(raw, "raw");
-
-                    let offence = false;
-                    let lines = rawStr.split(/\r?\n/);
-                    let inBigBlock = false;
-                    for (let line of lines) {
-                        if (isBigBlock(line)) {
-                            inBigBlock = !inBigBlock;
-                            continue;
-                        }
-                        if (inBigBlock) {
-                            continue;
-                        }
-
-                        if (line[0] == " " || line[0] == "\t") {
-                            offence = true;
-                            break;
-                        }
-
-                        if (line.length > 0) {
-                            let lastChar = line[line.length - 1];
-                            if (lastChar == " " || lastChar == "\t") {
-                                offence = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    return [
-                        !offence,
-                        `Please watch out for leading or ending trailing whitespace`
-                    ];
-                },
-
                 'type-space-before-paren': ({header}: {header:any}) => {
                     let headerStr = convertAnyToString(header, "header");
 
