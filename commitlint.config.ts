@@ -332,29 +332,6 @@ module.exports = {
                     ];
                 },
 
-                'type-space-after-comma': ({header}: {header:any}) => {
-                    let headerStr = convertAnyToString(header, "header");
-
-                    let offence = false;
-                    let colonIndex = headerStr.indexOf(":");
-                    if (colonIndex >= 0){
-                        let areaOrScope = headerStr.substring(0, colonIndex);
-                        let commaIndex = (areaOrScope.indexOf(','));
-                        while (commaIndex >= 0) {
-                            if (areaOrScope[commaIndex + 1] === ' ') {
-                                offence = true;
-                            }
-                            areaOrScope = areaOrScope.substring(commaIndex + 1);
-                            commaIndex = (areaOrScope.indexOf(','));
-                        }
-                    }
-
-                    return [
-                        !offence,
-                        `No need to use space after comma in the area/scope (so that commit title can be shorter)`
-                    ];
-                },
-
                 'type-space-before-paren': ({header}: {header:any}) => {
                     let headerStr = convertAnyToString(header, "header");
 
