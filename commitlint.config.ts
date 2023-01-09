@@ -221,41 +221,6 @@ module.exports = {
                     ];
                 },
 
-                'footer-notes-misplacement': ({raw}: {raw:any}) => {
-                    let offence = false;
-
-                    let rawStr = convertAnyToString(raw, "raw").trim();
-                    let lineBreakIndex = rawStr.indexOf('\n');
-
-                    if (lineBreakIndex >= 0){
-                        // Extracting bodyStr from rawStr rather than using body directly is a
-                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
-                        let bodyStr = rawStr.substring(lineBreakIndex).trim();
-                        
-                        if (bodyStr !== ''){
-                            let seenBody = false;
-                            let seenFooter = false;
-                            let lines = bodyStr.split(/\r?\n/);
-                            for (let line of lines) {
-                                if (line.length === 0){
-                                    continue;
-                                }
-                                seenBody = seenBody || !isFooterNote(line);
-                                seenFooter = seenFooter || isFooterNote(line);
-                                if (seenFooter && !isFooterNote(line)) {
-                                    offence = true;
-                                    break;
-                                }
-                                
-                            }
-                        }
-                    }
-                    return [
-                        !offence,
-                        `Footer messages must be placed after body paragraphs, please move any message that starts with a "[]" or "Fixes" to the end of the commmit message.`
-                    ]
-                },
-
                 'prefer-slash-over-backslash': ({header}: {header:any}) => {
                     let headerStr = convertAnyToString(header, "header");
 
