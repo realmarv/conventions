@@ -79,6 +79,11 @@ jobs:
           git --version
           node --version
           npm --version
+      - name: Compile commitlint.config.ts
+        run: |
+          npm install typescript -g
+          npm i --save-dev @types/node
+          tsc commitlint.config.ts --target es2015 --downlevelIteration true --skipLibCheck true
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
         run: ./commitlint.sh --from HEAD~1 --to HEAD --verbose
