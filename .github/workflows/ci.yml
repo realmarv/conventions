@@ -56,7 +56,7 @@ jobs:
 
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-          sudo npm install -g
+          sudo npm install --save -g
           npm install -g npm@8.15.0
           npm install -g --save commitlint@17.4.0 @commitlint/cli@17.4.0 conventional-changelog-conventionalcommits
           npm i -g --save-dev conventional-changelog-conventionalcommits
