@@ -73,7 +73,6 @@ jobs:
           git --version
           node --version
           npm --version
-          nodejs --version
           npx commitlint --version
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
