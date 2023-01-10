@@ -1,8 +1,5 @@
 {
   "name": "conventions",
-  "version": "1.0.0",
-  "description": "This is a repository that contains several useful things that other `nblockchain` repos use, such as:",
-  "main": "commitlint.config.js",
   "dependencies": {
     "ajv": "^8.12.0",
     "ansi-styles": "^4.3.0",
@@ -295,21 +292,16 @@
     "write-file-atomic": "^4.0.2",
     "yocto-queue": "^0.1.0",
     "walker": "^1.0.8",
-    "wrappy": "^1.0.2"
+    "wrappy": "^1.0.2",
+    "@commitlint/config-conventional": "^17.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^29.1.2",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nblockchain/conventions.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nblockchain/conventions/issues"
-  },
-  "homepage": "https://github.com/nblockchain/conventions#readme"
+    "test": "jest"
+  }
 }
