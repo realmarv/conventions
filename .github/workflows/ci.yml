@@ -48,6 +48,8 @@ jobs:
         run: ls
       - name: call pwd
         run: pwd
+      - name: call ls -lha
+        run: ls -lha
       - name: Install required dependencies
         run: |
           apt update && apt install -y sudo
