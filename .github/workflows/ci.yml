@@ -44,6 +44,10 @@ jobs:
     container:
       image: "ubuntu:22.04"
     steps:
+      - name: call ls
+        run: ls
+      - name: call pwd
+        run: pwd
       - name: Install required dependencies
         run: |
           apt update && apt install -y sudo
