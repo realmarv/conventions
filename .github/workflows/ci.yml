@@ -55,7 +55,7 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
-
+          echo here
           ls
           sudo npm install --save -g
           npm install -g npm@8.15.0
