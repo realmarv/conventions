@@ -44,6 +44,11 @@ jobs:
     container:
       image: "ubuntu:22.04"
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          # needed because of commit-lint, see https://github.com/conventional-changelog/commitlint/issues/3376
+          fetch-depth: 0
       - name: call ls
         run: ls
       - name: call pwd
@@ -70,11 +75,6 @@ jobs:
           npm install -g --save commitlint@17.4.0 @commitlint/cli@17.4.0 conventional-changelog-conventionalcommits
           npm i -g --save-dev conventional-changelog-conventionalcommits
           npm -g install @commitlint/config-conventional@17.1.0
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-          # needed because of commit-lint, see https://github.com/conventional-changelog/commitlint/issues/3376
-          fetch-depth: 0
       # workaround for https://github.com/actions/runner/issues/2033
       - name: ownership workaround
         run: git config --global --add safe.directory '*'
