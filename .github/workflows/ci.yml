@@ -77,7 +77,6 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
-          yarn --version
           tsc --version
       - name: ls node_moduels
         run: ls node_modules
