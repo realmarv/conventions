@@ -63,6 +63,8 @@ jobs:
       - name: Install conventions dependencies
         run: |
           sudo npm install --save -g
+      - name: ls node_moduels
+        run: ls node_modules
       - name: npm ls
         run: npm ls
       - name: call ls
