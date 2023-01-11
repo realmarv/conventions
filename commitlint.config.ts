@@ -1,3 +1,5 @@
+import { URL } from 'url'; 
+
 // FIXME: move abbr below to separate file when we start using
 // the whole repo instead of just wget'ing this single file
 let abbr = {
