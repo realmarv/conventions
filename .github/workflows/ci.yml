@@ -81,6 +81,9 @@ jobs:
         run: pwd
       - name: call ls -lha
         run: ls -lha
+      - name: use commitlint
+        run: |
+          echo 'wip' | npx commitlint
       - name: Print versions
         run: |
           git --version
