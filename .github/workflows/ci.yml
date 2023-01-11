@@ -31,6 +31,9 @@ jobs:
         run: |
           npm install -g typescript@4.8.4
           npm i --save-dev @types/jest
+          npm install --save-dev jest typescript ts-jest @types/jest
+          npm install -g --save jest
+          
       - name: Compile ts files
         run: |
           tsc commitlint.config.ts --target es2017 --moduleResolution node
