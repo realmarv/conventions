@@ -91,6 +91,8 @@ jobs:
           npx tsc --version
           yarn --version
           tsc --version
+      - name: cosmiconfig-typescript-loader
+        run: cat node_modules/cosmiconfig-typescript-loader/package.json
       - name: ls node_moduels
         run: ls node_modules
       - name: ls @types
@@ -103,10 +105,6 @@ jobs:
         run: pwd
       - name: call ls -lha
         run: ls -lha
-      - name: compile commitlint.config.ts and 
-        run: |
-          tsc commitlint.config.ts
-          tsc commitlintplugins.test.ts
       - name: use commitlint
         run: |
           echo 'wip' | npx commitlint
