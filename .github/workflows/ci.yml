@@ -79,7 +79,7 @@ jobs:
         run: git config --global --add safe.directory '*'
       - name: Install conventions dependencies
         run: |
-          sudo npm install
+          npm install
           npm install -g typescript@4.8.4
 
       - name: Print versions
@@ -103,6 +103,10 @@ jobs:
         run: pwd
       - name: call ls -lha
         run: ls -lha
+      - name: compile commitlint.config.ts and 
+        run: |
+          tsc commitlint.config.ts
+          tsc commitlintplugins.test.ts
       - name: use commitlint
         run: |
           echo 'wip' | npx commitlint
