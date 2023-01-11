@@ -293,9 +293,7 @@
     "yocto-queue": "^0.1.0",
     "walker": "^1.0.8",
     "wrappy": "^1.0.2",
-    "@commitlint/config-conventional": "^17.1.0",
-    "node": "^16.17.1",
-    "npm": "^8.15.0"
+    "@commitlint/config-conventional": "^17.1.0"
   },
   "devDependencies": {
     "jest": "^29.1.2",
@@ -305,5 +303,19 @@
   },
   "scripts": {
     "test": "jest"
-  }
+  },
+  "description": "This is a repository that contains several useful things that other `nblockchain` repos use, such as:",
+  "version": "1.0.0",
+  "main": "commitlint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nblockchain/conventions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nblockchain/conventions/issues"
+  },
+  "homepage": "https://github.com/nblockchain/conventions#readme"
 }
