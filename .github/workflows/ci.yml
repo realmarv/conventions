@@ -21,12 +21,6 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-      - name: Print versions
-        run: |
-          git --version
-          node --version
-          npm --version
-          npx commitlint --version
       - name: Install yarn
         run: |
           sudo npm install -g yarn
@@ -36,6 +30,10 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
+      - name: Compile ts files
+        run: |
+          tsc commitlint.config.ts --target es2017 --moduleResolution node
+          tsc commitlintplugins.test.ts --target es2017 --moduleResolution node
       - name: run commitlint
         run: echo 'wip' | npx commitlint
       - name: Run tests to validate our plugins
