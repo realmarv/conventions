@@ -62,9 +62,8 @@ jobs:
         run: git config --global --add safe.directory '*'
       - name: Install conventions dependencies
         run: |
+          npm cache clean --force
           sudo npm install --save -g
-      - name: npm rebuild node-sass 
-        run: npm rebuild node-sass 
       - name: ls node_moduels
         run: ls node_modules
       - name: npm ls
