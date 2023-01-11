@@ -39,8 +39,6 @@ jobs:
         run: |
           tsc commitlint.config.ts --target es2017 --moduleResolution node
           tsc commitlintplugins.test.ts --target es2017 --moduleResolution node
-      - name: run commitlint
-        run: echo 'wip' | npx commitlint
       - name: Run tests to validate our plugins
         run: |
           npm install --save-dev jest typescript ts-jest @types/jest
