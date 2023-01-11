@@ -71,6 +71,14 @@ jobs:
       - name: Install conventions dependencies
         run: |
           sudo npm install
+      - name: Print versions
+        run: |
+          git --version
+          node --version
+          npm --version
+          npx commitlint --version
+          yarn --version
+          tsc --version
       - name: ls node_moduels
         run: ls node_modules
       - name: npm ls
@@ -84,13 +92,7 @@ jobs:
       - name: use commitlint
         run: |
           echo 'wip' | npx commitlint
-      - name: Print versions
-        run: |
-          git --version
-          node --version
-          npm --version
-          npx commitlint --version
-          yarn --version
+
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
         run: ./commitlint.sh --from HEAD~1 --to HEAD --verbose
