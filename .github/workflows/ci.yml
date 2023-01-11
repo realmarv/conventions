@@ -70,6 +70,7 @@ jobs:
         run: git config --global --add safe.directory '*'
       - name: Install conventions dependencies
         run: |
+          sudo chown -R 1001:123 "/root/.npm"
           sudo npm install
       - name: ls node_moduels
         run: ls node_modules
