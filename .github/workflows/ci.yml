@@ -27,6 +27,10 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
+      - name: Install conventions dependencies 
+        run: |
+          npm install -g typescript@4.8.4
+          npm i --save-dev @types/jest
       - name: Install yarn
         run: |
           sudo npm install -g yarn
