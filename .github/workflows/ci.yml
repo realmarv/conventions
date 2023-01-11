@@ -80,7 +80,7 @@ jobs:
       - name: Install conventions dependencies
         run: |
           sudo npm install
-          npm install -g typescript
+          npm install -g typescript@4.8.4
 
       - name: Print versions
         run: |
