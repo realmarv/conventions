@@ -71,7 +71,7 @@ jobs:
       - name: Install conventions dependencies
         run: |
           sudo npm install
-          sudo npm install typescript --save-dev
+          sudo npm install typescript --save-dev -g
       - name: Print versions
         run: |
           git --version
