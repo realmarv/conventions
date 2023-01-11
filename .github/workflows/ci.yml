@@ -89,8 +89,13 @@ jobs:
           npm --version
           npx commitlint --version
           npx tsc --version
+          npx ts-node --version
           yarn --version
           tsc --version
+      - name: Compile ts files
+        run: |
+          tsc commitlint.config.ts --target es2017 --moduleResolution node
+          tsc commitlintplugins.test.ts --target es2017 --moduleResolution node
       - name: cosmiconfig-typescript-loader
         run: cat node_modules/cosmiconfig-typescript-loader/package.json
       - name: ls node_moduels
