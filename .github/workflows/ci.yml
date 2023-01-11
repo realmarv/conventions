@@ -36,6 +36,8 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
+      - name: run commitlint
+        run: echo 'wip' | npx commitlint
       - name: Run tests to validate our plugins
         run: |
           npm install --save-dev jest typescript ts-jest @types/jest
