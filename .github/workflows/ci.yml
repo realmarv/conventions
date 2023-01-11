@@ -80,6 +80,8 @@ jobs:
       - name: Install conventions dependencies
         run: |
           sudo npm install
+          npm install -g typescript
+
       - name: Print versions
         run: |
           git --version
@@ -88,6 +90,7 @@ jobs:
           npx commitlint --version
           npx tsc --version
           yarn --version
+          tsc --version
       - name: ls node_moduels
         run: ls node_modules
       - name: ls @types
