@@ -25,6 +25,9 @@ jobs:
         run: |
           npm install -g typescript@4.8.4
           npm install @types/jest
+      - name: Install yarn
+        run: |
+          sudo npm install -g yarn
       - name: Print versions
         run: |
           git --version
