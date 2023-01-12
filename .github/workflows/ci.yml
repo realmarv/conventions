@@ -21,9 +21,6 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-      - name: Install yarn
-        run: |
-          sudo npm install -g yarn
       - name: Install conventions dependencies
         run: |
           npm install -g typescript@4.8.4
