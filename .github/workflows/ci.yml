@@ -37,7 +37,6 @@ jobs:
           tsc commitlintplugins.test.ts --target es2017 --moduleResolution node
       - name: Run tests to validate our plugins
         run: |
-          npm install --save-dev jest typescript ts-jest @types/jest
           npm install -g --save jest
           yarn jest
 
