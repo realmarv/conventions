@@ -65,7 +65,6 @@ jobs:
         run: |
           npm install -g --save commitlint@17.4.0 @commitlint/cli@17.4.0 conventional-changelog-conventionalcommits@5.0.0
           npm i -g --save-dev conventional-changelog-conventionalcommits@5.0.0
-          npm install -g @commitlint/config-conventional@17.1.0
       - uses: actions/checkout@v2
         with:
           submodules: recursive
