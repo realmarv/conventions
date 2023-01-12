@@ -87,7 +87,8 @@ jobs:
           tsc commitlintplugins.test.ts --target es2017 --moduleResolution node
       - name: Install commitlint dependencies
         run: |
-          npm install -g conventional-changelog-conventionalcommits@5.0.0
+          npm init --yes
+          npm install -g --save conventional-changelog-conventionalcommits@5.0.0
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
         run: ./commitlint.sh --from HEAD~1 --to HEAD --verbose
