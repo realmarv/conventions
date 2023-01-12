@@ -61,10 +61,6 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-      - name: Install commitlint dependencies
-        run: |
-          npm install -g --save commitlint@17.4.0 @commitlint/cli@17.4.0 conventional-changelog-conventionalcommits@5.0.0
-          npm i -g --save-dev conventional-changelog-conventionalcommits@5.0.0
       - uses: actions/checkout@v2
         with:
           submodules: recursive
