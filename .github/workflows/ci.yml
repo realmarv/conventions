@@ -61,10 +61,6 @@ jobs:
           curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
           sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-      - name: Install yarn
-        run: |
-          sudo npm install -g yarn@1.22.19
-
       - name: Install commitlint dependencies
         run: |
           npm install -g --save commitlint@17.4.0 @commitlint/cli@17.4.0 conventional-changelog-conventionalcommits@5.0.0
@@ -92,7 +88,6 @@ jobs:
           npx commitlint --version
           npx tsc --version
           npx ts-node --version
-          yarn --version
           tsc --version
       - name: Compile ts files
         run: |
