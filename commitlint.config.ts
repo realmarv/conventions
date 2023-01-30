@@ -58,7 +58,7 @@ module.exports = {
         {
             rules: {
                 "body-prose": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.bodyProse(rawStr);
                 },
 
@@ -91,12 +91,12 @@ module.exports = {
                 },
 
                 "footer-notes-misplacement": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.footerNotesMisplacement(rawStr);
                 },
 
                 "footer-references-existence": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.footerReferencesExistence(rawStr);
                 },
 
@@ -113,7 +113,7 @@ module.exports = {
                 },
 
                 "proper-issue-refs": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.properIssueRefs(rawStr);
                 },
 
@@ -164,12 +164,15 @@ module.exports = {
                 },
 
                 "body-soft-max-line-length": (
-                    { raw }: { raw: any },
+                    { body }: { body: any },
                     _: any,
                     maxLineLength: number
                 ) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
-                    return Plugins.bodySoftMaxLineLength(rawStr, maxLineLength);
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
+                    return Plugins.bodySoftMaxLineLength(
+                        bodyStr,
+                        maxLineLength
+                    );
                 },
 
                 "trailing-whitespace": ({ raw }: { raw: any }) => {
