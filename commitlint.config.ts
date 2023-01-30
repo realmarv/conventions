@@ -298,33 +298,26 @@ module.exports = {
                     ];
                 },
 
-                'footer-notes-misplacement': ({raw}: {raw:any}) => {
+                'footer-notes-misplacement': ({body}: {body:any}) => {
                     let offence = false;
 
-                    let rawStr = convertAnyToString(raw, "raw").trim();
-                    let lineBreakIndex = rawStr.indexOf('\n');
-
-                    if (lineBreakIndex >= 0){
-                        // Extracting bodyStr from rawStr rather than using body directly is a
-                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
-                        let bodyStr = rawStr.substring(lineBreakIndex).trim();
+                    if (body !== null) {
+                        let bodyStr = convertAnyToString(body, "body");
                         
-                        if (bodyStr !== ''){
-                            let seenBody = false;
-                            let seenFooter = false;
-                            let lines = bodyStr.split(/\r?\n/);
-                            for (let line of lines) {
-                                if (line.length === 0){
-                                    continue;
-                                }
-                                seenBody = seenBody || !isFooterNote(line);
-                                seenFooter = seenFooter || isFooterNote(line);
-                                if (seenFooter && !isFooterNote(line)) {
-                                    offence = true;
-                                    break;
-                                }
-                                
+                        let seenBody = false;
+                        let seenFooter = false;
+                        let lines = bodyStr.split(/\r?\n/);
+                        for (let line of lines) {
+                            if (line.length === 0){
+                                continue;
                             }
+                            seenBody = seenBody || !isFooterNote(line);
+                            seenFooter = seenFooter || isFooterNote(line);
+                            if (seenFooter && !isFooterNote(line)) {
+                                offence = true;
+                                break;
+                            }
+                            
                         }
                     }
                     return [
@@ -333,46 +326,39 @@ module.exports = {
                     ]
                 },
 
-                'footer-references-existence': ({raw}: {raw:any}) => {
+                'footer-references-existence': ({body}: {body:any}) => {
                     let offence = false;
 
-                    let rawStr = convertAnyToString(raw, "raw").trim();
-                    let lineBreakIndex = rawStr.indexOf('\n');
+                    if (body !== null) {
+                        let bodyStr = convertAnyToString(body, "body");
 
-                    if (lineBreakIndex >= 0){
-                        // Extracting bodyStr from rawStr rather than using body directly is a
-                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
-                        let bodyStr = rawStr.substring(lineBreakIndex).trim();
-
-                        if (bodyStr !== ''){
-                            let lines = bodyStr.split(/\r?\n/);
-                            let bodyReferences = new Set();
-                            let references = new Set();
-                            for (let line of lines) {
-                                let matches = line.match(/(?<=\[)([0-9]+)(?=\])/g);
-                                if (matches === null) {
-                                    continue;
+                        let lines = bodyStr.split(/\r?\n/);
+                        let bodyReferences = new Set();
+                        let references = new Set();
+                        for (let line of lines) {
+                            let matches = line.match(/(?<=\[)([0-9]+)(?=\])/g);
+                            if (matches === null) {
+                                continue;
+                            }
+                            for (let match of matches){
+                                if (isFooterReference(line)) {
+                                    references.add(match);
                                 }
-                                for (let match of matches){
-                                    if (isFooterReference(line)) {
-                                        references.add(match);
-                                    }
-                                    else {
-                                        bodyReferences.add(match);
-                                    }
+                                else {
+                                    bodyReferences.add(match);
                                 }
                             }
-                            for (let ref of bodyReferences) {
-                                if (!references.has(ref)) {
-                                    offence = true;
-                                    break;
-                                }
+                        }
+                        for (let ref of bodyReferences) {
+                            if (!references.has(ref)) {
+                                offence = true;
+                                break;
                             }
-                            for (let ref of references) {
-                                if (!bodyReferences.has(ref)) {
-                                    offence = true;
-                                    break;
-                                }
+                        }
+                        for (let ref of references) {
+                            if (!bodyReferences.has(ref)) {
+                                offence = true;
+                                break;
                             }
                         }
                     }
@@ -516,16 +502,11 @@ module.exports = {
                     ];
                 },
 
-                'body-soft-max-line-length': ({raw}: {raw:any}) => {
+                'body-soft-max-line-length': ({body}: {body:any}) => {
                     let offence = false;
 
-                    let rawStr = convertAnyToString(raw, "raw").trim();
-                    let lineBreakIndex = rawStr.indexOf('\n');
-
-                    if (lineBreakIndex >= 0){
-                        // Extracting bodyStr from rawStr rather than using body directly is a
-                        // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
-                        let bodyStr = rawStr.substring(lineBreakIndex);
+                    if (body !== null) {
+                        let bodyStr = convertAnyToString(body, "body");
 
                         bodyStr = removeAllCodeBlocks(bodyStr).trim();
                         
