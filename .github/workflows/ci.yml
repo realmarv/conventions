@@ -68,3 +68,9 @@ jobs:
         run: sudo apt install -y dotnet6
       - name: Run script to make sure all files end with EOL 
         run: dotnet fsi eofConvention.fsx
+      - name: Install prettier
+        run: npm install prettier@2.8.3
+      - name: Run "prettier" to check the style of our TypeScript code
+        run: |
+          sudo npx prettier --quote-props=consistent --write './**/*.ts'
+          git diff --exit-code './**/*.ts'
