@@ -22,13 +22,7 @@ export abstract class Helpers {
     ): string {
         if (potentialString === null || potentialString === undefined) {
             // otherwise, String(null) might give us the stupid string "null"
-            throw new Error(
-                "Unexpected " +
-                    paramName +
-                    "===null or " +
-                    paramName +
-                    "===undefined happened"
-            );
+            return "";
         }
         return String(potentialString);
     }
