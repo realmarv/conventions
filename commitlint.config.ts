@@ -1,4 +1,5 @@
 import { abbr } from "./commitlint/abbreviations";
+import * as URL from "url"
 
 // to convert from 'any' type
 function convertAnyToString(potentialString: any, paramName: string): string {
