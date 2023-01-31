@@ -14,9 +14,12 @@ jobs:
           apt update
           apt install -y sudo
           sudo apt install -y git
-          sudo DEBIAN_FRONTEND=noninteractive apt install --yes npm
-      - name: Install commitlint
-        run: npm install
+
+          sudo apt install -y curl
+          # can't install ubuntu's default nodejs version because we would get this error:
+          # error @commitlint/config-conventional@17.1.0: The engine "node" is incompatible with this module. Expected version ">=v14". Got "12.22.9"
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
       - name: Print versions
         run: |
           git --version
@@ -25,7 +28,12 @@ jobs:
           npx commitlint --version
       - name: Install yarn
         run: |
-          sudo npm install -g yarn
+          npm install -g yarn
+          yarn add --dev jest typescript ts-jest @types/jest
+      - name: Install commitlint
+        run: |
+          npm install conventional-changelog-conventionalcommits
+          npm install commitlint@17.4.2
       - name: Print versions
         run: |
           git --version
@@ -44,7 +52,12 @@ jobs:
         run: |
           apt update && apt install -y sudo
           sudo apt install -y git
-          sudo DEBIAN_FRONTEND=noninteractive apt install --yes npm
+
+          sudo apt install -y curl
+          # can't install ubuntu's default nodejs version because we would get this error:
+          # error @commitlint/config-conventional@17.1.0: The engine "node" is incompatible with this module. Expected version ">=v14". Got "12.22.9"
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
       - uses: actions/checkout@v2
         with:
           submodules: recursive
@@ -58,6 +71,7 @@ jobs:
           git --version
           node --version
           npm --version
+          npx commitlint --version
       - name: Validate current commit (last commit) with commitlint
         if: github.event_name == 'push'
         run: ./commitlint.sh --from HEAD~1 --to HEAD --verbose
