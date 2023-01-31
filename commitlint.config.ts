@@ -1,5 +1,5 @@
 import { abbr } from "./commitlint/abbreviations";
-import * as URL from "url"
+const { URL } = require('url').URL;
 
 // to convert from 'any' type
 function convertAnyToString(potentialString: any, paramName: string): string {
