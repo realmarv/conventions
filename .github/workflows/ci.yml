@@ -27,8 +27,7 @@ jobs:
         run: sudo npm install -g yarn
       - name: Install jest
         run: |
-          npm install -g jest
-          npm install --save-dev jest-cli
+          npm install @types/jest
       - name: Print versions
         run: |
           git --version
