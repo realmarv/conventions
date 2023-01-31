@@ -27,9 +27,8 @@ jobs:
         run: sudo npm install -g yarn
       - name: Install jest
         run: |
-          npm install @types/jest
+          npm install --global @types/jest
           npm install --global jest
-          npx jest --init
       - name: Print versions
         run: |
           git --version
