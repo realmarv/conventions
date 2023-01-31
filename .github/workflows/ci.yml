@@ -28,6 +28,7 @@ jobs:
       - name: Install jest
         run: |
           npm install @types/jest
+          npm install --global jest
       - name: Print versions
         run: |
           git --version
