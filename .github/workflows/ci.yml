@@ -25,6 +25,8 @@ jobs:
         run: npm init --yes
       - name: Install yarn
         run: sudo npm install -g yarn
+      - name: Install jest
+        run: npm install -g jest
       - name: Print versions
         run: |
           git --version
