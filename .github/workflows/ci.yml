@@ -35,7 +35,6 @@ jobs:
         run: |
           npm install --global @types/jest
           npm install --global jest
-          source ~/.bashrc
           yarn jest
 
   sanitycheck:
