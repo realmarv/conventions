@@ -21,9 +21,10 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
+      - name: Create package.json
+        run: npm init --yes
       - name: Install yarn
-        run: |
-          sudo npm install -g yarn
+        run: sudo npm install -g yarn
       - name: Print versions
         run: |
           git --version
