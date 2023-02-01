@@ -37,10 +37,14 @@ jobs:
         run: pwd
       - name: ls
         run: ls
-      - name: Run tests to validate our plugins
+      - name: Install jest
         run: |
           sudo npm install --global --save-dev @types/jest
           sudo npm install --global --save-dev jest
+      - name: ls
+        run: ls
+      - name: Run tests to validate our plugins
+        run: |
           yarn jest
 
   sanitycheck:
