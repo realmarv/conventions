@@ -33,6 +33,7 @@ jobs:
           npx commitlint --version
       - name: Run tests to validate our plugins
         run: |
+          rm -r node_modules/jest
           sudo npm install --global --save-dev @types/jest
           sudo npm install --global --save-dev jest
           yarn jest
