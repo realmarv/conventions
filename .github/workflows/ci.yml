@@ -25,6 +25,7 @@ jobs:
         run: |
           npm init --yes
           npm i --package-lock-only
+          npm install
       - name: Install yarn
         run: sudo npm install -g yarn
       - name: Print versions
