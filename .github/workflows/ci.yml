@@ -21,8 +21,10 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
-      - name: Create package.json
-        run: npm init --yes
+      - name: Create package.json and package-lock.json
+        run: |
+          npm init --yes
+          npm i --package-lock-only
       - name: Install yarn
         run: sudo npm install -g yarn
       - name: Print versions
@@ -33,9 +35,6 @@ jobs:
           npx commitlint --version
       - name: Run tests to validate our plugins
         run: |
-          sudo npm install --global --save-dev @types/jest
-          sudo npm install --global --save-dev jest
-          rm -r node_modules/jest
           sudo npm install --global --save-dev @types/jest
           sudo npm install --global --save-dev jest
           yarn jest
