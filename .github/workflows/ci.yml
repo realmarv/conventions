@@ -14,7 +14,15 @@ jobs:
           apt update
           apt install -y sudo
           sudo apt install -y git
-          sudo DEBIAN_FRONTEND=noninteractive apt install --yes npm
+
+          sudo apt install -y curl
+          # can't install ubuntu's default nodejs version because we would get this error:
+          # error @commitlint/config-conventional@17.1.0: The engine "node" is incompatible with this module. Expected version ">=v14". Got "12.22.9"
+          curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y nodejs
+          sudo npm install -g yarn
+          yarn add --dev jest typescript ts-jest @types/jest
+
       - name: Print versions
         run: |
           git --version
@@ -40,8 +48,8 @@ jobs:
         run: ls
       - name: Install jest
         run: |
-          npm install --global --save-dev @types/jest
-          npm install --global --save-dev jest
+          npm install --save @types/jest
+          npm install --save --save jest
       - name: ls
         run: ls
       - name: Run tests to validate our plugins
