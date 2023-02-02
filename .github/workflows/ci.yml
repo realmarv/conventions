@@ -33,7 +33,7 @@ jobs:
       - name: Install yarn
         run: |
           sudo npm install -g yarn
-          yarn add --dev jest typescript @types/jest
+          yarn add --dev jest ts-jest typescript @types/jest
       - name: Print versions
         run: |
           git --version
