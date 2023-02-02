@@ -27,7 +27,7 @@ jobs:
           npm i --package-lock-only
           npm install
       - name: Install yarn
-        run: sudo npm install -g yarn
+        run: npm install -g yarn
       - name: Print versions
         run: |
           git --version
@@ -40,8 +40,8 @@ jobs:
         run: ls
       - name: Install jest
         run: |
-          sudo npm install --global --save-dev @types/jest
-          sudo npm install --global --save-dev jest
+          npm install --global --save-dev @types/jest
+          npm install --global --save-dev jest
       - name: ls
         run: ls
       - name: Run tests to validate our plugins
