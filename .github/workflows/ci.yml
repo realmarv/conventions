@@ -40,10 +40,6 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
-      - name: Install dependencies
-        run: |
-          npm install --save @types/jest
-          npm install --save jest
       - name: Run tests to validate our plugins
         run: |
           yarn jest
