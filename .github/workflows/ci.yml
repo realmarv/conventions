@@ -51,7 +51,7 @@ jobs:
           npm install conventional-changelog-conventionalcommits
           npx commitlint --version
           npm install --save @types/jest
-          npm install --save --save jest
+          npm install --save jest
       - name: ls
         run: ls
       - name: Run tests to validate our plugins
