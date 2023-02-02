@@ -70,6 +70,10 @@ jobs:
         run: dotnet fsi eofConvention.fsx
       - name: Install prettier
         run: npm install prettier@2.8.3
+      - name: ls
+        run: ls
+      - name: pwd
+        run: pwd
       - name: Run "prettier" to check the style of our TypeScript code
         run: |
           sudo npx prettier --quote-props=consistent --write './**/*.ts'
