@@ -74,6 +74,8 @@ jobs:
         run: ls
       - name: pwd
         run: pwd
+      - name: Change file permissions
+        run: sudo chmod 777 -R .
       - name: Run "prettier" to check the style of our TypeScript code
         run: |
           sudo npx prettier --quote-props=consistent --write './**/*.ts'
