@@ -29,11 +29,6 @@ jobs:
           node --version
           npm --version
           npx commitlint --version
-      - name: Create package.json and package-lock.json
-        run: |
-          npm init --yes
-          npm i --package-lock-only
-          npm install
       - name: Install yarn
         run: npm install -g yarn
       - name: Print versions
