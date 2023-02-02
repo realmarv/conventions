@@ -49,7 +49,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install conventional-changelog-conventionalcommits
-          npx commitlint --version
+          npm install commitlint@17.4.2
           npm install --save @types/jest
           npm install --save jest
       - name: ls
