@@ -29,6 +29,8 @@ jobs:
       - name: Install yarn
         run: |
           npm install -g yarn
+          npm install --save @types/jest
+          npm install --save jest
           yarn add --dev jest typescript ts-jest @types/jest
       - name: Print versions
         run: |
@@ -40,8 +42,6 @@ jobs:
         run: |
           npm install conventional-changelog-conventionalcommits
           npm install commitlint@17.4.2
-          npm install --save @types/jest
-          npm install --save jest
       - name: Run tests to validate our plugins
         run: |
           yarn jest
