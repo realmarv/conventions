@@ -30,16 +30,16 @@ jobs:
         run: |
           npm install -g yarn
           yarn add --dev jest typescript ts-jest @types/jest
+      - name: Install commitlint
+        run: |
+          npm install conventional-changelog-conventionalcommits
+          npm install commitlint@17.4.2
       - name: Print versions
         run: |
           git --version
           node --version
           npm --version
           npx commitlint --version
-      - name: Install dependencies
-        run: |
-          npm install conventional-changelog-conventionalcommits
-          npm install commitlint@17.4.2
       - name: Run tests to validate our plugins
         run: |
           yarn jest
