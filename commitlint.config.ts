@@ -11,28 +11,6 @@ enum RuleStatus {
 let bodyMaxLineLength = 64;
 let headerMaxLineLength = 50;
 
-function isFooterReference(line: string) {
-    Helpers.assertLine(line);
-    return (line[0] === "[" && line.indexOf("] ") > 0);
-}
-
-function isFixesOrClosesSentence(line: string) {
-    Helpers.assertLine(line);
-    return (line.indexOf("Fixes ") == 0) || (line.indexOf("Closes ") == 0);
-}
-
-function isCoAuthoredByTag(line: string) {
-    Helpers.assertLine(line);
-    return (line.indexOf("Co-authored-by: ") == 0);
-}
-
-function isFooterNote(line: string): boolean {
-    Helpers.assertLine(line);
-    return isFooterReference(line) ||
-        isCoAuthoredByTag(line) ||
-        isFixesOrClosesSentence(line);
-}
-
 function numUpperCaseLetters(word: string) {
     Helpers.assertWord(word)
     return word.length - word.replace(/[A-Z]/g, '').length;
@@ -171,7 +149,7 @@ module.exports = {
 
                                 if (!validParagraphEnd &&
                                     !Helpers.isValidUrl(lines[lines.length - 1]) &&
-                                    !isFooterNote(lines[lines.length - 1])) {
+                                    !Helpers.isFooterNote(lines[lines.length - 1])) {
 
                                     offence = true;
                                 }
@@ -258,9 +236,9 @@ module.exports = {
                                 if (line.length === 0){
                                     continue;
                                 }
-                                seenBody = seenBody || !isFooterNote(line);
-                                seenFooter = seenFooter || isFooterNote(line);
-                                if (seenFooter && !isFooterNote(line)) {
+                                seenBody = seenBody || !Helpers.isFooterNote(line);
+                                seenFooter = seenFooter || Helpers.isFooterNote(line);
+                                if (seenFooter && !Helpers.isFooterNote(line)) {
                                     offence = true;
                                     break;
                                 }
@@ -296,7 +274,7 @@ module.exports = {
                                     continue;
                                 }
                                 for (let match of matches){
-                                    if (isFooterReference(line)) {
+                                    if (Helpers.isFooterReference(line)) {
                                         references.add(match);
                                     }
                                     else {
@@ -495,7 +473,7 @@ module.exports = {
 
                                     let isUrl = Helpers.isValidUrl(line);
 
-                                    let lineIsFooterNote = isFooterNote(line);
+                                    let lineIsFooterNote = Helpers.isFooterNote(line);
 
                                     if ((!isUrl) && (!lineIsFooterNote)) {
                                         offence = true;

@@ -82,6 +82,27 @@ export abstract class Helpers {
         return (isLowerCase && !isUpperCase);
     }
 
+    public static isFooterReference(line: string) {
+        Helpers.assertLine(line);
+        return (line[0] === "[" && line.indexOf("] ") > 0);
+    }
+
+    public static isFixesOrClosesSentence(line: string) {
+        Helpers.assertLine(line);
+        return (line.indexOf("Fixes ") == 0) || (line.indexOf("Closes ") == 0);
+    }
+    
+    public static isCoAuthoredByTag(line: string) {
+        Helpers.assertLine(line);
+        return (line.indexOf("Co-authored-by: ") == 0);
+    }
+
+    public static isFooterNote(line: string): boolean {
+        Helpers.assertLine(line);
+        return Helpers.isFooterReference(line) ||
+            Helpers.isCoAuthoredByTag(line) ||
+            Helpers.isFixesOrClosesSentence(line);
+    }
 }
 
 
