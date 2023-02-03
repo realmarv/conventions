@@ -60,6 +60,12 @@ export abstract class Helpers {
         return url.includes('/commit/');
     }
 
+    public static isBigBlock(line: string) {
+        Helpers.assertLine(line);
+        let bigBlockDelimiter = "```";
+        return (line.length == bigBlockDelimiter.length) && (line.indexOf("```") == 0);
+    }
+
 }
 
 

@@ -11,12 +11,6 @@ enum RuleStatus {
 let bodyMaxLineLength = 64;
 let headerMaxLineLength = 50;
 
-function isBigBlock(line: string) {
-    Helpers.assertLine(line);
-    let bigBlockDelimiter = "```";
-    return (line.length == bigBlockDelimiter.length) && (line.indexOf("```") == 0);
-}
-
 function isUpperCase(letter: string) {
     Helpers.assertCharacter(letter);
     let isUpperCase = letter.toUpperCase() == letter;
@@ -506,7 +500,7 @@ module.exports = {
                             let lines = bodyStr.split(/\r?\n/);
                             let inBigBlock = false;
                             for (let line of lines) {
-                                if (isBigBlock(line)) {
+                                if (Helpers.isBigBlock(line)) {
                                     inBigBlock = !inBigBlock;
                                     continue;
                                 }
@@ -549,7 +543,7 @@ module.exports = {
                     let lines = rawStr.split(/\r?\n/);
                     let inBigBlock = false;
                     for (let line of lines) {
-                        if (isBigBlock(line)) {
+                        if (Helpers.isBigBlock(line)) {
                             inBigBlock = !inBigBlock;
                             continue;
                         }
