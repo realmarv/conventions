@@ -66,6 +66,22 @@ export abstract class Helpers {
         return (line.length == bigBlockDelimiter.length) && (line.indexOf("```") == 0);
     }
 
+    public static isUpperCase(letter: string) {
+        Helpers.assertCharacter(letter);
+        let isUpperCase = letter.toUpperCase() == letter;
+        let isLowerCase = letter.toLowerCase() == letter;
+    
+        return (isUpperCase && !isLowerCase);
+    }
+
+    public static isLowerCase(letter: string) {
+        Helpers.assertCharacter(letter);
+        let isUpperCase = letter.toUpperCase() == letter;
+        let isLowerCase = letter.toLowerCase() == letter;
+    
+        return (isLowerCase && !isUpperCase);
+    }
+
 }
 
 

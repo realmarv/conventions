@@ -11,22 +11,6 @@ enum RuleStatus {
 let bodyMaxLineLength = 64;
 let headerMaxLineLength = 50;
 
-function isUpperCase(letter: string) {
-    Helpers.assertCharacter(letter);
-    let isUpperCase = letter.toUpperCase() == letter;
-    let isLowerCase = letter.toLowerCase() == letter;
-
-    return (isUpperCase && !isLowerCase);
-}
-
-function isLowerCase(letter: string) {
-    Helpers.assertCharacter(letter);
-    let isUpperCase = letter.toUpperCase() == letter;
-    let isLowerCase = letter.toLowerCase() == letter;
-
-    return (isLowerCase && !isUpperCase);
-}
-
 function isFooterReference(line: string) {
     Helpers.assertLine(line);
     return (line[0] === "[" && line.indexOf("] ") > 0);
@@ -65,13 +49,13 @@ function isProperNoun(word: string) {
     let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
 
     return (numNonAlphabeticalChars > 0) ||
-            (isUpperCase(word[0]) && (numUpperCase > 1)) ||
-            (isLowerCase(word[0]) && (numUpperCase > 0))
+            (Helpers.isUpperCase(word[0]) && (numUpperCase > 1)) ||
+            (Helpers.isLowerCase(word[0]) && (numUpperCase > 0))
 }
 
 function wordIsStartOfSentence(word: string) {
     Helpers.assertWord(word);
-    if (isUpperCase(word[0])) {
+    if (Helpers.isUpperCase(word[0])) {
         let numUpperCase = numUpperCaseLetters(word)
         let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
         return numUpperCase == 1 && numNonAlphabeticalChars == 0;
@@ -173,7 +157,7 @@ module.exports = {
                                     continue
                                 }
 
-                                let startWithLowerCase = isLowerCase(paragraph[0]);
+                                let startWithLowerCase = Helpers.isLowerCase(paragraph[0]);
 
                                 let validParagraphEnd = paragraphHasValidEnding(paragraph);
 
