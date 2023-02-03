@@ -25,6 +25,25 @@ export abstract class Helpers {
         return String(potentialString);
     }
 
+    public static assertCharacter(letter: string) {
+        if (letter.length !== 1) {
+            throw Error('This function expects a character as input')
+        }
+    }
+    
+    public static assertLine(line: string) {
+        if (line.includes('\n')) {
+            throw Error('This function expects a line as input')
+        }
+    }
+    
+    public static assertWord(word: string) {
+        if (word.includes('\n') || word.includes(' ')) {
+            throw Error("This function expects a word as input.\n" +
+                        "A word doesn't include line breaks and whitespaces.")
+        }
+    }
+
     public static assertUrl(url: string) {
         if (!Helpers.isValidUrl(url)) {
             throw Error('This function expects a url as input')
