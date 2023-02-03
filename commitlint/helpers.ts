@@ -108,6 +108,39 @@ export abstract class Helpers {
         Helpers.assertWord(word)
         return word.length - word.replace(/[A-Z]/g, '').length;
     }
+
+    public static numNonAlphabeticalCharacters(word: string) {
+        Helpers.assertWord(word)
+        return word.length - word.replace(/[^a-zA-Z]/g, '').length;
+    }
+    
+    public static isProperNoun(word: string) {
+        Helpers.assertWord(word)
+        let numUpperCase = Helpers.numUpperCaseLetters(word)
+        let numNonAlphabeticalChars = Helpers.numNonAlphabeticalCharacters(word)
+    
+        return (numNonAlphabeticalChars > 0) ||
+                (Helpers.isUpperCase(word[0]) && (numUpperCase > 1)) ||
+                (Helpers.isLowerCase(word[0]) && (numUpperCase > 0))
+    }
+    
+    public static wordIsStartOfSentence(word: string) {
+        Helpers.assertWord(word);
+        if (Helpers.isUpperCase(word[0])) {
+            let numUpperCase = Helpers.numUpperCaseLetters(word)
+            let numNonAlphabeticalChars = Helpers.numNonAlphabeticalCharacters(word)
+            return numUpperCase == 1 && numNonAlphabeticalChars == 0;
+        }
+        return false;
+    }
+    
+    public static includesHashtagRef(text: string) {
+        return text.match(`#[0-9]+`) !== null;
+    }
+    
+    public static removeAllCodeBlocks(text: string) {
+        return text.replace(/```[^]*```/g, '');
+    }
 }
 
 

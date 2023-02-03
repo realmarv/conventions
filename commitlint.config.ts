@@ -11,39 +11,6 @@ enum RuleStatus {
 let bodyMaxLineLength = 64;
 let headerMaxLineLength = 50;
 
-function numNonAlphabeticalCharacters(word: string) {
-    Helpers.assertWord(word)
-    return word.length - word.replace(/[^a-zA-Z]/g, '').length;
-}
-
-function isProperNoun(word: string) {
-    Helpers.assertWord(word)
-    let numUpperCase = Helpers.numUpperCaseLetters(word)
-    let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
-
-    return (numNonAlphabeticalChars > 0) ||
-            (Helpers.isUpperCase(word[0]) && (numUpperCase > 1)) ||
-            (Helpers.isLowerCase(word[0]) && (numUpperCase > 0))
-}
-
-function wordIsStartOfSentence(word: string) {
-    Helpers.assertWord(word);
-    if (Helpers.isUpperCase(word[0])) {
-        let numUpperCase = Helpers.numUpperCaseLetters(word)
-        let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
-        return numUpperCase == 1 && numNonAlphabeticalChars == 0;
-    }
-    return false;
-}
-
-function includesHashtagRef(text: string) {
-    return text.match(`#[0-9]+`) !== null;
-}
-
-function removeAllCodeBlocks(text: string) {
-    return text.replace(/```[^]*```/g, '');
-}
-
 module.exports = {
     parserPreset: 'conventional-changelog-conventionalcommits',
     rules: {
@@ -95,7 +62,7 @@ module.exports = {
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
                         let bodyStr = rawStr.substring(lineBreakIndex);
 
-                        bodyStr = removeAllCodeBlocks(bodyStr).trim();
+                        bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
                         
                         if (bodyStr !== ''){
 
@@ -328,8 +295,8 @@ module.exports = {
                         // Extracting bodyStr from rawStr rather than using body directly is a 
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
                         let bodyStr = rawStr.substring(lineBreakIndex);
-                        bodyStr = removeAllCodeBlocks(bodyStr);
-                        offence = includesHashtagRef(bodyStr);
+                        bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
+                        offence = Helpers.includesHashtagRef(bodyStr);
                     }
 
                     return [
@@ -343,8 +310,8 @@ module.exports = {
                     let headerStr = Helpers.convertAnyToString(header, "header");
                     let firstWord = headerStr.split(' ')[0];
                     let offence = headerStr.indexOf(':') < 0 && 
-                                    !wordIsStartOfSentence(firstWord) &&
-                                    !isProperNoun(firstWord);
+                                    !Helpers.wordIsStartOfSentence(firstWord) &&
+                                    !Helpers.isProperNoun(firstWord);
                     return [
                         !offence,
                         `Please start the title with an upper-case letter if there is no area in the title.`
@@ -354,7 +321,7 @@ module.exports = {
 
                 'too-many-spaces': ({raw}: {raw:any}) => {
                     let rawStr = Helpers.convertAnyToString(raw, "raw");
-                    rawStr = removeAllCodeBlocks(rawStr);
+                    rawStr = Helpers.removeAllCodeBlocks(rawStr);
                     let offence = (rawStr.match(`[^.]  `) !== null);
 
                     return [
@@ -405,7 +372,7 @@ module.exports = {
                         let subject = headerStr.substring(colonFirstIndex + 1).trim();
                         if (subject != null && subject.length > 1) {
                             let firstWord = subject.trim().split(' ')[0];
-                            offence = wordIsStartOfSentence(firstWord)
+                            offence = Helpers.wordIsStartOfSentence(firstWord)
                         }
                     }
 
@@ -451,7 +418,7 @@ module.exports = {
                         // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
                         let bodyStr = rawStr.substring(lineBreakIndex);
 
-                        bodyStr = removeAllCodeBlocks(bodyStr).trim();
+                        bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
                         
                         if (bodyStr !== ''){
                             let lines = bodyStr.split(/\r?\n/);
