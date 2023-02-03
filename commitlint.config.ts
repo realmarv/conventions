@@ -11,11 +11,6 @@ enum RuleStatus {
 let bodyMaxLineLength = 64;
 let headerMaxLineLength = 50;
 
-function numUpperCaseLetters(word: string) {
-    Helpers.assertWord(word)
-    return word.length - word.replace(/[A-Z]/g, '').length;
-}
-
 function numNonAlphabeticalCharacters(word: string) {
     Helpers.assertWord(word)
     return word.length - word.replace(/[^a-zA-Z]/g, '').length;
@@ -23,7 +18,7 @@ function numNonAlphabeticalCharacters(word: string) {
 
 function isProperNoun(word: string) {
     Helpers.assertWord(word)
-    let numUpperCase = numUpperCaseLetters(word)
+    let numUpperCase = Helpers.numUpperCaseLetters(word)
     let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
 
     return (numNonAlphabeticalChars > 0) ||
@@ -34,7 +29,7 @@ function isProperNoun(word: string) {
 function wordIsStartOfSentence(word: string) {
     Helpers.assertWord(word);
     if (Helpers.isUpperCase(word[0])) {
-        let numUpperCase = numUpperCaseLetters(word)
+        let numUpperCase = Helpers.numUpperCaseLetters(word)
         let numNonAlphabeticalChars = numNonAlphabeticalCharacters(word)
         return numUpperCase == 1 && numNonAlphabeticalChars == 0;
     }

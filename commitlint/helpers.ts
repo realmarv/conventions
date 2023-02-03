@@ -103,6 +103,11 @@ export abstract class Helpers {
             Helpers.isCoAuthoredByTag(line) ||
             Helpers.isFixesOrClosesSentence(line);
     }
+
+    public static numUpperCaseLetters(word: string) {
+        Helpers.assertWord(word)
+        return word.length - word.replace(/[A-Z]/g, '').length;
+    }
 }
 
 
