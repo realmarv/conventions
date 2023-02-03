@@ -29,8 +29,6 @@ jobs:
       - name: Install yarn
         run: |
           npm install -g yarn
-          npm install --save @types/jest
-          npm install --save jest
           yarn add --dev jest typescript ts-jest @types/jest
       - name: Print versions
         run: |
