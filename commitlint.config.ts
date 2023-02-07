@@ -29,6 +29,7 @@ module.exports = {
             "always",
             headerMaxLineLength,
         ],
+        "no-ending-dot-in-title": [RuleConfigSeverity.Error, "always"],
         "subject-full-stop": [RuleConfigSeverity.Error, "never", "."],
         "type-empty": [RuleConfigSeverity.Warning, "never"],
         "type-space-after-colon": [RuleConfigSeverity.Error, "always"],
@@ -58,6 +59,18 @@ module.exports = {
 
         {
             rules: {
+
+                "no-ending-dot-in-title": ({ subject }: { subject: any }) => {
+                    let offence = true
+                    let subjectStr = Helpers.convertAnyToString(subject, "subject").trim();
+                    console.log('=subject=>' + subjectStr)
+                    return [
+                        !offence,
+                        `Please add a number or description after the WIP prefix.` +
+                            Helpers.errMessageSuffix,
+                    ];
+                },
+
                 "body-prose": ({ raw }: { raw: any }) => {
                     let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
                     return Plugins.bodyProse(rawStr);
