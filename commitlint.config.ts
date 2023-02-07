@@ -29,7 +29,7 @@ module.exports = {
             "always",
             headerMaxLineLength,
         ],
-        "subject-full-stop": [RuleConfigSeverity.Error, "never", "."],
+        "subject-full-stop": [RuleConfigSeverity.Error, "always", "."],
         "type-empty": [RuleConfigSeverity.Warning, "never"],
         "type-space-after-colon": [RuleConfigSeverity.Error, "always"],
         "subject-lowercase": [RuleConfigSeverity.Error, "always"],
