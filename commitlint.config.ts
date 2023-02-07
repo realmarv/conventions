@@ -9,6 +9,7 @@ let footerMaxLineLength = 150;
 module.exports = {
     parserPreset: "conventional-changelog-conventionalcommits",
     rules: {
+        "no-ending-dot-in-title": [RuleConfigSeverity.Error, "always"],
         "body-leading-blank": [RuleConfigSeverity.Warning, "always"],
         "body-soft-max-line-length": [
             RuleConfigSeverity.Error,
@@ -29,7 +30,6 @@ module.exports = {
             "always",
             headerMaxLineLength,
         ],
-        "no-ending-dot-in-title": [RuleConfigSeverity.Error, "always"],
         "subject-full-stop": [RuleConfigSeverity.Error, "never", "."],
         "type-empty": [RuleConfigSeverity.Warning, "never"],
         "type-space-after-colon": [RuleConfigSeverity.Error, "always"],
@@ -61,7 +61,7 @@ module.exports = {
             rules: {
 
                 "no-ending-dot-in-title": ({ subject }: { subject: any }) => {
-                    let offence = true
+                    let offence = false
                     let subjectStr = Helpers.convertAnyToString(subject, "subject").trim();
                     console.log('=subject=>' + subjectStr)
                     return [
