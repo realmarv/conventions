@@ -653,7 +653,7 @@ test("proper-issue-refs3", () => {
 });
 
 test("subject-full-stop1", () => {
-    let commitMsgWithEndingDotInTitle = "foo/bar: bla bla blah.";
+    let commitMsgWithEndingDotInTitle = "foo/bar: bla bla blah.\n";
     let subjectFullStop1 = runCommitLintOnMsg(commitMsgWithEndingDotInTitle);
     expect(subjectFullStop1.status).not.toBe(0);
 });
