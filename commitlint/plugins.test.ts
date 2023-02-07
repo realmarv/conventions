@@ -652,6 +652,12 @@ test("proper-issue-refs3", () => {
     expect(properIssueRefs3.status).toBe(0);
 });
 
+test("subject-full-stop1", () => {
+    let commitMsgWithEndingDotInTitle = "foo: bla bla blah.";
+    let subjectFullStop1 = runCommitLintOnMsg(commitMsgWithEndingDotInTitle);
+    expect(subjectFullStop1.status).not.toBe(0);
+});
+
 test("subject-lowercase1", () => {
     let commitMsgWithUppercaseAfterColon = "foo: Bar baz";
     let subjectLowerCase1 = runCommitLintOnMsg(
