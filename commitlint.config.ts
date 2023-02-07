@@ -9,7 +9,7 @@ let footerMaxLineLength = 150;
 module.exports = {
     parserPreset: "conventional-changelog-conventionalcommits",
     rules: {
-        "no-ending-dot-in-title": [RuleConfigSeverity.Error, "always"],
+        // "no-ending-dot-in-title": [RuleConfigSeverity.Error, "always"],
         "body-leading-blank": [RuleConfigSeverity.Warning, "always"],
         "body-soft-max-line-length": [
             RuleConfigSeverity.Error,
@@ -71,16 +71,16 @@ module.exports = {
                 //     ];
                 // },
 
-                "no-ending-dot-in-title": ({ subject }: { subject: any }) => {
-                    let offence = false
-                    let subjectStr = Helpers.convertAnyToString(subject, "subject").trim();
-                    console.log('=subject=>' + subjectStr)
-                    return [
-                        !offence,
-                        `Please add a number or description after the WIP prefix.` +
-                            Helpers.errMessageSuffix,
-                    ];
-                },
+                // "no-ending-dot-in-title": ({ subject }: { subject: any }) => {
+                //     let offence = false
+                //     let subjectStr = Helpers.convertAnyToString(subject, "subject").trim();
+                //     console.log('=subject=>' + subjectStr)
+                //     return [
+                //         !offence,
+                //         `Please add a number or description after the WIP prefix.` +
+                //             Helpers.errMessageSuffix,
+                //     ];
+                // },
 
                 "body-prose": ({ raw }: { raw: any }) => {
                     let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
