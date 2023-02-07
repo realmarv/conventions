@@ -60,9 +60,20 @@ module.exports = {
         {
             rules: {
 
-                "no-ending-dot-in-title": ({ subject }: { subject: any }) => {
+                // "no-ending-dot-in-title": ({ subject }: { subject: any }) => {
+                //     let offence = false
+                //     let subjectStr = Helpers.convertAnyToString(subject, "subject").trim();
+                //     console.log('=subject=>' + subjectStr)
+                //     return [
+                //         !offence,
+                //         `Please add a number or description after the WIP prefix.` +
+                //             Helpers.errMessageSuffix,
+                //     ];
+                // },
+
+                "no-ending-dot-in-title": ({ body }: { body: any }) => {
                     let offence = false
-                    let subjectStr = Helpers.convertAnyToString(subject, "subject").trim();
+                    let subjectStr = Helpers.convertAnyToString(body, "subject").trim();
                     console.log('=subject=>' + subjectStr)
                     return [
                         !offence,
