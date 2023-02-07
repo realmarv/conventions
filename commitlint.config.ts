@@ -71,9 +71,9 @@ module.exports = {
                 //     ];
                 // },
 
-                "no-ending-dot-in-title": ({ body }: { body: any }) => {
+                "no-ending-dot-in-title": ({ raw }: { raw: any }) => {
                     let offence = false
-                    let subjectStr = Helpers.convertAnyToString(body, "subject").trim();
+                    let subjectStr = Helpers.convertAnyToString(raw, "subject").trim();
                     console.log('=subject=>' + subjectStr)
                     return [
                         !offence,
