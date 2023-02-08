@@ -3,7 +3,27 @@ name: Run unit tests & check conventions
 on: [push, pull_request]
 
 jobs:
-  tests:
+  file-conventions:
+    runs-on: ubuntu-22.04
+    container:
+      image: "ubuntu:22.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install reqquired dependencies
+        run: |
+          apt update
+          apt install -y sudo
+          sudo apt install -y curl
+          sudo apt-get install -y libicu-dev
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+      - name: Run tests to validate F# scripts
+        run: dotnet test FileConventions.Test/FileConventions.Test.fsproj
+
+  commitlint-plugins:
     runs-on: ubuntu-22.04
     container:
       image: "ubuntu:22.04"
