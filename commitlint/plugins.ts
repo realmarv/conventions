@@ -144,6 +144,8 @@ export abstract class Plugins {
         let offence = false;
         let message = "";
 
+        console.log('=headerStr:=>' + headerStr)
+
         if (headerStr !== null) {
             let headerLength = headerStr.length;
             let message = `Please do not exceed ${maxLineLength} characters in title (found ${headerLength}).`;

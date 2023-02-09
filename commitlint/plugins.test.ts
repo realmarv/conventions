@@ -494,6 +494,7 @@ test("header-max-length-with-suggestions1", () => {
     let headerMaxLength1 = runCommitLintOnMsg(
         commitMsgWithThatExceedsHeaderMaxLength
     );
+    console.log('==>' + headerMaxLength1.stdout)
     let expected_message = `"configuration" -> "config"`;
     expect(headerMaxLength1.status).not.toBe(0);
     expect((headerMaxLength1.stdout + "").includes(expected_message)).toEqual(
