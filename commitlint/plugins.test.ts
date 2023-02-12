@@ -698,6 +698,14 @@ test("reject-obvious-words5", () => {
     expect(rejectObviousWord5.status).toBe(0);
 });
 
+test("reject-obvious-words6", () => {
+    let commitMsgWithObviousWordAfterColon = "foo: change";
+    let rejectObviousWords6 = runCommitLintOnMsg(
+        commitMsgWithObviousWordAfterColon
+    );
+    expect(rejectObviousWords6.status).not.toBe(0);
+});
+
 test("subject-lowercase1", () => {
     let commitMsgWithUppercaseAfterColon = "foo: Bar baz";
     let subjectLowerCase1 = runCommitLintOnMsg(
