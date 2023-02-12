@@ -281,8 +281,14 @@ export abstract class Plugins {
         let title = headerStr
             .substring(titleStartIndex, headerStr.length)
             .trim();
-        let firstWordInTitle = title.split(" ")[0];
-        offence = obviousWords.includes(firstWordInTitle);
+        let titleWords = title.split(" ");
+        let firstWordInTitle = titleWords[0];
+
+        if (titleWords.length === 1 && firstWordInTitle === "update") {
+            offence = false;
+        } else {
+            offence = obviousWords.includes(firstWordInTitle);
+        }
 
         return [
             !offence,
