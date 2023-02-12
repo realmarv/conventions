@@ -69,12 +69,19 @@ module.exports = {
                     return Plugins.commitHashAlone(rawStr);
                 },
 
-                "reject-obvious-words": ({ header }: { header: any }) => {
+                "reject-obvious-words": ({
+                    header,
+                    body,
+                }: {
+                    header: any;
+                    body: any;
+                }) => {
                     let headerStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
-                    return Plugins.rejectObviousWords(headerStr);
+                    let bodyStr = Helpers.convertAnyToString(body, "header");
+                    return Plugins.rejectObviousWords(headerStr, bodyStr);
                 },
 
                 "empty-wip": ({ header }: { header: any }) => {

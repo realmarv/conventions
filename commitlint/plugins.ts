@@ -273,7 +273,7 @@ export abstract class Plugins {
         ];
     }
 
-    public static rejectObviousWords(headerStr: string) {
+    public static rejectObviousWords(headerStr: string, bodyStr: string) {
         let offence = false;
 
         let colonFirstIndex = headerStr.indexOf(":");
@@ -284,8 +284,8 @@ export abstract class Plugins {
         let titleWords = title.split(" ");
         let firstWordInTitle = titleWords[0];
 
-        if (titleWords.length === 1 && firstWordInTitle === "update") {
-            offence = false;
+        if (firstWordInTitle === "update") {
+            offence = titleWords.length > 1 && bodyStr === null;
         } else {
             offence = obviousWords.includes(firstWordInTitle);
         }
