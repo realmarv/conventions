@@ -19,7 +19,7 @@ export abstract class Helpers {
     public static convertAnyToString(
         potentialString: any,
         paramName: string
-    ): any {
+    ): string | null {
         if (potentialString === null || potentialString === undefined) {
             // otherwise, String(null) might give us the stupid string "null"
             return null;
