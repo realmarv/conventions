@@ -684,6 +684,20 @@ test("reject-obvious-words4", () => {
     expect(rejectObviousWord4.status).not.toBe(0);
 });
 
+test("reject-obvious-words5", () => {
+    // In general using `update` in commit message is a bad practice but there is
+    // exception in cases that the area refers to a file which is only modified when
+    // it needs updating and there's no need for further explanation of why it needs
+    // updating such as:
+    // README: update or Backend/servers.json: update
+
+    let commitMsgWithoutObviousWordAfterColon = "foo: update";
+    let rejectObviousWord5 = runCommitLintOnMsg(
+        commitMsgWithoutObviousWordAfterColon
+    );
+    expect(rejectObviousWord5.status).toBe(0);
+});
+
 test("subject-lowercase1", () => {
     let commitMsgWithUppercaseAfterColon = "foo: Bar baz";
     let subjectLowerCase1 = runCommitLintOnMsg(
