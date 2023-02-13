@@ -59,7 +59,7 @@ module.exports = {
         {
             rules: {
                 "body-prose": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.bodyProse(rawStr);
                 },
 
@@ -91,20 +91,14 @@ module.exports = {
                     );
                 },
 
-                "footer-notes-misplacement": ({ body }: { body: any }) => {
-                    let bodyStr = Helpers.convertAnyToString(
-                        body,
-                        "body"
-                    ).trim();
-                    return Plugins.footerNotesMisplacement(bodyStr);
+                "footer-notes-misplacement": ({ raw }: { raw: any }) => {
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
+                    return Plugins.footerNotesMisplacement(rawStr);
                 },
 
-                "footer-references-existence": ({ body }: { body: any }) => {
-                    let bodyStr = Helpers.convertAnyToString(
-                        body,
-                        "body"
-                    ).trim();
-                    return Plugins.footerReferencesExistence(bodyStr);
+                "footer-references-existence": ({ raw }: { raw: any }) => {
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
+                    return Plugins.footerReferencesExistence(rawStr);
                 },
 
                 "prefer-slash-over-backslash": ({
@@ -120,7 +114,7 @@ module.exports = {
                 },
 
                 "proper-issue-refs": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
                     return Plugins.properIssueRefs(rawStr);
                 },
 
@@ -171,18 +165,12 @@ module.exports = {
                 },
 
                 "body-soft-max-line-length": (
-                    { body }: { body: any },
+                    { raw }: { raw: any },
                     _: any,
                     maxLineLength: number
                 ) => {
-                    let bodyStr = Helpers.convertAnyToString(
-                        body,
-                        "body"
-                    ).trim();
-                    return Plugins.bodySoftMaxLineLength(
-                        bodyStr,
-                        maxLineLength
-                    );
+                    let rawStr = Helpers.convertAnyToString(raw, "raw");
+                    return Plugins.bodySoftMaxLineLength(rawStr, maxLineLength);
                 },
 
                 "trailing-whitespace": ({ raw }: { raw: any }) => {
