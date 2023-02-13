@@ -144,11 +144,12 @@ export abstract class Plugins {
     ) {
         let offence = false;
         let message = "";
-        console.log('=headerStr=>' + headerStr)
 
         if (headerStr !== null) {
             let headerLength = headerStr.length;
             message = `Please do not exceed ${maxLineLength} characters in title (found ${headerLength}).`;
+            console.log('=headerStr=>' + headerStr + !headerStr.startsWith("Merge "))
+            console.log(!headerStr.startsWith("Merge ") && headerLength > maxLineLength)
             if (
                 !headerStr.startsWith("Merge ") &&
                 headerLength > maxLineLength
