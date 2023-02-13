@@ -536,6 +536,7 @@ test("header-max-length-with-suggestions5", () => {
     let longMergeCommitMessage =
         "Merge PR #42 from realmarv/fixFooterReferenceExistenceTruncatedBody";
     let headerMaxLength5 = runCommitLintOnMsg(longMergeCommitMessage);
+    console.log('=>' + headerMaxLength5.stdout)
     expect(headerMaxLength5.status).toBe(0);
 });
 

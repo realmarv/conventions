@@ -144,6 +144,7 @@ export abstract class Plugins {
     ) {
         let offence = false;
         let message = "";
+        console.log('=headerStr=>' + headerStr)
 
         if (headerStr !== null) {
             let headerLength = headerStr.length;
