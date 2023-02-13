@@ -162,7 +162,7 @@ export abstract class Plugins {
                 if (colonIndex > 0) {
                     titleWithoutArea = headerStr.substring(colonIndex);
                 }
-
+                
                 let numRecomendations = 0;
                 let lowerCaseTitleWithoutArea = titleWithoutArea.toLowerCase();
                 Object.entries(abbr).forEach(([key, value]) => {
@@ -179,6 +179,8 @@ export abstract class Plugins {
                 });
             }
         }
+
+        console.log('offence' + offence)
 
         return [!offence, message + Helpers.errMessageSuffix];
     }
