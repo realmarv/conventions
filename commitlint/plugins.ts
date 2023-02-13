@@ -2,75 +2,87 @@ import { abbr } from "./abbreviations";
 import { Helpers } from "./helpers";
 
 export abstract class Plugins {
-    public static bodyProse(rawStr: string) {
+    public static bodyProse(rawStr: string | null) {
         let offence = false;
 
-        let lineBreakIndex = rawStr.indexOf("\n");
+        if (rawStr !== null) {
+            let lineBreakIndex = rawStr.indexOf("\n");
 
-        if (lineBreakIndex >= 0) {
-            // Extracting bodyStr from rawStr rather than using body directly is a
-            // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
-            let bodyStr = rawStr.substring(lineBreakIndex);
+            if (lineBreakIndex >= 0) {
+                // Extracting bodyStr from rawStr rather than using body directly is a
+                // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
+                let bodyStr = rawStr.substring(lineBreakIndex);
 
-            bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
+                bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
 
-            if (bodyStr !== "") {
-                function paragraphHasValidEnding(paragraph: string): boolean {
-                    let paragraphWords = paragraph.split(" ");
-                    let lastWordInParagraph =
-                        paragraphWords[paragraphWords.length - 1];
-                    let isParagraphEndingWithUrl =
-                        Helpers.isValidUrl(lastWordInParagraph);
-                    if (isParagraphEndingWithUrl) {
-                        return true;
-                    }
+                if (bodyStr !== "") {
+                    function paragraphHasValidEnding(
+                        paragraph: string
+                    ): boolean {
+                        let paragraphWords = paragraph.split(" ");
+                        let lastWordInParagraph =
+                            paragraphWords[paragraphWords.length - 1];
+                        let isParagraphEndingWithUrl =
+                            Helpers.isValidUrl(lastWordInParagraph);
+                        if (isParagraphEndingWithUrl) {
+                            return true;
+                        }
 
-                    let endingChar = paragraph[paragraph.length - 1];
-                    if (
-                        endingChar === "." ||
-                        endingChar === ":" ||
-                        endingChar === "!" ||
-                        endingChar === "?"
-                    ) {
-                        return true;
-                    }
-                    if (
-                        endingChar === ")" &&
-                        paragraph.length > 1 &&
-                        paragraphHasValidEnding(paragraph[paragraph.length - 2])
-                    ) {
-                        return true;
-                    }
-                    return false;
-                }
-
-                for (let paragraph of bodyStr.split("\n\n")) {
-                    paragraph = paragraph.trim();
-
-                    if (paragraph === "") {
-                        continue;
-                    }
-
-                    let startWithLowerCase = Helpers.isLowerCase(paragraph[0]);
-
-                    let validParagraphEnd = paragraphHasValidEnding(paragraph);
-
-                    let lines = paragraph.split(/\r?\n/);
-
-                    if (startWithLowerCase) {
+                        let endingChar = paragraph[paragraph.length - 1];
                         if (
-                            !(lines.length == 1 && Helpers.isValidUrl(lines[0]))
+                            endingChar === "." ||
+                            endingChar === ":" ||
+                            endingChar === "!" ||
+                            endingChar === "?"
+                        ) {
+                            return true;
+                        }
+                        if (
+                            endingChar === ")" &&
+                            paragraph.length > 1 &&
+                            paragraphHasValidEnding(
+                                paragraph[paragraph.length - 2]
+                            )
+                        ) {
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    for (let paragraph of bodyStr.split("\n\n")) {
+                        paragraph = paragraph.trim();
+
+                        if (paragraph === "") {
+                            continue;
+                        }
+
+                        let startWithLowerCase = Helpers.isLowerCase(
+                            paragraph[0]
+                        );
+
+                        let validParagraphEnd =
+                            paragraphHasValidEnding(paragraph);
+
+                        let lines = paragraph.split(/\r?\n/);
+
+                        if (startWithLowerCase) {
+                            if (
+                                !(
+                                    lines.length == 1 &&
+                                    Helpers.isValidUrl(lines[0])
+                                )
+                            ) {
+                                offence = true;
+                            }
+                        }
+
+                        if (
+                            !validParagraphEnd &&
+                            !Helpers.isValidUrl(lines[lines.length - 1]) &&
+                            !Helpers.isFooterNote(lines[lines.length - 1])
                         ) {
                             offence = true;
                         }
-                    }
-
-                    if (
-                        !validParagraphEnd &&
-                        !Helpers.isValidUrl(lines[lines.length - 1]) &&
-                        !Helpers.isFooterNote(lines[lines.length - 1])
-                    ) {
-                        offence = true;
                     }
                 }
             }
@@ -83,18 +95,24 @@ export abstract class Plugins {
         ];
     }
 
-    public static commitHashAlone(rawStr: string) {
+    public static commitHashAlone(rawStr: string | null) {
         let offence = false;
 
-        let urls = Helpers.findUrls(rawStr);
+        if (rawStr !== null) {
+            rawStr = rawStr.trim();
+            let urls = Helpers.findUrls(rawStr);
 
-        let gitRepo = process.env["GITHUB_REPOSITORY"];
-        if (gitRepo !== undefined && urls !== null) {
-            for (let url of urls.entries()) {
-                let urlStr = url[1].toString();
-                if (Helpers.isCommitUrl(urlStr) && urlStr.includes(gitRepo)) {
-                    offence = true;
-                    break;
+            let gitRepo = process.env["GITHUB_REPOSITORY"];
+            if (gitRepo !== undefined && urls !== null) {
+                for (let url of urls.entries()) {
+                    let urlStr = url[1].toString();
+                    if (
+                        Helpers.isCommitUrl(urlStr) &&
+                        urlStr.includes(gitRepo)
+                    ) {
+                        offence = true;
+                        break;
+                    }
                 }
             }
         }
@@ -106,8 +124,13 @@ export abstract class Plugins {
         ];
     }
 
-    public static emptyWip(headerStr: string) {
-        let offence = headerStr.toLowerCase() === "wip";
+    public static emptyWip(headerStr: string | null) {
+        let offence = false;
+
+        if (headerStr !== null) {
+            offence = headerStr.toLowerCase() === "wip";
+        }
+
         return [
             !offence,
             `Please add a number or description after the WIP prefix.` +
@@ -116,61 +139,78 @@ export abstract class Plugins {
     }
 
     public static headerMaxLengthWithSuggestions(
-        headerStr: string,
+        headerStr: string | null,
         maxLineLength: number
     ) {
         let offence = false;
+        let message = "";
 
-        let headerLength = headerStr.length;
-        let message = `Please do not exceed ${maxLineLength} characters in title (found ${headerLength}).`;
-        if (!headerStr.startsWith("Merge ") && headerLength > maxLineLength) {
-            offence = true;
+        if (headerStr !== null) {
+            let headerLength = headerStr.length;
+            message = `Please do not exceed ${maxLineLength} characters in title (found ${headerLength}).`;
+            if (
+                !headerStr.startsWith("Merge ") &&
+                headerLength > maxLineLength
+            ) {
+                offence = true;
 
-            let colonIndex = headerStr.indexOf(":");
+                let colonIndex = headerStr.indexOf(":");
 
-            let titleWithoutArea = headerStr;
-            if (colonIndex > 0) {
-                titleWithoutArea = headerStr.substring(colonIndex);
-            }
-
-            let numRecomendations = 0;
-            let lowerCaseTitleWithoutArea = titleWithoutArea.toLowerCase();
-            Object.entries(abbr).forEach(([key, value]) => {
-                let pattern = new RegExp("\\b(" + key.toString() + ")\\b");
-                if (pattern.test(lowerCaseTitleWithoutArea)) {
-                    if (numRecomendations === 0) {
-                        message =
-                            message +
-                            " The following replacement(s) in your commit title are recommended:\n";
-                    }
-
-                    message = message + `"${key}" -> "${value}"\n`;
+                let titleWithoutArea = headerStr;
+                if (colonIndex > 0) {
+                    titleWithoutArea = headerStr.substring(colonIndex);
                 }
-            });
+
+                let numRecomendations = 0;
+                let lowerCaseTitleWithoutArea = titleWithoutArea.toLowerCase();
+                Object.entries(abbr).forEach(([key, value]) => {
+                    let pattern = new RegExp("\\b(" + key.toString() + ")\\b");
+                    if (pattern.test(lowerCaseTitleWithoutArea)) {
+                        if (numRecomendations === 0) {
+                            message =
+                                message +
+                                " The following replacement(s) in your commit title are recommended:\n";
+                        }
+
+                        message = message + `"${key}" -> "${value}"\n`;
+                    }
+                });
+            }
         }
 
         return [!offence, message + Helpers.errMessageSuffix];
     }
 
-    public static footerNotesMisplacement(bodyStr: string) {
+    public static footerNotesMisplacement(rawStr: string | null) {
         let offence = false;
 
-        if (bodyStr !== null) {
-            let seenBody = false;
-            let seenFooter = false;
-            let lines = bodyStr.split(/\r?\n/);
-            for (let line of lines) {
-                if (line.length === 0) {
-                    continue;
-                }
-                seenBody = seenBody || !Helpers.isFooterNote(line);
-                seenFooter = seenFooter || Helpers.isFooterNote(line);
-                if (seenFooter && !Helpers.isFooterNote(line)) {
-                    offence = true;
-                    break;
+        if (rawStr !== null) {
+            let lineBreakIndex = rawStr.indexOf("\n");
+
+            if (lineBreakIndex >= 0) {
+                // Extracting bodyStr from rawStr rather than using body directly is a
+                // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
+                let bodyStr = rawStr.substring(lineBreakIndex).trim();
+
+                if (bodyStr !== "") {
+                    let seenBody = false;
+                    let seenFooter = false;
+                    let lines = bodyStr.split(/\r?\n/);
+                    for (let line of lines) {
+                        if (line.length === 0) {
+                            continue;
+                        }
+                        seenBody = seenBody || !Helpers.isFooterNote(line);
+                        seenFooter = seenFooter || Helpers.isFooterNote(line);
+                        if (seenFooter && !Helpers.isFooterNote(line)) {
+                            offence = true;
+                            break;
+                        }
+                    }
                 }
             }
         }
+
         return [
             !offence,
             `Footer messages must be placed after body paragraphs, please move any message that starts with "Fixes", "Closes" or "[i]" to the end of the commmit message.` +
@@ -178,39 +218,51 @@ export abstract class Plugins {
         ];
     }
 
-    public static footerReferencesExistence(bodyStr: string) {
+    public static footerReferencesExistence(rawStr: string | null) {
         let offence = false;
 
-        if (bodyStr !== null) {
-            let lines = bodyStr.split(/\r?\n/);
-            let bodyReferences = new Set();
-            let references = new Set();
-            for (let line of lines) {
-                let matches = line.match(/(?<=\[)([0-9]+)(?=\])/g);
-                if (matches === null) {
-                    continue;
-                }
-                for (let match of matches) {
-                    if (Helpers.isFooterReference(line)) {
-                        references.add(match);
-                    } else {
-                        bodyReferences.add(match);
+        if (rawStr !== null) {
+            rawStr = rawStr.trim();
+            let lineBreakIndex = rawStr.indexOf("\n");
+
+            if (lineBreakIndex >= 0) {
+                // Extracting bodyStr from rawStr rather than using body directly is a
+                // workaround for https://github.com/conventional-changelog/commitlint/issues/3428
+                let bodyStr = rawStr.substring(lineBreakIndex).trim();
+
+                if (bodyStr !== "") {
+                    let lines = bodyStr.split(/\r?\n/);
+                    let bodyReferences = new Set();
+                    let references = new Set();
+                    for (let line of lines) {
+                        let matches = line.match(/(?<=\[)([0-9]+)(?=\])/g);
+                        if (matches === null) {
+                            continue;
+                        }
+                        for (let match of matches) {
+                            if (Helpers.isFooterReference(line)) {
+                                references.add(match);
+                            } else {
+                                bodyReferences.add(match);
+                            }
+                        }
+                    }
+                    for (let ref of bodyReferences) {
+                        if (!references.has(ref)) {
+                            offence = true;
+                            break;
+                        }
+                    }
+                    for (let ref of references) {
+                        if (!bodyReferences.has(ref)) {
+                            offence = true;
+                            break;
+                        }
                     }
                 }
             }
-            for (let ref of bodyReferences) {
-                if (!references.has(ref)) {
-                    offence = true;
-                    break;
-                }
-            }
-            for (let ref of references) {
-                if (!bodyReferences.has(ref)) {
-                    offence = true;
-                    break;
-                }
-            }
         }
+
         return [
             !offence,
             "All references in the body must be mentioned in the footer, and vice versa." +
@@ -218,14 +270,16 @@ export abstract class Plugins {
         ];
     }
 
-    public static preferSlashOverBackslash(headerStr: string) {
+    public static preferSlashOverBackslash(headerStr: string | null) {
         let offence = false;
 
-        let colonIndex = headerStr.indexOf(":");
-        if (colonIndex >= 0) {
-            let areaOrScope = headerStr.substring(0, colonIndex);
-            if (areaOrScope.includes("\\")) {
-                offence = true;
+        if (headerStr !== null) {
+            let colonIndex = headerStr.indexOf(":");
+            if (colonIndex >= 0) {
+                let areaOrScope = headerStr.substring(0, colonIndex);
+                if (areaOrScope.includes("\\")) {
+                    offence = true;
+                }
             }
         }
 
@@ -236,17 +290,20 @@ export abstract class Plugins {
         ];
     }
 
-    public static properIssueRefs(rawStr: string) {
+    public static properIssueRefs(rawStr: string | null) {
         let offence = false;
 
-        let lineBreakIndex = rawStr.indexOf("\n");
+        if (rawStr !== null) {
+            rawStr = rawStr.trim();
+            let lineBreakIndex = rawStr.indexOf("\n");
 
-        if (lineBreakIndex >= 0) {
-            // Extracting bodyStr from rawStr rather than using body directly is a
-            // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
-            let bodyStr = rawStr.substring(lineBreakIndex);
-            bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
-            offence = Helpers.includesHashtagRef(bodyStr);
+            if (lineBreakIndex >= 0) {
+                // Extracting bodyStr from rawStr rather than using body directly is a
+                // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
+                let bodyStr = rawStr.substring(lineBreakIndex);
+                bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
+                offence = Helpers.includesHashtagRef(bodyStr);
+            }
         }
 
         return [
@@ -256,12 +313,17 @@ export abstract class Plugins {
         ];
     }
 
-    public static titleUppercase(headerStr: string) {
-        let firstWord = headerStr.split(" ")[0];
-        let offence =
-            headerStr.indexOf(":") < 0 &&
-            !Helpers.wordIsStartOfSentence(firstWord) &&
-            !Helpers.isProperNoun(firstWord);
+    public static titleUppercase(headerStr: string | null) {
+        let offence = false;
+
+        if (headerStr !== null) {
+            let firstWord = headerStr.split(" ")[0];
+            offence =
+                headerStr.indexOf(":") < 0 &&
+                !Helpers.wordIsStartOfSentence(firstWord) &&
+                !Helpers.isProperNoun(firstWord);
+        }
+
         return [
             !offence,
             `Please start the title with an upper-case letter if there is no area in the title.` +
@@ -269,9 +331,13 @@ export abstract class Plugins {
         ];
     }
 
-    public static tooManySpaces(rawStr: string) {
-        rawStr = Helpers.removeAllCodeBlocks(rawStr);
-        let offence = rawStr.match(`[^.]  `) !== null;
+    public static tooManySpaces(rawStr: string | null) {
+        let offence = false;
+
+        if (rawStr !== null) {
+            rawStr = Helpers.removeAllCodeBlocks(rawStr);
+            offence = rawStr.match(`[^.]  `) !== null;
+        }
 
         return [
             !offence,
@@ -280,13 +346,16 @@ export abstract class Plugins {
         ];
     }
 
-    public static typeSpaceAfterColon(headerStr: string) {
-        let colonFirstIndex = headerStr.indexOf(":");
-
+    public static typeSpaceAfterColon(headerStr: string | null) {
         let offence = false;
-        if (colonFirstIndex > 0 && headerStr.length > colonFirstIndex) {
-            if (headerStr[colonFirstIndex + 1] != " ") {
-                offence = true;
+
+        if (headerStr !== null) {
+            let colonFirstIndex = headerStr.indexOf(":");
+
+            if (colonFirstIndex > 0 && headerStr.length > colonFirstIndex) {
+                if (headerStr[colonFirstIndex + 1] != " ") {
+                    offence = true;
+                }
             }
         }
 
@@ -297,8 +366,12 @@ export abstract class Plugins {
         ];
     }
 
-    public static typeWithSquareBrackets(headerStr: string) {
-        let offence = headerStr.match(`^\\[.*\\]`) !== null;
+    public static typeWithSquareBrackets(headerStr: string | null) {
+        let offence = false;
+
+        if (headerStr !== null) {
+            offence = headerStr.match(`^\\[.*\\]`) !== null;
+        }
 
         return [
             !offence,
@@ -307,16 +380,18 @@ export abstract class Plugins {
         ];
     }
 
-    public static subjectLowercase(headerStr: string) {
+    public static subjectLowercase(headerStr: string | null) {
         let offence = false;
 
-        let colonFirstIndex = headerStr.indexOf(":");
+        if (headerStr !== null) {
+            let colonFirstIndex = headerStr.indexOf(":");
 
-        if (colonFirstIndex > 0 && headerStr.length > colonFirstIndex) {
-            let subject = headerStr.substring(colonFirstIndex + 1).trim();
-            if (subject != null && subject.length > 1) {
-                let firstWord = subject.trim().split(" ")[0];
-                offence = Helpers.wordIsStartOfSentence(firstWord);
+            if (colonFirstIndex > 0 && headerStr.length > colonFirstIndex) {
+                let subject = headerStr.substring(colonFirstIndex + 1).trim();
+                if (subject != null && subject.length > 1) {
+                    let firstWord = subject.trim().split(" ")[0];
+                    offence = Helpers.wordIsStartOfSentence(firstWord);
+                }
             }
         }
 
@@ -327,20 +402,22 @@ export abstract class Plugins {
         ];
     }
 
-    public static typeSpaceAfterComma(headerStr: string) {
+    public static typeSpaceAfterComma(headerStr: string | null) {
         let offence = false;
 
-        let colonIndex = headerStr.indexOf(":");
+        if (headerStr !== null) {
+            let colonIndex = headerStr.indexOf(":");
 
-        if (colonIndex >= 0) {
-            let areaOrScope = headerStr.substring(0, colonIndex);
-            let commaIndex = areaOrScope.indexOf(",");
-            while (commaIndex >= 0) {
-                if (areaOrScope[commaIndex + 1] === " ") {
-                    offence = true;
+            if (colonIndex >= 0) {
+                let areaOrScope = headerStr.substring(0, colonIndex);
+                let commaIndex = areaOrScope.indexOf(",");
+                while (commaIndex >= 0) {
+                    if (areaOrScope[commaIndex + 1] === " ") {
+                        offence = true;
+                    }
+                    areaOrScope = areaOrScope.substring(commaIndex + 1);
+                    commaIndex = areaOrScope.indexOf(",");
                 }
-                areaOrScope = areaOrScope.substring(commaIndex + 1);
-                commaIndex = areaOrScope.indexOf(",");
             }
         }
 
@@ -352,12 +429,13 @@ export abstract class Plugins {
     }
 
     public static bodySoftMaxLineLength(
-        bodyStr: string,
+        bodyStr: string | null,
         bodyMaxLineLength: number
     ) {
         let offence = false;
 
         if (bodyStr !== null) {
+            bodyStr = bodyStr.trim();
             bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
 
             if (bodyStr !== "") {
@@ -399,30 +477,32 @@ export abstract class Plugins {
         ];
     }
 
-    public static trailingWhitespace(rawStr: string) {
+    public static trailingWhitespace(rawStr: string | null) {
         let offence = false;
 
-        let lines = rawStr.split(/\r?\n/);
-        let inBigBlock = false;
-        for (let line of lines) {
-            if (Helpers.isBigBlock(line)) {
-                inBigBlock = !inBigBlock;
-                continue;
-            }
-            if (inBigBlock) {
-                continue;
-            }
+        if (rawStr !== null) {
+            let lines = rawStr.split(/\r?\n/);
+            let inBigBlock = false;
+            for (let line of lines) {
+                if (Helpers.isBigBlock(line)) {
+                    inBigBlock = !inBigBlock;
+                    continue;
+                }
+                if (inBigBlock) {
+                    continue;
+                }
 
-            if (line[0] == " " || line[0] == "\t") {
-                offence = true;
-                break;
-            }
-
-            if (line.length > 0) {
-                let lastChar = line[line.length - 1];
-                if (lastChar == " " || lastChar == "\t") {
+                if (line[0] == " " || line[0] == "\t") {
                     offence = true;
                     break;
+                }
+
+                if (line.length > 0) {
+                    let lastChar = line[line.length - 1];
+                    if (lastChar == " " || lastChar == "\t") {
+                        offence = true;
+                        break;
+                    }
                 }
             }
         }
@@ -434,16 +514,18 @@ export abstract class Plugins {
         ];
     }
 
-    public static typeSpaceBeforeParen(headerStr: string) {
+    public static typeSpaceBeforeParen(headerStr: string | null) {
         let offence = false;
 
-        let colonIndex = headerStr.indexOf(":");
-        if (colonIndex >= 0) {
-            let areaOrScope = headerStr.substring(0, colonIndex);
-            let parenIndex = areaOrScope.indexOf("(");
-            if (parenIndex >= 1) {
-                if (headerStr[parenIndex - 1] === " ") {
-                    offence = true;
+        if (headerStr !== null) {
+            let colonIndex = headerStr.indexOf(":");
+            if (colonIndex >= 0) {
+                let areaOrScope = headerStr.substring(0, colonIndex);
+                let parenIndex = areaOrScope.indexOf("(");
+                if (parenIndex >= 1) {
+                    if (headerStr[parenIndex - 1] === " ") {
+                        offence = true;
+                    }
                 }
             }
         }
