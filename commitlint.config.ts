@@ -165,12 +165,12 @@ module.exports = {
                 },
 
                 "body-soft-max-line-length": (
-                    { raw }: { raw: any },
+                    { body }: { body: any },
                     _: any,
                     maxLineLength: number
                 ) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw");
-                    return Plugins.bodySoftMaxLineLength(rawStr, maxLineLength);
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
+                    return Plugins.bodySoftMaxLineLength(bodyStr, maxLineLength);
                 },
 
                 "trailing-whitespace": ({ raw }: { raw: any }) => {
