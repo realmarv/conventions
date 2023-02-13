@@ -148,7 +148,7 @@ export abstract class Plugins {
 
         if (headerStr !== null) {
             let headerLength = headerStr.length;
-            let message = `Please do not exceed ${maxLineLength} characters in title (found ${headerLength}).`;
+            message = `Please do not exceed ${maxLineLength} characters in title (found ${headerLength}).`;
             if (
                 !headerStr.startsWith("Merge ") &&
                 headerLength > maxLineLength
