@@ -129,7 +129,7 @@ export abstract class Plugins {
         let offence = false;
 
         if (headerStr !== null) {
-            headerStr.toLowerCase() === "wip";
+            offence = headerStr.toLowerCase() === "wip";
         }
 
         return [
