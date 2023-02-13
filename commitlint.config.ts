@@ -59,20 +59,28 @@ module.exports = {
         {
             rules: {
                 "body-prose": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawUncastedStr = Helpers.convertAnyToString(raw, "raw");
+                    Helpers.assertRaw(rawUncastedStr);
+                    let rawStr = (rawUncastedStr as string).trim();
+
                     return Plugins.bodyProse(rawStr);
                 },
 
                 "commit-hash-alone": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw");
+                    let rawUncastedStr = Helpers.convertAnyToString(raw, "raw");
+                    Helpers.assertRaw(rawUncastedStr);
+                    let rawStr = (rawUncastedStr as string).trim();
+
                     return Plugins.commitHashAlone(rawStr);
                 },
 
                 "empty-wip": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.emptyWip(headerStr);
                 },
 
@@ -81,10 +89,12 @@ module.exports = {
                     _: any,
                     maxLineLength: number
                 ) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.headerMaxLengthWithSuggestions(
                         headerStr,
                         maxLineLength
@@ -92,18 +102,13 @@ module.exports = {
                 },
 
                 "footer-notes-misplacement": ({ body }: { body: any }) => {
-                    let bodyStr = Helpers.convertAnyToString(
-                        body,
-                        "body"
-                    ).trim();
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
                     return Plugins.footerNotesMisplacement(bodyStr);
                 },
 
                 "footer-references-existence": ({ body }: { body: any }) => {
-                    let bodyStr = Helpers.convertAnyToString(
-                        body,
-                        "body"
-                    ).trim();
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
+
                     return Plugins.footerReferencesExistence(bodyStr);
                 },
 
@@ -112,61 +117,80 @@ module.exports = {
                 }: {
                     header: any;
                 }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.preferSlashOverBackslash(headerStr);
                 },
 
                 "proper-issue-refs": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw").trim();
+                    let rawUncastedStr = Helpers.convertAnyToString(raw, "raw");
+                    Helpers.assertRaw(rawUncastedStr);
+                    let rawStr = (rawUncastedStr as string).trim();
+
                     return Plugins.properIssueRefs(rawStr);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
+
                     return Plugins.titleUppercase(headerStr);
                 },
 
                 "too-many-spaces": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw");
+                    let rawUncastedStr = Helpers.convertAnyToString(raw, "raw");
+                    Helpers.assertRaw(rawUncastedStr);
+                    let rawStr = (rawUncastedStr as string).trim();
+
                     return Plugins.tooManySpaces(rawStr);
                 },
 
                 "type-space-after-colon": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.typeSpaceAfterColon(headerStr);
                 },
 
                 "type-with-square-brackets": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.typeWithSquareBrackets(headerStr);
                 },
 
                 // NOTE: we use 'header' instead of 'subject' as a workaround to this bug: https://github.com/conventional-changelog/commitlint/issues/3404
                 "subject-lowercase": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.subjectLowercase(headerStr);
                 },
 
                 "type-space-after-comma": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.typeSpaceAfterComma(headerStr);
                 },
 
@@ -175,10 +199,7 @@ module.exports = {
                     _: any,
                     maxLineLength: number
                 ) => {
-                    let bodyStr = Helpers.convertAnyToString(
-                        body,
-                        "body"
-                    ).trim();
+                    let bodyStr = Helpers.convertAnyToString(body, "body");
                     return Plugins.bodySoftMaxLineLength(
                         bodyStr,
                         maxLineLength
@@ -186,15 +207,20 @@ module.exports = {
                 },
 
                 "trailing-whitespace": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.convertAnyToString(raw, "raw");
+                    let rawUncastedStr = Helpers.convertAnyToString(raw, "raw");
+                    Helpers.assertRaw(rawUncastedStr);
+                    let rawStr = (rawUncastedStr as string).trim();
+
                     return Plugins.trailingWhitespace(rawStr);
                 },
 
                 "type-space-before-paren": ({ header }: { header: any }) => {
-                    let headerStr = Helpers.convertAnyToString(
+                    let headerUncastedStr = Helpers.convertAnyToString(
                         header,
                         "header"
                     );
+                    Helpers.assertHeader(headerUncastedStr);
+                    let headerStr = headerUncastedStr as string;
                     return Plugins.typeSpaceBeforeParen(headerStr);
                 },
             },

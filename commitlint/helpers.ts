@@ -19,12 +19,28 @@ export abstract class Helpers {
     public static convertAnyToString(
         potentialString: any,
         paramName: string
-    ): any {
+    ): string | null {
         if (potentialString === null || potentialString === undefined) {
             // otherwise, String(null) might give us the stupid string "null"
             return null;
         }
         return String(potentialString);
+    }
+
+    public static assertRaw(rawStr: string | null) {
+        if (rawStr === null) {
+            throw new Error(
+                "This is unexpected because raw should never be null"
+            );
+        }
+    }
+
+    public static assertHeader(headerStr: string | null) {
+        if (headerStr === null) {
+            throw new Error(
+                "This is unexpected because header should never be null"
+            );
+        }
     }
 
     public static assertCharacter(letter: string) {

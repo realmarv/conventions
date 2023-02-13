@@ -152,10 +152,11 @@ export abstract class Plugins {
         return [!offence, message + Helpers.errMessageSuffix];
     }
 
-    public static footerNotesMisplacement(bodyStr: string) {
+    public static footerNotesMisplacement(bodyStr: string | null) {
         let offence = false;
 
         if (bodyStr !== null) {
+            bodyStr = bodyStr.trim();
             let seenBody = false;
             let seenFooter = false;
             let lines = bodyStr.split(/\r?\n/);
@@ -178,10 +179,11 @@ export abstract class Plugins {
         ];
     }
 
-    public static footerReferencesExistence(bodyStr: string) {
+    public static footerReferencesExistence(bodyStr: string | null) {
         let offence = false;
 
         if (bodyStr !== null) {
+            bodyStr = bodyStr.trim();
             let lines = bodyStr.split(/\r?\n/);
             let bodyReferences = new Set();
             let references = new Set();
@@ -352,12 +354,13 @@ export abstract class Plugins {
     }
 
     public static bodySoftMaxLineLength(
-        bodyStr: string,
+        bodyStr: string | null,
         bodyMaxLineLength: number
     ) {
         let offence = false;
 
         if (bodyStr !== null) {
+            bodyStr = bodyStr.trim();
             bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
 
             if (bodyStr !== "") {
