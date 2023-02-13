@@ -88,6 +88,8 @@ export abstract class Plugins {
             }
         }
 
+        console.log('body-prose: ' + offence)
+
         return [
             !offence,
             `The body of the commit message (as opposed to the commit message title) is composed of paragraphs. Please begin each paragraph with an uppercase letter and end it with a dot (or other valid character to finish a paragraph).` +
@@ -116,6 +118,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('2: ' + offence)
 
         return [
             !offence,
@@ -130,6 +133,7 @@ export abstract class Plugins {
         if (headerStr !== null) {
             offence = headerStr.toLowerCase() === "wip";
         }
+        console.log('3: ' + offence)
 
         return [
             !offence,
@@ -181,6 +185,7 @@ export abstract class Plugins {
         }
 
         console.log('offence' + offence)
+        console.log('4: ' + offence)
 
         return [!offence, message + Helpers.errMessageSuffix];
     }
@@ -214,6 +219,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('5: ' + offence)
 
         return [
             !offence,
@@ -266,6 +272,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('6: ' + offence)
 
         return [
             !offence,
@@ -286,6 +293,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('7: ' + offence)
 
         return [
             !offence,
@@ -309,6 +317,7 @@ export abstract class Plugins {
                 offence = Helpers.includesHashtagRef(bodyStr);
             }
         }
+        console.log('8: ' + offence)
 
         return [
             !offence,
@@ -327,6 +336,7 @@ export abstract class Plugins {
                 !Helpers.wordIsStartOfSentence(firstWord) &&
                 !Helpers.isProperNoun(firstWord);
         }
+        console.log('9: ' + offence)
 
         return [
             !offence,
@@ -342,6 +352,7 @@ export abstract class Plugins {
             rawStr = Helpers.removeAllCodeBlocks(rawStr);
             offence = rawStr.match(`[^.]  `) !== null;
         }
+        console.log('10: ' + offence)
 
         return [
             !offence,
@@ -362,6 +373,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('11: ' + offence)
 
         return [
             !offence,
@@ -376,6 +388,7 @@ export abstract class Plugins {
         if (headerStr !== null) {
             offence = headerStr.match(`^\\[.*\\]`) !== null;
         }
+        console.log('12: ' + offence)
 
         return [
             !offence,
@@ -398,6 +411,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('13: ' + offence)
 
         return [
             !offence,
@@ -424,6 +438,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('14: ' + offence)
 
         return [
             !offence,
@@ -471,6 +486,7 @@ export abstract class Plugins {
         function getUnixCommand(fmtOption: string) {
             return `git log --format=%B -n 1 $(git log -1 --pretty=format:"%h") | cat - > log.txt ; fmt -w 1111 -s log.txt > ulog.txt && fmt -w 64 -s ${fmtOption} ulog.txt > wlog.txt && git commit --amend -F wlog.txt`;
         }
+        console.log('15: ' + offence)
 
         return [
             !offence,
@@ -510,6 +526,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('16: ' + offence)
 
         return [
             !offence,
@@ -533,6 +550,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('17: ' + offence)
 
         return [
             !offence,
