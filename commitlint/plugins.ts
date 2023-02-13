@@ -100,6 +100,7 @@ export abstract class Plugins {
         let offence = false;
 
         if (rawStr !== null) {
+            rawStr = rawStr.trim();
             let urls = Helpers.findUrls(rawStr);
 
             let gitRepo = process.env["GITHUB_REPOSITORY"];
@@ -222,6 +223,7 @@ export abstract class Plugins {
         let offence = false;
 
         if (rawStr !== null) {
+            rawStr = rawStr.trim();
             let lineBreakIndex = rawStr.indexOf("\n");
 
             if (lineBreakIndex >= 0) {
@@ -293,6 +295,7 @@ export abstract class Plugins {
         let offence = false;
 
         if (rawStr !== null) {
+            rawStr = rawStr.trim();
             let lineBreakIndex = rawStr.indexOf("\n");
 
             if (lineBreakIndex >= 0) {
@@ -340,7 +343,7 @@ export abstract class Plugins {
         ];
     }
 
-    public static titleUppercase(headerStr: string) {
+    public static titleUppercase(headerStr: string | null) {
         let offence = false;
 
         if (headerStr !== null) {
@@ -462,6 +465,7 @@ export abstract class Plugins {
         let offence = false;
 
         if (rawStr !== null) {
+            rawStr = rawStr.trim();
             let lineBreakIndex = rawStr.indexOf("\n");
 
             if (lineBreakIndex >= 0) {
