@@ -291,7 +291,7 @@ export abstract class Plugins {
         ];
     }
 
-    public static properIssueRefs(rawStr: string) {
+    public static properIssueRefs(rawStr: string | null) {
         let offence = false;
 
         if (rawStr !== null) {
