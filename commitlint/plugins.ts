@@ -328,7 +328,7 @@ export abstract class Plugins {
                 .substring(titleStartIndex, headerStr.length)
                 .trim();
             let titleWords = title.split(" ");
-            let firstWordInTitle = titleWords[0];
+            firstWordInTitle = titleWords[0];
 
             if (firstWordInTitle === "update") {
                 offence = titleWords.length > 1 && bodyStr === null;
