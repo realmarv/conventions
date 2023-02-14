@@ -209,7 +209,7 @@ module.exports = {
                 "trailing-whitespace": ({ raw }: { raw: any }) => {
                     let rawUncastedStr = Helpers.convertAnyToString(raw, "raw");
                     Helpers.assertRaw(rawUncastedStr);
-                    let rawStr = (rawUncastedStr as string).trim();
+                    let rawStr = (rawUncastedStr as string)
 
                     return Plugins.trailingWhitespace(rawStr);
                 },
