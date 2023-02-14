@@ -290,8 +290,8 @@ export abstract class Plugins {
 
             const negated = when === "never";
             offence = negated
-                ? !isDefaultRevertCommitMessage
-                : isDefaultRevertCommitMessage;
+                ? isDefaultRevertCommitMessage
+                : !isDefaultRevertCommitMessage;
         }
         console.log("offence:" + offence);
         return [
