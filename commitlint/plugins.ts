@@ -75,7 +75,7 @@ export abstract class Plugins {
                 }
             }
         }
-
+        console.log('1:' + offence);
         return [
             !offence,
             `The body of the commit message (as opposed to the commit message title) is composed of paragraphs. Please begin each paragraph with an uppercase letter and end it with a dot (or other valid character to finish a paragraph).` +
@@ -98,6 +98,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('2:' + offence);
 
         return [
             !offence,
@@ -108,6 +109,8 @@ export abstract class Plugins {
 
     public static emptyWip(headerStr: string) {
         let offence = headerStr.toLowerCase() === "wip";
+        console.log('3:' + offence);
+
         return [
             !offence,
             `Please add a number or description after the WIP prefix.` +
@@ -148,6 +151,7 @@ export abstract class Plugins {
                 }
             });
         }
+        console.log('4:' + offence);
 
         return [!offence, message + Helpers.errMessageSuffix];
     }
@@ -172,6 +176,8 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('5:' + offence);
+
         return [
             !offence,
             `Footer messages must be placed after body paragraphs, please move any message that starts with "Fixes", "Closes" or "[i]" to the end of the commmit message.` +
@@ -213,6 +219,8 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('6:' + offence);
+
         return [
             !offence,
             "All references in the body must be mentioned in the footer, and vice versa." +
@@ -230,6 +238,7 @@ export abstract class Plugins {
                 offence = true;
             }
         }
+        console.log('7:' + offence);
 
         return [
             !offence,
@@ -250,6 +259,7 @@ export abstract class Plugins {
             bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
             offence = Helpers.includesHashtagRef(bodyStr);
         }
+        console.log('8:' + offence);
 
         return [
             !offence,
@@ -264,6 +274,8 @@ export abstract class Plugins {
             headerStr.indexOf(":") < 0 &&
             !Helpers.wordIsStartOfSentence(firstWord) &&
             !Helpers.isProperNoun(firstWord);
+        console.log('9:' + offence);
+
         return [
             !offence,
             `Please start the title with an upper-case letter if there is no area in the title.` +
@@ -274,6 +286,7 @@ export abstract class Plugins {
     public static tooManySpaces(rawStr: string) {
         rawStr = Helpers.removeAllCodeBlocks(rawStr);
         let offence = rawStr.match(`[^.]  `) !== null;
+        console.log('10:' + offence);
 
         return [
             !offence,
@@ -291,6 +304,7 @@ export abstract class Plugins {
                 offence = true;
             }
         }
+        console.log('11:' + offence);
 
         return [
             !offence,
@@ -301,6 +315,7 @@ export abstract class Plugins {
 
     public static typeWithSquareBrackets(headerStr: string) {
         let offence = headerStr.match(`^\\[.*\\]`) !== null;
+        console.log('12:' + offence);
 
         return [
             !offence,
@@ -321,6 +336,7 @@ export abstract class Plugins {
                 offence = Helpers.wordIsStartOfSentence(firstWord);
             }
         }
+        console.log('13:' + offence);
 
         return [
             !offence,
@@ -345,6 +361,7 @@ export abstract class Plugins {
                 commaIndex = areaOrScope.indexOf(",");
             }
         }
+        console.log('14:' + offence);
 
         return [
             !offence,
@@ -392,6 +409,7 @@ export abstract class Plugins {
         function getUnixCommand(fmtOption: string) {
             return `git log --format=%B -n 1 $(git log -1 --pretty=format:"%h") | cat - > log.txt ; fmt -w 1111 -s log.txt > ulog.txt && fmt -w 64 -s ${fmtOption} ulog.txt > wlog.txt && git commit --amend -F wlog.txt`;
         }
+        console.log('15:' + offence);
 
         return [
             !offence,
@@ -429,6 +447,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('16:' + offence);
 
         return [
             !offence,
@@ -450,6 +469,7 @@ export abstract class Plugins {
                 }
             }
         }
+        console.log('17:' + offence);
 
         return [
             !offence,

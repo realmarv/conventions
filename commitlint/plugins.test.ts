@@ -813,6 +813,7 @@ test("trailing-whitespace3", () => {
     let trailingWhitespace3 = runCommitLintOnMsg(
         commitMsgWithTrailingWhiteSpaceInTitleStart
     );
+    console.log('tr3==>' + trailingWhitespace3.stdout)
     expect(trailingWhitespace3.status).not.toBe(0);
 });
 
@@ -831,6 +832,8 @@ test("trailing-whitespace5", () => {
     let trailingWhitespace5 = runCommitLintOnMsg(
         commitMsgWithTrailingWhiteSpaceInBodyEnd
     );
+    console.log('tr5==>' + trailingWhitespace5.stdout)
+
     expect(trailingWhitespace5.status).not.toBe(0);
 });
 
