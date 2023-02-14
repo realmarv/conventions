@@ -276,22 +276,22 @@ export abstract class Plugins {
             let isDefaultRevertHeader =
                 headerStr.match(/^[Rr]evert ".+"$/) !== null;
 
-            let isDefaultRevertCommitMessage = false;
-
             if (isDefaultRevertHeader) {
                 if (bodyStr !== null) {
                     let lines = bodyStr.split("\n");
-                    isDefaultRevertCommitMessage =
+                    offence =
                         // 40 is the length of git commit hash in the following regex pattern.
                         lines.length == 1 &&
                         lines[0].match(/^This reverts commit [^ ]{40}\.$/) !== null;
+                } else {
+                    offence = true; 
                 }
             }
 
             const negated = when === "never";
             offence = negated
-                ? isDefaultRevertCommitMessage
-                : !isDefaultRevertCommitMessage;
+                ? offence
+                : !offence;
         }
         console.log("offence:" + offence);
         return [
