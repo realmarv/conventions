@@ -279,6 +279,8 @@ export abstract class Plugins {
                     // 40 is the length of git commit hash in the following regex pattern.
                     lines.length == 1 &&
                     lines[0].match(/^This reverts commit [^ ]{40}\.$/) !== null;
+            } else {
+                isDefaultRevertCommitMessage = true;
             }
 
             const negated = when === "never";
