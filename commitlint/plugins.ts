@@ -266,19 +266,23 @@ export abstract class Plugins {
         when = "never"
     ) {
         let offence = false;
-        let isRevertCommitMessage =
-            headerStr.match(/^[Rr]evert ".+"$/) !== null;
+        let isRevertCommitMessage = headerStr.toLowerCase().includes('revert');
 
         if (isRevertCommitMessage) {
+
+            let isDefaultRevertHeader =
+                headerStr.match(/^[Rr]evert ".+"$/) !== null;
+
             let isDefaultRevertCommitMessage = false;
 
-            // does msg have a body?
-            if (bodyStr !== null) {
-                let lines = bodyStr.split("\n");
-                isDefaultRevertCommitMessage =
-                    // 40 is the length of git commit hash in the following regex pattern.
-                    lines.length == 1 &&
-                    lines[0].match(/^This reverts commit [^ ]{40}\.$/) !== null;
+            if (isDefaultRevertHeader) {
+                if (bodyStr !== null) {
+                    let lines = bodyStr.split("\n");
+                    isDefaultRevertCommitMessage =
+                        // 40 is the length of git commit hash in the following regex pattern.
+                        lines.length == 1 &&
+                        lines[0].match(/^This reverts commit [^ ]{40}\.$/) !== null;
+                }
             }
 
             const negated = when === "never";
