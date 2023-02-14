@@ -260,20 +260,31 @@ export abstract class Plugins {
         ];
     }
 
-    public static defaultRevertMessage(headerStr: string, bodyStr: string | null) {
+    public static defaultRevertMessage(
+        headerStr: string,
+        bodyStr: string | null,
+        when = "never"
+    ) {
         let offence = false;
+        let isRevertCommitMessage =
+            headerStr.match(/^[Rr]evert ".+"$/) !== null;
 
-        if (headerStr.match(/^[Rr]evert ".+"$/) !== null) {
+        if (isRevertCommitMessage) {
+            let isDefaultRevertCommitMessage = false;
+
             // does msg have a body?
             if (bodyStr !== null) {
                 let lines = bodyStr.split("\n");
-                offence =
+                isDefaultRevertCommitMessage =
                     // 40 is the length of git commit hash in the following regex pattern.
                     lines.length == 1 &&
                     lines[0].match(/^This reverts commit [^ ]{40}\.$/) !== null;
-            } else {
-                offence = true;
             }
+
+            const negated = when === "never";
+            offence = negated
+                ? !isDefaultRevertCommitMessage
+                : isDefaultRevertCommitMessage;
         }
 
         return [
