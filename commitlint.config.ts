@@ -159,9 +159,11 @@ module.exports = {
                 "default-revert-message": ({
                     header,
                     body,
+                    when,
                 }: {
                     header: any;
                     body: any;
+                    when: any;
                 }) => {
                     let bodyStr = Helpers.convertAnyToString(body, "body");
                     let headerUncastedStr = Helpers.convertAnyToString(
@@ -172,6 +174,7 @@ module.exports = {
                         headerUncastedStr,
                         notNullStringErrorMessage("header")
                     );
+                    console.log("when:" + when);
                     return Plugins.defaultRevertMessage(headerStr, bodyStr);
                 },
 

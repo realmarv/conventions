@@ -266,13 +266,12 @@ export abstract class Plugins {
         when = "never"
     ) {
         let offence = false;
-        let isRevertCommitMessage = headerStr.toLowerCase().includes('revert');
-        console.log('----')
-        console.log('headerStr: ' + headerStr);
-        console.log('bodyStr:' + bodyStr);
-        console.log('----')
+        let isRevertCommitMessage = headerStr.toLowerCase().includes("revert");
+        console.log("----");
+        console.log("headerStr: " + headerStr);
+        console.log("bodyStr:" + bodyStr);
+        console.log("----");
         if (isRevertCommitMessage) {
-
             let isDefaultRevertHeader =
                 headerStr.match(/^[Rr]evert ".+"$/) !== null;
 
@@ -282,16 +281,15 @@ export abstract class Plugins {
                     offence =
                         // 40 is the length of git commit hash in the following regex pattern.
                         lines.length == 1 &&
-                        lines[0].match(/^This reverts commit [^ ]{40}\.$/) !== null;
+                        lines[0].match(/^This reverts commit [^ ]{40}\.$/) !==
+                            null;
                 } else {
-                    offence = true; 
+                    offence = true;
                 }
             }
 
             const negated = when === "never";
-            offence = negated
-                ? offence
-                : !offence;
+            offence = negated ? offence : !offence;
         }
         console.log("offence:" + offence);
         return [
