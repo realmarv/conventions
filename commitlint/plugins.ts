@@ -267,7 +267,10 @@ export abstract class Plugins {
     ) {
         let offence = false;
         let isRevertCommitMessage = headerStr.toLowerCase().includes('revert');
-
+        console.log('----')
+        console.log('headerStr: ' + headerStr);
+        console.log('bodyStr:' + bodyStr);
+        console.log('----')
         if (isRevertCommitMessage) {
 
             let isDefaultRevertHeader =
