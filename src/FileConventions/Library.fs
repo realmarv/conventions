@@ -18,4 +18,5 @@ let HasCorrectShebang (fileInfo: FileInfo) =
         false
 
 let IsExecutable (fileInfo: FileInfo) =
-    false
+    let hasExecuteAccess = Syscall.access(fileInfo.FullName, AccessModes.X_OK)
+    hasExecuteAccess = 0
