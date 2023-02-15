@@ -156,15 +156,16 @@ module.exports = {
                     return Plugins.properIssueRefs(rawStr);
                 },
 
-                "default-revert-message": ({
-                    header,
-                    body,
-                    when,
-                }: {
-                    header: any;
-                    body: any;
-                    when: any;
-                }) => {
+                "default-revert-message": (
+                    {
+                        header,
+                        body,
+                    }: {
+                        header: any;
+                        body: any;
+                    },
+                    when: any
+                ) => {
                     let bodyStr = Helpers.convertAnyToString(body, "body");
                     let headerUncastedStr = Helpers.convertAnyToString(
                         header,
