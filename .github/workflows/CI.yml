@@ -24,7 +24,10 @@ jobs:
       - name: compile the FileConventions project
         run: dotnet build src/FileConventions.Test/FileConventions.Test.fsproj
       - name: Run tests to validate F# scripts
-        run: dotnet test src/FileConventions.Test/FileConventions.Test.fsproj
+        run: |
+          chmod +x src/FileConventions.Test/DummyFiles/DummyExecutable.fsx
+          chmod -x src/FileConventions.Test/DummyFiles/DummyNotExecutable.fs
+          dotnet test src/FileConventions.Test/FileConventions.Test.fsproj
 
   commitlint-plugins-tests:
     name: Run commitlint-related tests

@@ -32,3 +32,15 @@ let HasCorrectShebangTest3 () =
 let HasCorrectShebangTest4() =
     let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyEmpty.fsx")))
     Assert.That(HasCorrectShebang fileInfo, Is.EqualTo false)
+
+
+[<Test>]
+let IsExecutableTest1 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyExecutable.fsx")))
+    Assert.That(IsExecutable fileInfo, Is.EqualTo true)
+
+
+[<Test>]
+let IsExecutableTest2 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyNotExecutable.fs")))
+    Assert.That(IsExecutable fileInfo, Is.EqualTo false)

@@ -16,3 +16,6 @@ let HasCorrectShebang (fileInfo: FileInfo) =
         
     else
         false
+
+let IsExecutable (fileInfo: FileInfo) =
+    false
