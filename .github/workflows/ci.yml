@@ -23,6 +23,10 @@ jobs:
         run: apt install -y dotnet6
       - name: compile the FileConventions project
         run: dotnet build src/FileConventions.Test/FileConventions.Test.fsproj
+      - name: Print file modes
+        run: |
+          ls -l src/FileConventions.Test/DummyFiles/DummyExecutable.fsx
+          ls -l src/FileConventions.Test/DummyFiles/DummyNotExecutable.fs
       - name: Run tests to validate F# scripts
         run: dotnet test src/FileConventions.Test/FileConventions.Test.fsproj
 
