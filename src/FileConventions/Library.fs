@@ -19,5 +19,5 @@ let HasCorrectShebang (fileInfo: FileInfo) =
 
 let IsExecutable (fileInfo: FileInfo) =
     let hasExecuteAccess = Syscall.access(fileInfo.FullName, AccessModes.X_OK)
-    printfn "%A" hasExecuteAccess
+    printfn "==> %A" hasExecuteAccess
     hasExecuteAccess = 0
