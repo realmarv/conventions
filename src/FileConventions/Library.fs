@@ -37,3 +37,6 @@ let MixedLineEndings(fileInfo: FileInfo) =
         |> Seq.length
 
     numberOfLineEndings > 1
+
+let IsExecutable (fileInfo: FileInfo) =
+    false
