@@ -60,3 +60,11 @@ let DetectAsteriskInPackageReferenceItems(fileInfo: FileInfo) =
         )
 
     asteriskInPackageReference.IsMatch fileText
+
+type EolAtEof =
+    | True
+    | False
+    | NotApplicable
+
+let EolAtEof(fileInfo: FileInfo) = 
+    EolAtEof.False

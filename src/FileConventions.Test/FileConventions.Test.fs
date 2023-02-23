@@ -78,3 +78,15 @@ let DetectAsteriskInPackageReferenceItems1 () =
 let DetectAsteriskInPackageReferenceItems2 () =
     let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyFsprojWithoutAsterisk.fsproj")))
     Assert.That(DetectAsteriskInPackageReferenceItems fileInfo, Is.EqualTo false)
+
+
+[<Test>]
+let EolAtEofTest1() =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyWithEolAtEof.fsx")))
+    Assert.That(EolAtEof fileInfo, Is.EqualTo EolAtEof.True)
+
+
+[<Test>]
+let EolAtEofTest2() =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyWithoutEolAtEof.fsx")))
+    Assert.That(EolAtEof fileInfo, Is.EqualTo EolAtEof.False)
