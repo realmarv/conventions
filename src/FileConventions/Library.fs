@@ -62,7 +62,10 @@ let DetectAsteriskInPackageReferenceItems(fileInfo: FileInfo) =
     asteriskInPackageReference.IsMatch fileText
 
 let HasBinaryContent (fileInfo: FileInfo) =
-    raise (System.NotImplementedException("You haven't written an implementation yet!"))
+    let lines = File.ReadLines fileInfo.FullName 
+    lines 
+        |> Seq.map (fun line -> line.Any(fun character -> Char.IsControl character && character <> '\r' && character <> '\n'))
+        |> Seq.contains true 
 
 type EolAtEof =
     | True
