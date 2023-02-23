@@ -5,6 +5,7 @@ open System.IO
 open FileConventions
 open NUnit.Framework
 open NUnit.Framework.Constraints
+open Fsdk
 
 [<SetUp>]
 let Setup () =
@@ -36,7 +37,18 @@ let HasCorrectShebangTest4() =
 
 [<Test>]
 let IsExecutableTest1 () =
-    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyExecutable.fsx")))
+    let filePath = Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyExecutable.fsx")
+    Fsdk.Process
+        .Execute(
+            {
+                Command = "chmod"
+                Arguments = sprintf "+x %s" filePath
+            },
+            Echo.All
+        )
+        .UnwrapDefault()
+    |> ignore<string>
+    let fileInfo = (FileInfo filePath)
     Assert.That(IsExecutable fileInfo, Is.EqualTo true)
 
 
