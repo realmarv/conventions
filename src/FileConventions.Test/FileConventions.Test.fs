@@ -6,6 +6,7 @@ open FileConventions
 open NUnit.Framework
 open NUnit.Framework.Constraints
 open Fsdk
+open Fsdk.Process
 
 [<SetUp>]
 let Setup () =
