@@ -4,22 +4,15 @@ open System.IO
 open System
 
 #load "../src/FileConventions/Helpers.fs"
+#load "../src/FileConventions/Library.fs"
 
-let rootDir =
-    Path.Combine(__SOURCE_DIRECTORY__, "..")
-    |> DirectoryInfo
-
-let EolAtEof(fileInfo: FileInfo) = 
-    use streamReader = new StreamReader (fileInfo.FullName)
-    let filetext = streamReader.ReadToEnd()
-    
-    if filetext <> String.Empty then
-        Seq.last filetext = '\n'
-    else
-        true
+let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let invalidFiles =
-    Helpers.GetInvalidFiles rootDir "*.*" (fun fileInfo -> not(EolAtEof fileInfo))
+    Helpers.GetInvalidFiles
+        rootDir
+        "*.*"
+        (fun fileInfo -> not(FileConventions.EolAtEof fileInfo))
 
 Helpers.AssertNoInvalidFiles
     invalidFiles

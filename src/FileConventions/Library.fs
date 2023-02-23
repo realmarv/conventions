@@ -67,4 +67,13 @@ type EolAtEof =
     | NotApplicable
 
 let EolAtEof(fileInfo: FileInfo) = 
-    EolAtEof.False
+    use streamReader = new StreamReader (fileInfo.FullName)
+    let filetext = streamReader.ReadToEnd()
+    
+    if filetext <> String.Empty then
+        if Seq.last filetext = '\n' then
+            EolAtEof.True
+        else
+            EolAtEof.False
+    else
+        EolAtEof.True
