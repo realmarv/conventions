@@ -5,7 +5,7 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
-open Mono.Unix
+open Mono
 open Mono.Unix.Native
 
 let HasCorrectShebang (fileInfo: FileInfo) =
