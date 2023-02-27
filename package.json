@@ -1,6 +1,6 @@
 {
     "dependencies": {
-      "cosmiconfig": "6.0.0"
+      "cosmiconfig": "8.0.0"
     }
 }
   
