@@ -60,3 +60,6 @@ let DetectAsteriskInPackageReferenceItems(fileInfo: FileInfo) =
         )
 
     asteriskInPackageReference.IsMatch fileText
+
+let DotnetToolInstallInvocationsWithoutVersionFlag(fileInfo: FileInfo) =
+    false

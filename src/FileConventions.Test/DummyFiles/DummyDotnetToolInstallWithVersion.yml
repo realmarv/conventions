@@ -1,0 +1,10 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  install-dotnet-tool:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install foo with specifying its version
+        run: dotnet tool install foo --version 1.0.0

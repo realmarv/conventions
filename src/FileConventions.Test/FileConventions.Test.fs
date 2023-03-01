@@ -78,3 +78,15 @@ let DetectAsteriskInPackageReferenceItems1 () =
 let DetectAsteriskInPackageReferenceItems2 () =
     let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyFsprojWithoutAsterisk.fsproj")))
     Assert.That(DetectAsteriskInPackageReferenceItems fileInfo, Is.EqualTo false)
+
+
+[<Test>]
+let DotnetToolInstallInvocationsWithoutVersionFlag1 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyDotnetToolInstallWithoutVersion.yml")))
+    Assert.That(DotnetToolInstallInvocationsWithoutVersionFlag fileInfo, Is.EqualTo true)
+
+
+[<Test>]
+let DotnetToolInstallInvocationsWithoutVersionFlag2 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyDotnetToolInstallWithVersion.yml")))
+    Assert.That(DotnetToolInstallInvocationsWithoutVersionFlag fileInfo, Is.EqualTo false)
