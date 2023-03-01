@@ -62,4 +62,18 @@ let DetectAsteriskInPackageReferenceItems(fileInfo: FileInfo) =
     asteriskInPackageReference.IsMatch fileText
 
 let DotnetToolInstallInvocationsWithoutVersionFlag(fileInfo: FileInfo) =
-    false
+    // ToDo: assert non binary
+    let fileLines = File.ReadLines fileInfo.FullName
+
+    not(
+        fileLines
+        |> Seq.filter(
+            function
+            | line -> line.Contains "dotnet tool install"
+        )
+        |> Seq.filter(
+            function
+            | line -> not(line.Contains "--version")
+        )
+        |> Seq.isEmpty
+    )
