@@ -128,6 +128,6 @@ jobs:
           git diff --exit-code
       - name: fantomless
         run: |
-          dotnet tool install --global fantomless-tool --version 4.8.999
+          dotnet tool install fantomless-tool --version 4.7.997-prerelease
           dotnet fantomless --recurse .
           git diff --exit-code
