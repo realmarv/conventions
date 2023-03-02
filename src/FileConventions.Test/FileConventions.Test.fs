@@ -7,6 +7,7 @@ open NUnit.Framework
 open NUnit.Framework.Constraints
 
 open FileConventions
+open type FileConventions.EolAtEof
 
 [<SetUp>]
 let Setup () =
@@ -83,13 +84,13 @@ let DetectAsteriskInPackageReferenceItems2 () =
 [<Test>]
 let EolAtEofTest1() =
     let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyWithEolAtEof.fsx")))
-    Assert.That(EolAtEof fileInfo, Is.EqualTo EolAtEof.True)
+    Assert.That(EolAtEof fileInfo, Is.EqualTo True)
 
 
 [<Test>]
 let EolAtEofTest2() =
     let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyWithoutEolAtEof.fsx")))
-    Assert.That(EolAtEof fileInfo, Is.EqualTo EolAtEof.False)
+    Assert.That(EolAtEof fileInfo, Is.EqualTo False)
 
 
 [<Test>]
