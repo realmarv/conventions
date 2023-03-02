@@ -110,6 +110,8 @@ jobs:
         run: dotnet fsi scripts/unpinnedGitHubActionsImageVersions.fsx
       - name: Check there are no unpinned dotnet package versions
         run: dotnet fsi scripts/unpinnedDotnetPackageVersions.fsx
+      - name: Compile F# scripts
+        run: dotnet fsi scripts/compileFsharpScripts.fsx
       - name: Install prettier
         run: npm install prettier@2.8.3
       - name: Change file permissions
