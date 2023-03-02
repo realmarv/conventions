@@ -4,6 +4,7 @@ open System
 open System.IO
 
 #r "nuget: Fsdk, 0.6.0--date20230214-0422.git-1ea6f62"
+#load "../src/FileConventions/Helpers.fs"
 
 Fsdk
     .Process
@@ -32,7 +33,8 @@ Fsdk
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
-Directory.GetFiles(rootDir.FullName, "*.fsx", SearchOption.AllDirectories)
+Helpers.GetFiles rootDir "*.fsx"
+|> Seq.map(fun fileInfo -> fileInfo.FullName)
 |> Seq.iter(fun filePath ->
     Fsdk
         .Process
