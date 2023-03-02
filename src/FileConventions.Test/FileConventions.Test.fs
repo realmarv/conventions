@@ -90,3 +90,21 @@ let EolAtEofTest1() =
 let EolAtEofTest2() =
     let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyWithoutEolAtEof.fsx")))
     Assert.That(EolAtEof fileInfo, Is.EqualTo EolAtEof.False)
+
+
+[<Test>]
+let HasBinaryContentTest1 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "someLib.dll")))
+    Assert.That(HasBinaryContent fileInfo, Is.EqualTo true)
+
+
+[<Test>]
+let HasBinaryContentTest2 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "white.png")))
+    Assert.That(HasBinaryContent fileInfo, Is.EqualTo true)
+
+
+[<Test>]
+let HasBinaryContentTest3 () =
+    let fileInfo = (FileInfo (Path.Combine(__SOURCE_DIRECTORY__, "DummyFiles", "DummyNonBinaryFile.txt")))
+    Assert.That(HasBinaryContent fileInfo, Is.EqualTo false)

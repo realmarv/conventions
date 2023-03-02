@@ -61,6 +61,9 @@ let DetectAsteriskInPackageReferenceItems(fileInfo: FileInfo) =
 
     asteriskInPackageReference.IsMatch fileText
 
+let HasBinaryContent (fileInfo: FileInfo) =
+    raise (System.NotImplementedException("You haven't written an implementation yet!"))
+
 type EolAtEof =
     | True
     | False
