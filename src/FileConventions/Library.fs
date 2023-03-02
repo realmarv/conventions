@@ -67,22 +67,19 @@ let HasBinaryContent (fileInfo: FileInfo) =
         |> Seq.map (fun line -> line.Any(fun character -> Char.IsControl character && character <> '\r' && character <> '\n'))
         |> Seq.contains true 
 
-type EolAtEof =
-    | True
-    | False
-    | NotApplicable
+type EolAtEof = True | False | NotApplicable
 
 let EolAtEof(fileInfo: FileInfo) = 
     if HasBinaryContent fileInfo then
-        EolAtEof.NotApplicable
+        NotApplicable
     else
         use streamReader = new StreamReader (fileInfo.FullName)
         let filetext = streamReader.ReadToEnd()
         
         if filetext <> String.Empty then
             if Seq.last filetext = '\n' then
-                EolAtEof.True
+                True
             else
-                EolAtEof.False  
+                False  
         else
-            EolAtEof.True
+            True
