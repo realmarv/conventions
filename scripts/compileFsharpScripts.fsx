@@ -33,6 +33,8 @@ Fsdk
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
+printfn "%A" (Helpers.GetFiles rootDir "*.fsx" |> Seq.map (fun fileInfo -> fileInfo.FullName))
+
 Helpers.GetFiles rootDir "*.fsx"
 |> Seq.iter(fun fileInfo ->
     Fsdk
