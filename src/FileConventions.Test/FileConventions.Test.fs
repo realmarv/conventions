@@ -286,3 +286,35 @@ let DetectInconsistentVersionsInGitHubCIWorkflow2() =
         DetectInconsistentVersionsInGitHubCIWorkflow fileInfo,
         Is.EqualTo true
     )
+
+
+[<Test>]
+let DetectInconsistentVersionsInGitHubCIWorkflow3() =
+    let fileInfo =
+        (FileInfo(
+            Path.Combine(
+                dummyFilesDirectory.FullName,
+                "DummyCIWithoutSameSetupPulumiVersion.yml"
+            )
+        ))
+
+    Assert.That(
+        DetectInconsistentVersionsInGitHubCIWorkflow fileInfo,
+        Is.EqualTo true
+    )
+
+
+[<Test>]
+let DetectInconsistentVersionsInGitHubCIWorkflow4() =
+    let fileInfo =
+        (FileInfo(
+            Path.Combine(
+                dummyFilesDirectory.FullName,
+                "DummyCIWithSameSetupPulumiVersion.yml"
+            )
+        ))
+
+    Assert.That(
+        DetectInconsistentVersionsInGitHubCIWorkflow fileInfo,
+        Is.EqualTo false
+    )
