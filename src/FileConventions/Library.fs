@@ -4,6 +4,7 @@ open System
 open System.IO
 open System.Linq
 open System.Text.RegularExpressions
+open System.Collections.Generic
 
 let HasCorrectShebang(fileInfo: FileInfo) =
     let fileText = File.ReadLines fileInfo.FullName
@@ -122,21 +123,33 @@ let DetectInconsistentVersionsInGitHubCIWorkflow(fileInfos: seq<FileInfo>) =
         |> Seq.length
         |> (fun length -> length > 1)
 
-    let inconsistentSetupPulumiVersions =
-        fileInfos
-        |> Seq.map(fun fileInfo -> File.ReadLines fileInfo.FullName)
-        |> Seq.map(fun fileLines ->
-            fileLines
-            |> Seq.filter(fun line -> line.Contains "setup-pulumi@")
-            |> Seq.map(fun line -> line.Substring(line.IndexOf(":") + 1))
-            |> Seq.map(fun line -> line.Trim())
-        )
-        |> Seq.concat
-        |> Set.ofSeq
-        |> Seq.length
-        |> (fun length -> length > 1)
+    let versionRegex = Regex("uses: (.*)@(.*)\\b", RegexOptions.Compiled)
 
-    inconsistentPulumiVersions || inconsistentSetupPulumiVersions
+    let dict: Dictionary<string, Set<string>> =
+        new Dictionary<string, Set<string>>()
+
+    fileInfos
+    |> Seq.iter(fun fileInfo ->
+        let fileText = File.ReadAllText fileInfo.FullName
+
+        (versionRegex.Matches fileText)
+        |> Seq.iter(fun regexMatch ->
+            let key = regexMatch.Groups.[1].ToString()
+            let value = regexMatch.Groups.[2].ToString()
+
+            if dict.ContainsKey(key) then
+                dict.[key] <- Set.add value dict[key]
+            else
+                dict.[key] <- Set.singleton(value)
+        )
+    )
+
+    let inconsistentVersions =
+        dict
+        |> Seq.map(fun item -> Seq.length item.Value > 1)
+        |> Seq.contains true
+
+    inconsistentPulumiVersions || inconsistentVersions
 
 let DetectInconsistentVersionsInGitHubCI(directoryInfo: DirectoryInfo) =
     let ymlFiles =
