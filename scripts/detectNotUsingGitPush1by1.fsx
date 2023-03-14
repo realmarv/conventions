@@ -36,6 +36,8 @@ let prCommits =
         .Trim()
         .Split "\n"
 
+printfn "prCommits: %A" prCommits
+
 let notUsingGitPush1by1 =
     prCommits
     |> Seq.map(fun commit ->
