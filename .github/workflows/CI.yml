@@ -22,6 +22,8 @@ jobs:
       # workaround for https://github.com/actions/runner/issues/2033
       - name: ownership workaround
         run: git config --global --add safe.directory '*'
+      - name: Install dotnet sdk
+        run: sudo apt install -y dotnet6
       - name: Print
         if: github.event_name == 'pull_request'
         run: |
