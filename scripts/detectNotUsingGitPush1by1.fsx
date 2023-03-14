@@ -46,11 +46,18 @@ let notUsingGitPush1by1 =
         client.DefaultRequestHeaders.Add("User-Agent", ".NET App")
         client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28")
 
+        let command = sprintf
+                        "https://api.github.com/repos/%s/commits/%s/check-suites"
+                        (Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"))
+                        commit
+
+        printfn "Command: %A" command
+
         let url =
             sprintf
                 "https://api.github.com/repos/%s/commits/%s/check-suites"
-                commit
                 (Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"))
+                commit
 
         let json = client.GetStringAsync(url).Result
 
