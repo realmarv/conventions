@@ -1,7 +1,10 @@
 #!/usr/bin/env -S dotnet fsi
 
+open System
 open System.Net.Http
 open System.Net.Http.Headers
+
+#r "nuget: Fsdk, Version=0.6.0--date20230214-0422.git-1ea6f62"
 
 let currentBranch =
     Fsdk
@@ -45,8 +48,9 @@ let notUsingGitPush1by1 =
 
         let url =
             sprintf
-                "https://api.github.com/repos/realmarv/conventions/commits/%s/check-suites"
+                "https://api.github.com/repos/%s/commits/%s/check-suites"
                 commit
+                (Environment.GetEnvironmentVariable("GITHUB_REPOSITORY"))
 
         let json = client.GetStringAsync(url).Result
 
