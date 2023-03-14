@@ -26,5 +26,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
             echo ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
+      - name: Git branches
+        run: |
+            git branch
       - name: Check if gitPush1by1 was used
         run: dotnet fsi scripts/detectNotUsingGitPush1by1.fsx
