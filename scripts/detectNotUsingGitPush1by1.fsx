@@ -59,4 +59,4 @@ let notUsingGitPush1by1 =
     |> Seq.contains true
 
 if notUsingGitPush1by1 then
-    failwith "Please push the commits one by one."
+    failwith "Please push the commits one by one.\nYou may use the scripts/gitPush1by1.fsx script."
