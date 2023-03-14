@@ -1,68 +1,62 @@
 #!/usr/bin/env -S dotnet fsi
 
-open System
-open System.IO
 open System.Net.Http
+open System.Net.Http.Headers
 
 // #r "nuget: Flurl.Http"
 #r "nuget: Fsdk, Version=0.6.0--date20230214-0422.git-1ea6f62"
 #load "../src/FileConventions/Helpers.fs"
 
-// open Flurl.Http
+let currentBranch =
+    Fsdk
+        .Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments = "rev-parse --abbrev-ref HEAD"
+            },
+            Fsdk.Process.Echo.All
+        )
+        .UnwrapDefault()
+        .Trim()
 
-// task {
-//     let! content =
-//         let url = "https://api.github.com/repos/realmarv/conventions/commits/ba83f08a0c2d06abf79f8061d0b84f12a139b9a1/check-suites"
+let prCommits =
+    Fsdk
+        .Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments = sprintf "rev-list master..%s" currentBranch
+            },
+            Fsdk.Process.Echo.All
+        )
+        .UnwrapDefault()
+        .Trim()
+        .Split "\n"
 
-//         url.GetStringAsync()
+let notUsingGitPush1by1 =
+    prCommits
+    |> Seq.map(fun commit ->
+        let client: HttpClient = new HttpClient()
+        client.DefaultRequestHeaders.Accept.Clear()
 
-//     do! File.WriteAllTextAsync("./response.html", content)
-// }
-// |> Async.AwaitTask
-// // we run synchronously
-// // to allow the fsi to finish the pending tasks
-// |> Async.RunSynchronously
+        client.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/vnd.github+json")
+        )
 
-task {
-    /// note the ***use*** instead of ***let***
-    use client = new HttpClient()
-    let! response = 
-        client.GetStringAsync("https://api.github.com")
-    do! File.WriteAllTextAsync("./response.html", response)
-    // after the client goes out of scope
-    // it will get disposed automatically thanks to the ***use*** keyword
-}
-|> Async.AwaitTask
-// we run synchronously
-// to allow the fsi to finish the pending tasks
-|> Async.RunSynchronously
+        client.DefaultRequestHeaders.Add("User-Agent", ".NET App")
+        client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28")
 
+        let url =
+            sprintf
+                "https://api.github.com/repos/realmarv/conventions/commits/%s/check-suites"
+                commit
 
-// let checkSuites =
-//     Fsdk
-//         .Process
-//         .Execute(
-//             {
-//                 Command = "curl"
-//                 Arguments = "https://api.github.com/repos/realmarv/conventions/commits/ba83f08a0c2d06abf79f8061d0b84f12a139b9a1/check-suites"
-//             },
-//             Fsdk.Process.Echo.All
-//         )
-// printfn "%A" checkSuites
+        let json = client.GetStringAsync(url).Result
 
+        json.Contains "\"check_suites\":[]"
+    )
+    |> Seq.contains true
 
-
-// let prCommits =
-//     Fsdk
-//         .Process
-//         .Execute(
-//             {
-//                 Command = "git"
-//                 Arguments = "rev-list master..wip/checkGitPush1by1"
-//             },
-//             Fsdk.Process.Echo.All
-//         ).UnwrapDefault()
-
-// printfn "%A" (prCommits.Trim().Split "\n")
-
-
+if notUsingGitPush1by1 then
+    failwith "Please push the commits one by one."
