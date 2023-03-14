@@ -122,14 +122,10 @@ let DetectInconsistentVersionsInGitHubCIWorkflow(fileInfos: seq<FileInfo>) =
         |> Seq.length
         |> (fun length -> length > 1)
 
-    let versionRegex = Regex("\\s([^\\s]*)@([^\\s]*)\\s", RegexOptions.Compiled)
+    let versionRegex = Regex("\\s([^\\s]*)@v([^\\s]*)\\s", RegexOptions.Compiled)
 
     let mutable versionMap: Map<string, Set<string>> = Map.empty
 
-    let addSet (value: string) (prevSet: option<Set<string>>) =
-        match prevSet with
-        | Some pSet -> Some(Set.add value pSet)
-        | None -> None
 
     fileInfos
     |> Seq.iter(fun fileInfo ->
@@ -139,6 +135,11 @@ let DetectInconsistentVersionsInGitHubCIWorkflow(fileInfos: seq<FileInfo>) =
         |> Seq.iter(fun regexMatch ->
             let key = regexMatch.Groups.[1].ToString()
             let value = regexMatch.Groups.[2].ToString()
+
+            let addSet (value: string) (maybePrevSet: Option<Set<string>>) =
+                match maybePrevSet with
+                | Some prevSet -> Some(Set.add value prevSet)
+                | None -> None
 
             if versionMap.ContainsKey key then
                 versionMap <- versionMap.Change(key, addSet value)
