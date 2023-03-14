@@ -40,5 +40,8 @@ jobs:
       - name: Git branches
         run: |
             git branch
+      - name: Git log
+        run: |
+            git log
       - name: Check if gitPush1by1 was used
         run: dotnet fsi scripts/detectNotUsingGitPush1by1.fsx
