@@ -21,6 +21,7 @@ let currentBranch =
 
 let numPrCommits = Environment.GetEnvironmentVariable("github.event.pull_request.commits")
 printfn "numPrCommits: %A" numPrCommits
+printfn "currentBranch: %A" currentBranch
 
 let prCommits =
     Fsdk
@@ -28,7 +29,7 @@ let prCommits =
         .Execute(
             {
                 Command = "git"
-                Arguments = sprintf "rev-list %s~%s..%s" currentBranch numPrCommits currentBranch
+                Arguments = sprintf "rev-list %s~..%s" currentBranch currentBranch
             },
             Fsdk.Process.Echo.All
         )
