@@ -19,10 +19,6 @@ let currentBranch =
         .UnwrapDefault()
         .Trim()
 
-let numPrCommits = Environment.GetEnvironmentVariable("github.event.pull_request.commits")
-printfn "numPrCommits: %A" numPrCommits
-printfn "currentBranch: %A" currentBranch
-
 let prCommits =
     Fsdk
         .Process
@@ -36,8 +32,6 @@ let prCommits =
         .UnwrapDefault()
         .Trim()
         .Split "\n"
-
-printfn "prCommits: %A" prCommits
 
 let notUsingGitPush1by1 =
     prCommits
