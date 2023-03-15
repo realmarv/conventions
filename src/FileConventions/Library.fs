@@ -167,4 +167,6 @@ let DetectInconsistentVersionsInNugetReferencesInFsharpScripts
     fileInfos
     |> Seq.iter(fun fileInfo -> assert (fileInfo.FullName.EndsWith ".fsx"))
 
-    false
+    DetectInconsistentVersion
+        fileInfos
+        "#r \"nuget:\\s*([^\\s]*)\\s*,\\s*Version\\s*=\\s*([^\\s]*)\\s*\""
