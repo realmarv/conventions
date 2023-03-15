@@ -170,3 +170,6 @@ let DetectInconsistentVersionsInNugetReferencesInFsharpScripts
     DetectInconsistentVersion
         fileInfos
         "#r \"nuget:\\s*([^\\s]*)\\s*,\\s*Version\\s*=\\s*([^\\s]*)\\s*\""
+
+let DetectInconsistentVersionsInFsharpScripts(dir: DirectoryInfo) =
+    false
