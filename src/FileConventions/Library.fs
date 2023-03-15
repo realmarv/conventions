@@ -45,9 +45,22 @@ let DetectUnpinnedVersionsInGitHubCI(fileInfo: FileInfo) =
     let fileText = streamReader.ReadToEnd()
 
     let latestTagInRunsOnRegex =
-        Regex("runs-on: .*-latest", RegexOptions.Compiled)
+        (Regex("runs-on: .*-latest", RegexOptions.Compiled))
 
-    latestTagInRunsOnRegex.IsMatch fileText
+    let latestTagInRunsOn = latestTagInRunsOnRegex.IsMatch fileText
+
+    let dotnetToolInstallRegex =
+        Regex("dotnet\\s*tool\\s*install", RegexOptions.Compiled)
+
+    let unpinnedDotnetToolVersionsVersions =
+        fileText.Split("\n")
+        |> Seq.filter(fun line -> dotnetToolInstallRegex.IsMatch line)
+        |> Seq.filter(fun line ->
+            not(line.Contains("--version") && not(line.Contains("-v")))
+        )
+        |> (fun unpinnedVersions -> Seq.length unpinnedVersions > 0)
+
+    latestTagInRunsOn || unpinnedDotnetToolVersionsVersions
 
 let DetectAsteriskInPackageReferenceItems(fileInfo: FileInfo) =
     assert (fileInfo.FullName.EndsWith "proj")
