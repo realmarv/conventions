@@ -124,6 +124,19 @@ let DetectUnpinnedVersionsInGitHubCI2() =
 
 
 [<Test>]
+let DetectUnpinnedVersionsInGitHubCI3() =
+    let fileInfo =
+        (FileInfo(
+            Path.Combine(
+                dummyFilesDirectory.FullName,
+                "DummyCIWithUnpinnedDotnetToolInstallVersion.yml"
+            )
+        ))
+
+    Assert.That(DetectUnpinnedVersionsInGitHubCI fileInfo, Is.EqualTo true)
+
+
+[<Test>]
 let DetectAsteriskInPackageReferenceItems1() =
     let fileInfo =
         (FileInfo(
