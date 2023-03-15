@@ -399,3 +399,30 @@ let DetectInconsistentVersionsInGitHubCI1() =
         )
 
     Assert.That(DetectInconsistentVersionsInGitHubCI fileInfo, Is.EqualTo true)
+
+
+[<Test>]
+let DetectInconsistentVersionsInNugetReferencesInFsharpScripts1() =
+    let fileInfos =
+        (seq {
+
+            FileInfo(
+                Path.Combine(
+                    dummyFilesDirectory.FullName,
+                    "DummyFsharpScriptWithFsdkVersion0.6.0.fsx"
+                )
+            )
+
+            FileInfo(
+                Path.Combine(
+                    dummyFilesDirectory.FullName,
+                    "DummyFsharpScriptWithFsdkVersion0.6.1.fsx"
+                )
+            )
+
+        })
+
+    Assert.That(
+        DetectInconsistentVersionsInNugetReferencesInFsharpScripts fileInfos,
+        Is.EqualTo true
+    )
