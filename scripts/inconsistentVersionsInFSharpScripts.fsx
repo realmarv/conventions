@@ -2,6 +2,7 @@
 
 open System.IO
 
+#load "../src/FileConventions/Helpers.fs"
 #load "../src/FileConventions/Library.fs"
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
