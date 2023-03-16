@@ -175,6 +175,7 @@ let DetectInconsistentVersionsInNugetReferencesInFsharpScripts
 
 let DetectInconsistentVersionsInFsharpScripts(dir: DirectoryInfo) =
     let fsxFiles = Helpers.GetFiles dir "*.fsx"
+    printfn "%A" fsxFiles
 
     if Seq.length fsxFiles = 0 then
         false
