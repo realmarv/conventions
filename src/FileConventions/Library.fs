@@ -5,6 +5,8 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
+open Helpers
+
 let HasCorrectShebang(fileInfo: FileInfo) =
     let fileText = File.ReadLines fileInfo.FullName
 
@@ -172,7 +174,7 @@ let DetectInconsistentVersionsInNugetReferencesInFsharpScripts
         "#r \"nuget:\\s*([^\\s]*)\\s*,\\s*Version\\s*=\\s*([^\\s]*)\\s*\""
 
 let DetectInconsistentVersionsInFsharpScripts(dir: DirectoryInfo) =
-    let fsxFiles = dir.GetFiles("*.fsx", SearchOption.AllDirectories)
+    let fsxFiles = Helpers.GetFiles dir "*.fsx"
 
     if Seq.length fsxFiles = 0 then
         false
