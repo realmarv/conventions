@@ -104,3 +104,7 @@ let EolAtEof(fileInfo: FileInfo) =
                 False
         else
             True
+
+let NonVerboseFlagsInGitHubCI(fileInfo: FileInfo) =
+    assert (fileInfo.FullName.EndsWith(".yml"))
+    false
