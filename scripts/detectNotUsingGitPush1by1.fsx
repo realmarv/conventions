@@ -1,20 +1,30 @@
 #!/usr/bin/env -S dotnet fsi
 
 open System
+open System.IO
 open System.Net.Http
 open System.Net.Http.Headers
+open System.Text.RegularExpressions
 
 #r "nuget: Fsdk, Version=0.6.0--date20230214-0422.git-1ea6f62"
 open Fsdk
 
+let githubEventPath = Environment.GetEnvironmentVariable "GITHUB_EVENT_PATH"
 
-let gitRepo = Environment.GetEnvironmentVariable "GITHUB_REPOSITORY"
-
-if String.IsNullOrEmpty gitRepo then
+if String.IsNullOrEmpty githubEventPath then
     Console.Error.WriteLine
         "This script is meant to be used only within a GitHubCI pipeline"
 
     Environment.Exit 2
+
+let jsonString = File.ReadAllText(githubEventPath)
+
+let repoRegex =
+    Regex("\"full_name\"\\s*:\\s*\"([^\\s]*)\"", RegexOptions.Compiled)
+
+let gitRepo =
+    (repoRegex.Matches jsonString).[0].Groups.[1]
+        .ToString()
 
 let currentBranch =
     Process
@@ -27,6 +37,8 @@ let currentBranch =
         )
         .UnwrapDefault()
         .Trim()
+
+printfn "currentBranch %A" currentBranch
 
 let prCommits =
     Process
@@ -42,6 +54,8 @@ let prCommits =
         .Trim()
         .Split "\n"
     |> Seq.tail
+
+printfn "prCommits %A" prCommits
 
 let notUsingGitPush1by1 =
     prCommits
@@ -61,6 +75,8 @@ let notUsingGitPush1by1 =
                 "https://api.github.com/repos/%s/commits/%s/check-suites"
                 gitRepo
                 commit
+
+        printfn "url %A" url
 
         let json = (client.GetStringAsync url).Result
 
