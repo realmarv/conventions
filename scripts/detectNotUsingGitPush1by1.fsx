@@ -33,6 +33,8 @@ let currentBranch =
         .UnwrapDefault()
         .Trim()
 
+printfn "currentBranch %A" currentBranch
+
 let prCommits =
     Process
         .Execute(
@@ -47,6 +49,8 @@ let prCommits =
         .Trim()
         .Split "\n"
     |> Seq.tail
+
+printfn "prCommits %A" prCommits
 
 let notUsingGitPush1by1 =
     prCommits
@@ -66,6 +70,8 @@ let notUsingGitPush1by1 =
                 "https://api.github.com/repos/%s/commits/%s/check-suites"
                 gitRepo
                 commit
+
+        printfn "url %A" url
 
         let json = (client.GetStringAsync url).Result
 
