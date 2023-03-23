@@ -3,6 +3,24 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-22.04
+    container:
+      image: "ubuntu:22.04"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install required dependencies
+        run: |
+          apt update
+          apt install -y sudo
+          sudo apt install -y git
+      # workaround for https://github.com/actions/runner/issues/2033
+      - name: ownership workaround
+        run: git config --global --add safe.directory '*'
+      - name: log
+        run: cat "$GITHUB_EVENT_PATH"
+
   build:
     name: Build
     runs-on: ubuntu-22.04
