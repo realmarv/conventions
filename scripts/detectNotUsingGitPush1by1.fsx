@@ -18,7 +18,7 @@ if String.IsNullOrEmpty githubEventPath then
     Environment.Exit 2
 
 let jsonString = File.ReadAllText(githubEventPath)
-let repoRegex = Regex("\"full_name\"\\s*:\\s*([^\\s]*)\\s", RegexOptions.Compiled)
+let repoRegex = Regex("\"full_name\"\\s*:\\s*\"([^\\s]*)\"", RegexOptions.Compiled)
 let gitRepo = (repoRegex.Matches jsonString).[0].Groups.[1].ToString()
 
 let currentBranch =
