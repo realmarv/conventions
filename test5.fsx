@@ -13,7 +13,7 @@ open FSharp.Data
 let jsonString = File.ReadAllText("repo_info.json")
 
 let parsedJson = FSharp.Data.JsonValue.Parse jsonString
-printfn "%A" parsedJson
+printfn "%A" (parsedJson.base.repo.full_name)
 // printfn "%A" ((repoRegex.Matches jsonString).[0].Groups.[1])
 
 // let info = JsonValue.Parse(jsonString)
