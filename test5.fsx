@@ -13,7 +13,22 @@ open FSharp.Data
 let jsonString = File.ReadAllText("repo_info.json")
 
 let parsedJson = FSharp.Data.JsonValue.Parse jsonString
-printfn "%A" ((((parsedJson.TryGetProperty "pull_request").TryGetProperty("base")).TryGetProperty("repo")).TryGetProperty("full_name"))
+
+let gitRepo =
+    match parsedJsonObj.TryGetProperty "pull_request" with
+    | None -> "None"
+    | Some pull_request ->
+        match pull_request.TryGetProperty "base" with
+        | None -> "None"
+        | Some baseInfo ->
+            match baseInfo.TryGetProperty "repo" with
+            | None -> "None"
+            | Some repo ->
+                match repo.TryGetProperty "full_name" with
+                | None -> "None"
+                | Some full_name -> full_name
+    
+printfn "%A" gitRepo
 // printfn "%A" ((repoRegex.Matches jsonString).[0].Groups.[1])
 
 // let info = JsonValue.Parse(jsonString)
