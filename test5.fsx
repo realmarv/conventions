@@ -16,16 +16,16 @@ let parsedJsonObj = FSharp.Data.JsonValue.Parse jsonString
 
 let gitRepo =
     match parsedJsonObj.TryGetProperty "pull_request" with
-    | None -> "None"
+    | None -> failwith "Invalid JSON"
     | Some pull_request ->
         match pull_request.TryGetProperty "base" with
-        | None -> "None"
+        | None -> failwith "Invalid JSON"
         | Some baseInfo ->
             match baseInfo.TryGetProperty "repo" with
-            | None -> "None"
+            | None -> failwith "Invalid JSON"
             | Some repo ->
                 match repo.TryGetProperty "full_name" with
-                | None -> "None"
+                | None -> failwith "Invalid JSON"
                 | Some full_name -> full_name
     
 printfn "%A" gitRepo
