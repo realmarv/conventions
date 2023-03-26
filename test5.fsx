@@ -12,7 +12,7 @@ open FSharp.Data
 // let repoRegex = Regex("\"full_name\"\\s*:\\s*\"([^\\s]*)\"", RegexOptions.Compiled)
 let jsonString = File.ReadAllText("repo_info.json")
 
-let parsedJson = JsonProvider<jsonString>
+let parsedJson = FSharp.Data.JsonValue.Parse jsonString
 printfn "%A" parsedJson
 // printfn "%A" ((repoRegex.Matches jsonString).[0].Groups.[1])
 
