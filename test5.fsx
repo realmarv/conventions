@@ -12,7 +12,7 @@ open FSharp.Data
 // let repoRegex = Regex("\"full_name\"\\s*:\\s*\"([^\\s]*)\"", RegexOptions.Compiled)
 let jsonString = File.ReadAllText("repo_info.json")
 
-let parsedJson = FSharp.Data.JsonValue.Parse jsonString
+let parsedJsonObj = FSharp.Data.JsonValue.Parse jsonString
 
 let gitRepo =
     match parsedJsonObj.TryGetProperty "pull_request" with
