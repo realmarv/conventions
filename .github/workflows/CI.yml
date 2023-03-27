@@ -27,6 +27,9 @@ jobs:
       - name: Check if gitPush1by1 was used
         if: github.event_name == 'pull_request'
         run: dotnet fsi scripts/detectNotUsingGitPush1by1.fsx
+      - name: Run test 10
+        if: github.event_name == 'pull_request'
+        run: dotnet fsi test10.fsx
       - name: fantomless
         run: |
           dotnet new tool-manifest
