@@ -63,6 +63,7 @@ let notUsingGitPush1by1 =
                 commit
 
         let json = (client.GetStringAsync url).Result
+        printfn "json: %A" json
 
         json.Contains "\"check_suites\":[]"
     )
