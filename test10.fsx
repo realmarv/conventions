@@ -3,9 +3,7 @@ open System.IO
 open FSharp.Data
 
 // let checkSuitsType = File.ReadAllText("scripts/checkSuitsType.json")
-let path = Path.Combine(__SOURCE_DIRECTORY__, "scripts", "checkSuitsType.json")
-printfn "path: %A" path
-type Simple = JsonProvider<path>
+type Simple = JsonProvider<Path.Combine(__SOURCE_DIRECTORY__, "scripts", "checkSuitsType.json")>
 
 let sample = File.ReadAllText("scripts/sample.json")
 let value = Simple.Parse sample
