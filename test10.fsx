@@ -388,4 +388,4 @@ type Simple =
 let sample = File.ReadAllText("scripts/sample.json")
 let value = Simple.Parse sample
 
-printfn "value: %A" (Some value.CheckSuites.[0].Repository.FullName)
+printfn "value: %A" (value.CheckSuites.[0].Repository.FullName)
