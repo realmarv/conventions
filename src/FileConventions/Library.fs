@@ -106,4 +106,5 @@ let EolAtEof(fileInfo: FileInfo) =
             True
 
 let IsSnakeCase(fileInfo: FileInfo) =
-    false
+    let fileName = fileInfo.Name
+    fileName.ToLower() = fileName
