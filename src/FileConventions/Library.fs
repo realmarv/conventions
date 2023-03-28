@@ -124,5 +124,5 @@ let EolAtEof(fileInfo: FileInfo) =
             True
 
 let DetectNotUsingSnakeCaseInScriptName(fileInfo: FileInfo) =
-    printfn "%A" fileInfo.FullName
-    true
+    let fileName = fileInfo.Name
+    not(fileName.ToLower() = fileName)
