@@ -944,6 +944,8 @@ type checkSuitsType =
 }    
 """>
 
+printfn "prCommits: %A" prCommits
+
 prCommits
 |> Seq.iter(fun commit ->
     use client = new HttpClient()
