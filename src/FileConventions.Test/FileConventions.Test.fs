@@ -271,3 +271,13 @@ let HasBinaryContentTest3() =
         ))
 
     Assert.That(HasBinaryContent fileInfo, Is.EqualTo false)
+
+
+[<Test>]
+let DetectNotUsingSnakeCaseInScriptName1() =
+    let fileInfo =
+        (FileInfo(
+            Path.Combine(dummyFilesDirectory.FullName, "dummy_snake_case.fsx")
+        ))
+
+    Assert.That(DetectNotUsingSnakeCaseInScriptName fileInfo, Is.EqualTo false)
