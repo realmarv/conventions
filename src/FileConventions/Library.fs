@@ -104,3 +104,6 @@ let EolAtEof(fileInfo: FileInfo) =
                 False
         else
             True
+
+let IsSnakeCase(fileInfo: FileInfo) =
+    false
