@@ -2,14 +2,11 @@
 
 open System
 open System.IO
-open System.Net.Http
-open System.Net.Http.Headers
-
-#r "nuget: FSharp.Data, Version=5.0.2"
-open FSharp.Data
 
 #r "nuget: Fsdk, Version=0.6.0--date20230214-0422.git-1ea6f62"
 open Fsdk
+#r "nuget: FSharp.Data, Version=5.0.2"
+open FSharp.Data
 
 let githubEventPath = Environment.GetEnvironmentVariable "GITHUB_EVENT_PATH"
 
@@ -18,6 +15,33 @@ if String.IsNullOrEmpty githubEventPath then
         "This script is meant to be used only within a GitHubCI pipeline"
 
     Environment.Exit 2
+
+let currentBranch =
+    Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments = "rev-parse --abbrev-ref HEAD"
+            },
+            Process.Echo.Off
+        )
+        .UnwrapDefault()
+        .Trim()
+
+let prCommits =
+    Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments =
+                    sprintf "rev-list %s~..%s" currentBranch currentBranch
+            },
+            Process.Echo.Off
+        )
+        .UnwrapDefault()
+        .Trim()
+        .Split "\n"
+    |> Seq.tail
 
 type githubEventType =
     JsonProvider<"""
@@ -529,71 +553,61 @@ type githubEventType =
   }
 """>
 
-let jsonString = File.ReadAllText githubEventPath
-let parsedJsonObj = githubEventType.Parse jsonString
+printfn "prCommits: %A" prCommits
 
-let gitForkUser = parsedJsonObj.PullRequest.Head.User.Login
-let gitForkRepo = parsedJsonObj.PullRequest.Head.Repo.Name
-let gitRepo = $"{gitForkUser}/{gitForkRepo}"
+if Seq.length prCommits > 1 then
+    Environment.Exit 0
+else
+    let prCommit = Seq.nth 0 prCommits
+    printfn "prCommit: %A" prCommit
 
-let currentBranch =
-    Process
-        .Execute(
-            {
-                Command = "git"
-                Arguments = "rev-parse --abbrev-ref HEAD"
-            },
-            Process.Echo.Off
-        )
-        .UnwrapDefault()
-        .Trim()
+    let jsonString = File.ReadAllText githubEventPath
+    let parsedJsonObj = githubEventType.Parse jsonString
 
-let prCommits =
-    Process
-        .Execute(
-            {
-                Command = "git"
-                Arguments =
-                    sprintf "rev-list %s~..%s" currentBranch currentBranch
-            },
-            Process.Echo.Off
-        )
-        .UnwrapDefault()
-        .Trim()
-        .Split "\n"
-    |> Seq.tail
+    let prTitle = parsedJsonObj.PullRequest.Title
+    let prBody = parsedJsonObj.PullRequest.Body.ToString()
+    printfn "prTitle: %A" prTitle
+    printfn "prBody: %A" prBody
 
-let notUsingGitPush1by1 =
-    prCommits
-    |> Seq.map(fun commit ->
-        use client = new HttpClient()
-        client.DefaultRequestHeaders.Accept.Clear()
+    let lastCommitMessage =
+        Process
+            .Execute(
+                {
+                    Command = "git"
+                    Arguments = "log -1 --pretty=%B"
+                },
+                Process.Echo.Off
+            )
+            .UnwrapDefault()
+            .Trim()
 
-        client.DefaultRequestHeaders.Accept.Add(
-            MediaTypeWithQualityHeaderValue "application/vnd.github+json"
-        )
+    let newLineIndex = lastCommitMessage.IndexOf("\n")
 
-        client.DefaultRequestHeaders.Add("User-Agent", ".NET App")
-        client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28")
+    let commitMsgTitle =
+        if newLineIndex > 0 then
+            lastCommitMessage.[0..newLineIndex].Trim()
+        else
+            lastCommitMessage.Trim()
 
-        let url =
-            sprintf
-                "https://api.github.com/repos/%s/commits/%s/check-suites"
-                gitRepo
-                commit
+    let commitMsgBody =
+        if newLineIndex > 0 then
+            lastCommitMessage.[newLineIndex..].Trim()
+        else
+            null
 
-        let json = (client.GetStringAsync url).Result
+    printfn "commitMsgTitle: %A" commitMsgTitle
+    printfn "commitMsgBody: %A" commitMsgBody
 
-        json.Contains "\"check_suites\":[]"
-    )
-    |> Seq.contains true
+    if commitMsgTitle <> prTitle then
+        let errMsg =
+            "When there is only one commit in the PR, the PR title and the commit message title shouldn't differ."
 
-if notUsingGitPush1by1 then
-    let errMsg =
-        sprintf
-            "Please push the commits one by one; using this script is recommended:%s%s"
-            Environment.NewLine
-            "https://github.com/nblockchain/conventions/blob/master/scripts/gitPush1by1.fsx"
+        Console.Error.WriteLine errMsg
+        Environment.Exit 1
 
-    Console.Error.WriteLine errMsg
-    Environment.Exit 1
+    if commitMsgBody <> prBody then
+        let errMsg =
+            "When there is only one commit in the PR, the PR description and the commit message body shouldn't differ."
+
+        Console.Error.WriteLine errMsg
+        Environment.Exit 1
