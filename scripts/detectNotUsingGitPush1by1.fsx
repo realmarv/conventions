@@ -12,7 +12,7 @@ open FSharp.Data
 open Fsdk
 
 let githubEventPath = Environment.GetEnvironmentVariable "GITHUB_EVENT_PATH"
-
+printfn "%A" (Environment.GetEnvironmentVariable "GITHUB_EVENT")
 if String.IsNullOrEmpty githubEventPath then
     Console.Error.WriteLine
         "This script is meant to be used only within a GitHubCI pipeline"
