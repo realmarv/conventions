@@ -103,13 +103,13 @@ StyleTypeScriptFiles()
 StyleYmlFiles()
 
 let processResult =
-        Process.Execute(
-            {
-                Command = "git"
-                Arguments = "diff --exit-code"
-            },
-            Process.Echo.Off
-        )
+    Process.Execute(
+        {
+            Command = "git"
+            Arguments = "diff --exit-code"
+        },
+        Process.Echo.Off
+    )
 
 let errMsg =
     sprintf
@@ -119,9 +119,13 @@ let errMsg =
 
 let suggestion =
     "Please use the following commands to style your code:"
+    + System.Environment.NewLine
     + "Style your F# code using: `dotnet fantomless --recurse .`"
+    + System.Environment.NewLine
     + "Style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
+    + System.Environment.NewLine
     + "Style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
+    + System.Environment.NewLine
 
 match processResult.Result with
 | Success output -> output
