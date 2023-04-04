@@ -103,13 +103,13 @@ StyleTypeScriptFiles()
 StyleYmlFiles()
 
 let processResult =
-    Process.Execute(
-        {
-            Command = "git"
-            Arguments = "diff --exit-code"
-        },
-        Process.Echo.Off
-    )
+        Process.Execute(
+            {
+                Command = "git"
+                Arguments = "diff --exit-code"
+            },
+            Process.Echo.Off
+        )
 
 let errMsg =
     sprintf
