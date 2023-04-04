@@ -143,7 +143,7 @@ let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
             Console.WriteLine()
             Console.Out.Flush()
 
-        let fullErrMsg = errMsg + System.Environment.NewLine + suggestion
+        let fullErrMsg = errMsg + Environment.NewLine + suggestion
         fullErrMsg
 
     | WarningsOrAmbiguous output ->
