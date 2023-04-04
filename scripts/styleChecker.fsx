@@ -1,11 +1,15 @@
 #!/usr/bin/env -S dotnet fsi
 
 #r "nuget: Fsdk, Version=0.6.0--date20230326-0544.git-5c4f55b"
+#load "../src/FileConventions/Helpers.fs"
 
 open System
+open System.IO
 
 open Fsdk
 open Fsdk.Process
+
+open Helpers
 
 let StyleFSharpFiles() =
     Process
@@ -98,11 +102,11 @@ let StyleTypeScriptFiles() =
 let StyleYmlFiles() =
     RunPrettier "--quote-props=consistent --write ./**/*.yml"
 
-StyleFSharpFiles()
-StyleTypeScriptFiles()
-StyleYmlFiles()
+let ContainsFiles (rootDir: DirectoryInfo) (searchPattern: string) =
+    Helpers.GetFiles rootDir searchPattern |> Seq.length > 0
 
-let processResult =
+let GitDiff (): ProcessResult =
+    let processResult =
         Process.Execute(
             {
                 Command = "git"
@@ -110,40 +114,106 @@ let processResult =
             },
             Process.Echo.Off
         )
+    processResult
 
-let errMsg =
-    sprintf
-        "Error when running '%s %s'"
-        processResult.Details.Command
-        processResult.Details.Args
+let GitRestore () =
+    Process.Execute(
+            {
+                Command = "git"
+                Arguments = "restore ."
+            },
+            Process.Echo.Off
+    ) |> ignore
 
-let suggestion =
-    "Please use the following commands to style your code:"
-    + System.Environment.NewLine
-    + "Style your F# code using: `dotnet fantomless --recurse .`"
-    + System.Environment.NewLine
-    + "Style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
-    + System.Environment.NewLine
-    + "Style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
-    + System.Environment.NewLine
 
-match processResult.Result with
-| Success output -> output
-| Error(_, output) ->
-    if processResult.Details.Echo = Echo.Off then
-        output.PrintToConsole()
-        Console.WriteLine()
-        Console.Out.Flush()
+let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
+    let errMsg = 
+        sprintf
+            "Error when running '%s %s'"
+            processResult.Details.Command
+            processResult.Details.Args
 
-    let fullErrMsg = suggestion + System.Environment.NewLine + errMsg
-    Console.Error.WriteLine fullErrMsg
-    raise <| ProcessFailed fullErrMsg
-| WarningsOrAmbiguous output ->
-    if processResult.Details.Echo = Echo.Off then
-        output.PrintToConsole()
-        Console.WriteLine()
-        Console.Out.Flush()
+    match processResult.Result with
+    | Success output -> output
+    | Error(_, output) ->
+        if processResult.Details.Echo = Echo.Off then
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
 
-    let fullErrMsg = sprintf "%s (with warnings?)" errMsg
-    fullErrMsg
-|> printfn "%A"
+        let fullErrMsg = suggestion + System.Environment.NewLine + errMsg
+        fullErrMsg
+
+    | WarningsOrAmbiguous output ->
+        if processResult.Details.Echo = Echo.Off then
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
+
+        let fullErrMsg = sprintf "%s (with warnings?)" errMsg
+        fullErrMsg
+
+    |> printfn "%A"
+
+let GetProcessExitCode(processResult: ProcessResult): int =
+    match processResult.Result with
+                | Success output -> 0
+                | _ -> 1
+
+let CheckStyleOfFSharpFiles (rootDir: DirectoryInfo): int =
+    let suggestion = "Please style your F# code using: `dotnet fantomless --recurse .`"
+    GitRestore()
+    let exitCode =
+        if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
+            StyleFSharpFiles()
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            GetProcessExitCode processResult
+
+        else
+            0
+    exitCode
+
+let CheckStyleOfTypeScriptFiles (rootDir: DirectoryInfo): int =
+    let suggestion = "Please style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
+
+    GitRestore()
+    let exitCode =
+        if ContainsFiles rootDir "*.ts" then
+            StyleFSharpFiles()
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            GetProcessExitCode processResult
+
+        else
+            0
+
+    exitCode
+
+let CheckStyleOfYmlFiles (rootDir: DirectoryInfo): int =
+    let suggestion = "Please style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
+
+    GitRestore()
+    let exitCode =
+        if ContainsFiles rootDir "*.yml" then
+            StyleFSharpFiles()
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            GetProcessExitCode processResult
+        else
+            0
+
+    exitCode
+
+
+let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
+
+let exitCodes = 
+    seq {
+        CheckStyleOfFSharpFiles rootDir
+        CheckStyleOfTypeScriptFiles rootDir
+        CheckStyleOfYmlFiles rootDir
+    }
+
+if exitCodes |> Seq.contains 1 then
+    Environment.Exit 1
