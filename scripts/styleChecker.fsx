@@ -79,10 +79,10 @@ let RunPrettier(arguments: string) =
     |> ignore
 
 let StyleTypeScriptFiles() =
-    RunPrettier "--quote-props=consistent --write \"./**/*.ts\""
+    RunPrettier "--quote-props=consistent --write ./**/*.ts"
 
 let StyleYmlFiles() =
-    RunPrettier "--quote-props=consistent --write \"./**/*.yml\""
+    RunPrettier "--quote-props=consistent --write ./**/*.yml"
 
 StyleFSharpFiles()
 StyleTypeScriptFiles()
