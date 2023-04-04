@@ -18,7 +18,7 @@ let StyleFSharpFiles() =
                 Command = "dotnet"
                 Arguments = "new tool-manifest --force"
             },
-            Process.Echo.Off
+            Echo.Off
         )
         .UnwrapDefault()
     |> ignore
@@ -30,7 +30,7 @@ let StyleFSharpFiles() =
                 Arguments =
                     "tool install fantomless-tool --version 4.7.997-prerelease"
             },
-            Process.Echo.Off
+            Echo.Off
         )
         .UnwrapDefault()
     |> ignore
@@ -41,7 +41,7 @@ let StyleFSharpFiles() =
                 Command = "dotnet"
                 Arguments = "fantomless --recurse ."
             },
-            Process.Echo.Off
+            Echo.Off
         )
         .UnwrapDefault()
     |> ignore
@@ -53,7 +53,7 @@ let RunPrettier(arguments: string) =
                 Command = "npx"
                 Arguments = $"prettier {arguments}"
             },
-            Process.Echo.All
+            Echo.All
         )
 
     let errMsg =
@@ -91,7 +91,7 @@ let RunPrettier(arguments: string) =
                 Command = "git"
                 Arguments = "restore package.json"
             },
-            Process.Echo.Off
+            Echo.Off
         )
         .UnwrapDefault()
     |> ignore
@@ -112,7 +112,7 @@ let GitDiff() : ProcessResult =
                 Command = "git"
                 Arguments = "diff --exit-code"
             },
-            Process.Echo.Off
+            Echo.Off
         )
 
     processResult
@@ -123,7 +123,7 @@ let GitRestore() =
             Command = "git"
             Arguments = "restore ."
         },
-        Process.Echo.Off
+        Echo.Off
     )
     |> ignore
 
@@ -188,10 +188,10 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
         if ContainsFiles rootDir "*.ts" then
-                StyleFSharpFiles()
-                let processResult = GitDiff()
-                PrintProcessResult processResult suggestion
-                GetProcessExitCode processResult
+            StyleFSharpFiles()
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            GetProcessExitCode processResult
 
         else
             0

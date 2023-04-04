@@ -11,9 +11,9 @@ jobs:
     steps:
       - name: Install required dependencies
         run: |
-            apt update && apt install --yes sudo
-            sudo apt install --yes git
-            sudo DEBIAN_FRONTEND=noninteractive apt install --yes npm
+          apt update && apt install --yes sudo
+          sudo apt install --yes git
+          sudo DEBIAN_FRONTEND=noninteractive apt install --yes npm
       - uses: actions/checkout@v2
         with:
           submodules: recursive
