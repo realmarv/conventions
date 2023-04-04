@@ -105,7 +105,7 @@ let StyleYmlFiles() =
 let ContainsFiles (rootDir: DirectoryInfo) (searchPattern: string) =
     Helpers.GetFiles rootDir searchPattern |> Seq.length > 0
 
-let GitDiff (): ProcessResult =
+let GitDiff() : ProcessResult =
     let processResult =
         Process.Execute(
             {
@@ -114,20 +114,22 @@ let GitDiff (): ProcessResult =
             },
             Process.Echo.Off
         )
+
     processResult
 
-let GitRestore () =
+let GitRestore() =
     Process.Execute(
-            {
-                Command = "git"
-                Arguments = "restore ."
-            },
-            Process.Echo.Off
-    ) |> ignore
+        {
+            Command = "git"
+            Arguments = "restore ."
+        },
+        Process.Echo.Off
+    )
+    |> ignore
 
 
 let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
-    let errMsg = 
+    let errMsg =
         sprintf
             "Error when running '%s %s'"
             processResult.Details.Command
@@ -155,14 +157,17 @@ let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
 
     |> printfn "%A"
 
-let GetProcessExitCode(processResult: ProcessResult): int =
+let GetProcessExitCode(processResult: ProcessResult) : int =
     match processResult.Result with
-                | Success output -> 0
-                | _ -> 1
+    | Success output -> 0
+    | _ -> 1
 
-let CheckStyleOfFSharpFiles (rootDir: DirectoryInfo): int =
-    let suggestion = "Please style your F# code using: `dotnet fantomless --recurse .`"
+let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : int =
+    let suggestion =
+        "Please style your F# code using: `dotnet fantomless --recurse .`"
+
     GitRestore()
+
     let exitCode =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
             StyleFSharpFiles()
@@ -172,12 +177,15 @@ let CheckStyleOfFSharpFiles (rootDir: DirectoryInfo): int =
 
         else
             0
+
     exitCode
 
-let CheckStyleOfTypeScriptFiles (rootDir: DirectoryInfo): int =
-    let suggestion = "Please style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
+let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
+    let suggestion =
+        "Please style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
 
     GitRestore()
+
     let exitCode =
         if ContainsFiles rootDir "*.ts" then
             StyleFSharpFiles()
@@ -190,10 +198,12 @@ let CheckStyleOfTypeScriptFiles (rootDir: DirectoryInfo): int =
 
     exitCode
 
-let CheckStyleOfYmlFiles (rootDir: DirectoryInfo): int =
-    let suggestion = "Please style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
+let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
+    let suggestion =
+        "Please style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
 
     GitRestore()
+
     let exitCode =
         if ContainsFiles rootDir "*.yml" then
             StyleFSharpFiles()
@@ -208,7 +218,7 @@ let CheckStyleOfYmlFiles (rootDir: DirectoryInfo): int =
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
-let exitCodes = 
+let exitCodes =
     seq {
         CheckStyleOfFSharpFiles rootDir
         CheckStyleOfTypeScriptFiles rootDir
