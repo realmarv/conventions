@@ -84,17 +84,6 @@ let StyleTypeScriptFiles() =
 let StyleYmlFiles() =
     RunPrettier "--quote-props=consistent --write \"./**/*.yml\""
 
-Process
-    .Execute(
-        {
-            Command = "git"
-            Arguments = "config --system --add safe.directory '*'"
-        },
-        Process.Echo.Off
-    )
-    .UnwrapDefault()
-|> ignore
-
 StyleFSharpFiles()
 StyleTypeScriptFiles()
 StyleYmlFiles()
