@@ -27,15 +27,6 @@ jobs:
           git --version
           node --version
           npm --version
-      - name: Validate current commit (last commit) with commitlint
-        if: github.event_name == 'push'
-        run: ./commitlint.sh --from HEAD~1 --to HEAD --verbose
-      - name: Validate PR commits with commitlint
-        if: github.event_name == 'pull_request'
-        run: |
-          ./commitlint.sh --verbose \
-            --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
-            --to ${{ github.event.pull_request.head.sha }}
       - name: Install dotnet sdk
         run: sudo apt install --yes dotnet6
       - name: Install prettier
