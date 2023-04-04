@@ -205,13 +205,13 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
     GitRestore()
 
     let exitCode =
-        if ContainsFiles rootDir "*.yml" then
-            StyleFSharpFiles()
-            let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
-            GetProcessExitCode processResult
-        else
-            0
+            if ContainsFiles rootDir "*.yml" then
+                StyleFSharpFiles()
+                let processResult = GitDiff()
+                PrintProcessResult processResult suggestion
+                GetProcessExitCode processResult
+            else
+                0
 
     exitCode
 
