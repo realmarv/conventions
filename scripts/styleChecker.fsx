@@ -88,7 +88,7 @@ Process
     .Execute(
         {
             Command = "git"
-            Arguments = "config --global --add safe.directory '*'"
+            Arguments = "config --system --add safe.directory '*'"
         },
         Process.Echo.Off
     )

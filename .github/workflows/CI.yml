@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
       # workaround for https://github.com/actions/runner/issues/2033
       - name: ownership workaround
-        run: git config --global --add safe.directory '*'
+        run: git config --system --add safe.directory '*'
       - name: Print versions
         run: |
           git --version
