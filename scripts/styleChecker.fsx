@@ -191,7 +191,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
         if ContainsFiles rootDir "*.ts" then
             StyleFSharpFiles()
             let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
+            printfn "HERE3:%A" (PrintProcessResult processResult suggestion)
             printfn "HERE1" 
             GetProcessExitCode processResult
 
