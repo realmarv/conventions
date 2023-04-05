@@ -256,5 +256,5 @@ let exitCodes =
     |]
 
 printfn "Exit Code: %A" exitCodes
-// if exitCodes |> Seq.contains 1 then
-//     Environment.Exit 1
+if exitCodes |> Seq.contains 1 then
+    Environment.Exit 1
