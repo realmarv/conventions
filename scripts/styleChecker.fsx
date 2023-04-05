@@ -211,7 +211,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
             if ContainsFiles rootDir "*.yml" then
                 StyleFSharpFiles()
                 let processResult = GitDiff()
-                printfn "%A" processResult
+                printfn "HERE5:%A" processResult
                 0
                 // PrintProcessResult processResult suggestion
                 // GetProcessExitCode processResult
