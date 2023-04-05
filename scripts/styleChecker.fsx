@@ -194,70 +194,70 @@ let GetProcessExitCode(processResult: ProcessResult) : int =
     | Success output -> 0
     | _ -> 1
 
-let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : int =
+let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
         "Please style your F# code using: `dotnet fantomless --recurse .`"
 
     GitRestore()
 
-    let exitCode =
+    let success =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
             StyleFSharpFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
-            GetProcessExitCode processResult
+            GetProcessExitCode processResult = 0
 
         else
-            0
+            true
 
-    exitCode
+    success
 
-let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
+let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
         "Please style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
 
     GitRestore()
 
-    let exitCode =
+    let success =
         if ContainsFiles rootDir "*.ts" then
             InstallPrettier prettierVersion
             StyleTypeScriptFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
-            GetProcessExitCode processResult
+            GetProcessExitCode processResult = 0
 
         else
-            0
+            true
 
-    exitCode
+    success
 
-let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
+let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
         "Please style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
 
     GitRestore()
 
-    let exitCode =
+    let success =
         if ContainsFiles rootDir "*.yml" then
             InstallPrettier prettierVersion
             StyleYmlFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
-            GetProcessExitCode processResult
+            GetProcessExitCode processResult = 0
         else
-            0
+            true
 
-    exitCode
+    success
 
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
-let exitCodes =
+let processSuccessStates =
     [|
         CheckStyleOfFSharpFiles rootDir
         CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
     |]
 
-if exitCodes |> Seq.contains 1 then
+if processSuccessStates |> Seq.contains false then
     Environment.Exit 1
