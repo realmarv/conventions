@@ -34,6 +34,6 @@ jobs:
       - name: Change file permissions
         # We need this step so we can change the files using `npx prettier --write` in the next step.
         # Otherwise we get permission denied error in the CI.
-        run: sudo chmod 777 -R .
+        run: chmod 777 -R .
       - name: Check style of our F#, TypeScript and YML code
         run: sudo dotnet fsi scripts/styleChecker.fsx
