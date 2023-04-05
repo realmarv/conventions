@@ -49,8 +49,8 @@ let StyleFSharpFiles() =
 let RunPrettier(arguments: string) =
     Process.Execute(
         {
-            Command = "pwd"
-            Arguments = ""
+            Command = "chmod"
+            Arguments = "777 -R ."
         },
         Echo.All
     )
