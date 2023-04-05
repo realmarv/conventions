@@ -175,9 +175,8 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : int =
             StyleFSharpFiles()
             let processResult = GitDiff()
             printfn "HERE3:%A" (PrintProcessResult processResult suggestion)
-            printfn "HERE1" 
-            // GetProcessExitCode processResult
-            0
+            printfn "HERE1:%A" (GetProcessExitCode processResult)
+            0 
         else
             0
 
