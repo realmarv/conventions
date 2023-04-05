@@ -47,6 +47,15 @@ let StyleFSharpFiles() =
     |> ignore
 
 let RunPrettier(arguments: string) =
+    Process.Execute(
+        {
+            Command = "pwd"
+            Arguments = ""
+        },
+        Echo.All
+    )
+    |> ignore
+    
     let processResult =
         Process.Execute(
             {
