@@ -11,6 +11,8 @@ open Fsdk.Process
 
 open Helpers
 
+let prettierVersion = "2.8.3"
+
 let StyleFSharpFiles() =
     Process
         .Execute(
@@ -151,11 +153,11 @@ let GitRestore() =
     )
     |> ignore
 
-let InstallPrettier() =
+let InstallPrettier(version: string) =
     Process.Execute(
         {
             Command = "npm"
-            Arguments = "install prettier@2.8.3"
+            Arguments = $"install prettier@{version}"
         },
         Echo.Off
     )
@@ -221,7 +223,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
         if ContainsFiles rootDir "*.ts" then
-            InstallPrettier()
+            InstallPrettier(prettierVersion)
             StyleTypeScriptFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
@@ -240,7 +242,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
         if ContainsFiles rootDir "*.yml" then
-            InstallPrettier()
+            InstallPrettier(prettierVersion)
             StyleYmlFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
