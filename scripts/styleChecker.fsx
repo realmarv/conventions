@@ -54,7 +54,7 @@ let RunPrettier(arguments: string) =
             Command = "chmod"
             Arguments = "777 -R ."
         },
-        Echo.All
+        Echo.Off
     )
     |> ignore
 
@@ -64,7 +64,7 @@ let RunPrettier(arguments: string) =
                 Command = "npx"
                 Arguments = $"prettier {arguments}"
             },
-            Echo.All
+            Echo.Off
         )
 
     let errMsg =
