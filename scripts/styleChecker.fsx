@@ -51,11 +51,11 @@ let RunPrettier(arguments: string) =
     // We need this step so we can change the files using `npx prettier --write` in the next step.
     // Otherwise we get permission denied error in the CI.
     Process.Execute(
-        {
-            Command = "chmod"
-            Arguments = "777 -R ."
-        },
-        Echo.Off
+            {
+                Command = "chmod"
+                Arguments = "777 -R ."
+            },
+            Echo.Off
     )
     |> ignore
 
