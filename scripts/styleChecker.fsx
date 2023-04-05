@@ -156,6 +156,7 @@ let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
         fullErrMsg
 
     |> printfn "%A"
+    printfn "HERE2"
 
 let GetProcessExitCode(processResult: ProcessResult) : int =
     match processResult.Result with
