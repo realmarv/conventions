@@ -50,7 +50,7 @@ let RunPrettier(arguments: string) =
     let processResult =
         Process.Execute(
             {
-                Command = "npx"
+                Command = "sudo npx"
                 Arguments = $"prettier {arguments}"
             },
             Echo.All
