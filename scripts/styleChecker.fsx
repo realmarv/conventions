@@ -189,7 +189,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
         if ContainsFiles rootDir "*.ts" then
-            StyleFSharpFiles()
+            StyleTypeScriptFiles()
             let processResult = GitDiff()
             printfn "HERE3:%A" (PrintProcessResult processResult suggestion)
             printfn "HERE1" 
@@ -208,7 +208,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
             if ContainsFiles rootDir "*.yml" then
-                StyleFSharpFiles()
+                StyleYmlFiles()
                 let processResult = GitDiff()
                 PrintProcessResult processResult suggestion
                 GetProcessExitCode processResult
@@ -222,8 +222,8 @@ let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let exitCodes =
     seq {
-        // CheckStyleOfFSharpFiles rootDir
-        // CheckStyleOfTypeScriptFiles rootDir
+        CheckStyleOfFSharpFiles rootDir
+        CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
     }
 
