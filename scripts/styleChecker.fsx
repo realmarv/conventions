@@ -182,9 +182,14 @@ let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
     printfn "HERE2"
 
 let GetProcessExitCode(processResult: ProcessResult) : int =
+    printfn "HERE10"
     match processResult.Result with
-    | Success output -> 0
-    | _ -> 1
+    | Success output -> 
+        printfn "HERE11"
+        0
+    | _ -> 
+        printfn "HERE12"
+        1
 
 let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : int =
     let suggestion =
@@ -198,9 +203,7 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : int =
             let processResult = GitDiff()
             printfn "HERE3:%A" (PrintProcessResult processResult suggestion)
             printfn "HERE7" 
-            GetProcessExitCode processResult |> ignore
-            printfn "HERE8" 
-            0
+            GetProcessExitCode processResult
         else
             0
 
