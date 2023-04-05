@@ -99,11 +99,11 @@ let RunPrettier(arguments: string) =
     // run the following command to ignore package.json file
     Process
         .Execute(
-                {
-                    Command = "git"
-                    Arguments = "restore package.json"
-                },
-                Echo.Off
+            {
+                Command = "git"
+                Arguments = "restore package.json"
+            },
+            Echo.Off
         )
         .UnwrapDefault()
     |> ignore
@@ -244,8 +244,8 @@ let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let exitCodes =
     [|
-        CheckStyleOfFSharpFiles rootDir;
-        CheckStyleOfTypeScriptFiles rootDir;
+        CheckStyleOfFSharpFiles rootDir
+        CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
     |]
 
