@@ -249,11 +249,11 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let exitCodes =
-    seq {
+    [|
         CheckStyleOfFSharpFiles rootDir;
         CheckStyleOfTypeScriptFiles rootDir;
         CheckStyleOfYmlFiles rootDir
-    }
+    |]
 
 printfn "Exit Code: %A" exitCodes
 // if exitCodes |> Seq.contains 1 then
