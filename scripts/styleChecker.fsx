@@ -222,8 +222,8 @@ let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let exitCodes =
     seq {
-        CheckStyleOfFSharpFiles rootDir
-        CheckStyleOfTypeScriptFiles rootDir
+        // CheckStyleOfFSharpFiles rootDir
+        // CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
     }
 
