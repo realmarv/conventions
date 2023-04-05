@@ -140,9 +140,9 @@ let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
     | Error(_, output) ->
         if processResult.Details.Echo = Echo.Off then
             printfn "HERE4"
-            // output.PrintToConsole()
-            // Console.WriteLine()
-            // Console.Out.Flush()
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
 
         let fullErrMsg = errMsg + Environment.NewLine + suggestion
         fullErrMsg
