@@ -61,6 +61,30 @@ let StyleCSharpFiles(rootDir: DirectoryInfo) =
         .UnwrapDefault()
     |> ignore
 
+let StyleXamlFiles() =
+    Process
+        .Execute(
+            {
+                Command = "npm"
+                Arguments = "install --save-dev prettier @prettier/plugin-xml"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+    Process
+        .Execute(
+            {
+                Command = "./node_modules/.bin/prettier"
+                Arguments =
+                    "--xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml'"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
 let RunPrettier(arguments: string) =
 
     // We need this step so we can change the files using `npx prettier --write` in the next step.
@@ -278,6 +302,23 @@ let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
 
     success
 
+let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
+    let suggestion =
+        "Please style your XAML code using: `dotnet format whitespace . --folder"
+
+    GitRestore()
+
+    let success =
+        if ContainsFiles rootDir "*.xaml" then
+            StyleXamlFiles()
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            IsProcessSuccessful processResult
+        else
+            true
+
+    success
+
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let processSuccessStates =
@@ -286,6 +327,7 @@ let processSuccessStates =
         CheckStyleOfCSharpFiles rootDir
         CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
+        CheckStyleOfXamlFiles rootDir
     |]
 
 if processSuccessStates |> Seq.contains false then
