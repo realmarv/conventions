@@ -14,7 +14,7 @@ open Helpers
 let fantomlessToolVersion = "4.7.997-prerelease"
 let prettierVersion = "2.8.3"
 
-let StyleFSharpFiles() =
+let StyleFSharpFiles(rootDir: DirectoryInfo) =
     Process
         .Execute(
             {
@@ -42,7 +42,19 @@ let StyleFSharpFiles() =
         .Execute(
             {
                 Command = "dotnet"
-                Arguments = "fantomless --recurse ."
+                Arguments = $"fantomless --recurse {rootDir.FullName}"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+let StyleCSharpFiles(rootDir: DirectoryInfo) =
+    Process
+        .Execute(
+            {
+                Command = "dotnet"
+                Arguments = $"format whitespace {rootDir.FullName} --folder"
             },
             Echo.Off
         )
@@ -202,7 +214,7 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
-            StyleFSharpFiles()
+            StyleFSharpFiles rootDir
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
             IsProcessSuccessful processResult
@@ -249,12 +261,29 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
 
     success
 
+let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
+    let suggestion =
+        "Please style your C# code using: `dotnet format whitespace . --folder"
+
+    GitRestore()
+
+    let success =
+        if ContainsFiles rootDir "*.cs" then
+            StyleCSharpFiles rootDir
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            IsProcessSuccessful processResult
+        else
+            true
+
+    success
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let processSuccessStates =
     [|
         CheckStyleOfFSharpFiles rootDir
+        CheckStyleOfCSharpFiles rootDir
         CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
     |]
