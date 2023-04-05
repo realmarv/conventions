@@ -29,8 +29,6 @@ jobs:
           npm --version
       - name: Install dotnet sdk
         run: sudo apt install --yes dotnet6
-      - name: Install prettier
-        run: npm install prettier@2.8.3
       - name: Change file permissions
         # We need this step so we can change the files using `npx prettier --write` in the next step.
         # Otherwise we get permission denied error in the CI.

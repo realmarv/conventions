@@ -151,6 +151,15 @@ let GitRestore() =
     )
     |> ignore
 
+let InstallPrettier() =
+    Process.Execute(
+        {
+            Command = "npm"
+            Arguments = "install prettier@2.8.3"
+        },
+        Echo.Off
+    )
+    |> ignore
 
 let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
     let errMsg =
@@ -212,6 +221,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
         if ContainsFiles rootDir "*.ts" then
+            InstallPrettier()
             StyleTypeScriptFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
@@ -230,6 +240,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : int =
 
     let exitCode =
         if ContainsFiles rootDir "*.yml" then
+            InstallPrettier()
             StyleYmlFiles()
             let processResult = GitDiff()
             PrintProcessResult processResult suggestion
