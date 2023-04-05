@@ -47,6 +47,8 @@ let StyleFSharpFiles() =
     |> ignore
 
 let RunPrettier(arguments: string) =
+    // We need this step so we can change the files using `npx prettier --write` in the next step.
+    // Otherwise we get permission denied error in the CI.
     Process.Execute(
         {
             Command = "chmod"
@@ -55,7 +57,7 @@ let RunPrettier(arguments: string) =
         Echo.All
     )
     |> ignore
-    
+
     let processResult =
         Process.Execute(
             {
@@ -115,6 +117,17 @@ let ContainsFiles (rootDir: DirectoryInfo) (searchPattern: string) =
     Helpers.GetFiles rootDir searchPattern |> Seq.length > 0
 
 let GitDiff() : ProcessResult =
+    // Since we changed file modes in the prettier step we need the following command to
+    // make git ignore mode changes in files and doesn't include them in the git diff command.
+    Process.Execute(
+        {
+            Command = "git"
+            Arguments = "config core.fileMode false"
+        },
+        Echo.Off
+    )
+    |> ignore
+
     let processResult =
         Process.Execute(
             {
