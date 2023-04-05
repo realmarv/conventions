@@ -49,6 +49,42 @@ let StyleFSharpFiles(rootDir: DirectoryInfo) =
         .UnwrapDefault()
     |> ignore
 
+let StyleCSharpFiles(rootDir: DirectoryInfo) =
+    Process
+        .Execute(
+            {
+                Command = "dotnet"
+                Arguments = $"format whitespace {rootDir.FullName} --folder"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+let StyleXamlFiles() =
+    Process
+        .Execute(
+            {
+                Command = "npm"
+                Arguments = "install --save-dev prettier @prettier/plugin-xml"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+    Process
+        .Execute(
+            {
+                Command = "./node_modules/.bin/prettier"
+                Arguments =
+                    "--xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml'"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
 let RunPrettier(arguments: string) =
 
     // We need this step so we can change the files using `npx prettier --write` in the next step.
@@ -249,14 +285,50 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
 
     success
 
+let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
+    let suggestion =
+        "Please style your C# code using: `dotnet format whitespace . --folder"
+
+    GitRestore()
+
+    let success =
+        if ContainsFiles rootDir "*.cs" then
+            StyleCSharpFiles rootDir
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            IsProcessSuccessful processResult
+        else
+            true
+
+    success
+
+let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
+    let suggestion =
+        "Please style your XAML code using:" + Environment.NewLine +
+        "`./node_modules/.bin/prettier --xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml`"
+
+    GitRestore()
+
+    let success =
+        if ContainsFiles rootDir "*.xaml" then
+            StyleXamlFiles()
+            let processResult = GitDiff()
+            PrintProcessResult processResult suggestion
+            IsProcessSuccessful processResult
+        else
+            true
+
+    success
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
 let processSuccessStates =
     [|
         CheckStyleOfFSharpFiles rootDir
+        CheckStyleOfCSharpFiles rootDir
         CheckStyleOfTypeScriptFiles rootDir
         CheckStyleOfYmlFiles rootDir
+        CheckStyleOfXamlFiles rootDir
     |]
 
 if processSuccessStates |> Seq.contains false then
