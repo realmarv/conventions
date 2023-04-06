@@ -69,6 +69,7 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
     match processResult.Result with
     | Success output ->
         Console.WriteLine output
+        printfn "HERE1"
         output
     | Error(_, output) ->
         if processResult.Details.Echo = Echo.Off then
@@ -77,6 +78,7 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
             Console.Out.Flush()
 
         Console.Error.WriteLine errMsg
+        printfn "HERE2"
         raise <| ProcessFailed errMsg
     | WarningsOrAmbiguous output ->
         if processResult.Details.Echo = Echo.Off then
@@ -86,6 +88,7 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
 
         let fullErrMsg = sprintf "%s (with warnings?)" errMsg
         Console.Error.WriteLine fullErrMsg
+        printfn "HERE3"
         fullErrMsg
 
 let InstallPrettier(version: string) =
