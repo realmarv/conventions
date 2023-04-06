@@ -13,6 +13,7 @@ open Helpers
 
 let fantomlessToolVersion = "4.7.997-prerelease"
 let prettierVersion = "2.8.3"
+let pluginXmlVersion = "v2.2.0"
 
 let StyleFSharpFiles(rootDir: DirectoryInfo) =
     Process
@@ -67,7 +68,7 @@ let StyleXamlFiles() =
             {
                 Command = "npm"
                 Arguments =
-                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml@v2.2.0"
+                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml@{pluginXmlVersion}"
             },
             Echo.Off
         )
