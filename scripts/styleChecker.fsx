@@ -53,7 +53,7 @@ let StyleFSharpFiles(rootDir: DirectoryInfo) =
                 .UnwrapDefault()
 
         installedPackages.Split Environment.NewLine 
-        |> Seq.map (fun line -> line.Contains "fantomless-tool" && line.Contains "4.7.997-prerelease")
+        |> Seq.map (fun line -> line.Contains "fantomless-tool" && line.Contains fantomlessToolVersion)
         |> Seq.contains true
     
     if not(isFantomlessInstalled) then
