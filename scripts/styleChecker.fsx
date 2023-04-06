@@ -16,49 +16,6 @@ let prettierVersion = "2.8.3"
 let pluginXmlVersion = "v2.2.0"
 
 let InstallFantomlessTool(version: string) =
-    Process
-        .Execute(
-            {
-                Command = "dotnet"
-                Arguments = "new tool-manifest --force"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-    Process
-        .Execute(
-            {
-                Command = "dotnet"
-                Arguments = $"tool install fantomless-tool --version {version}"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-let InstallPrettier(version: string) =
-    Process.Execute(
-        {
-            Command = "npm"
-            Arguments = $"install prettier@{version}"
-        },
-        Echo.Off
-    )
-    |> ignore
-
-let InstallPrettierPluginXml(version: string) =
-    Process.Execute(
-        {
-            Command = "npm"
-            Arguments = $"install @prettier/plugin-xml@{version}"
-        },
-        Echo.Off
-    )
-    |> ignore
-
-let StyleFSharpFiles(rootDir: DirectoryInfo) =
     let isFantomlessInstalled =
         let installedPackages: string =
             Process
@@ -79,7 +36,81 @@ let StyleFSharpFiles(rootDir: DirectoryInfo) =
         |> Seq.contains true
 
     if not(isFantomlessInstalled) then
-        InstallFantomlessTool(fantomlessToolVersion)
+        Process
+            .Execute(
+                {
+                    Command = "dotnet"
+                    Arguments = "new tool-manifest --force"
+                },
+                Echo.Off
+            )
+            .UnwrapDefault()
+        |> ignore
+
+        Process
+            .Execute(
+                {
+                    Command = "dotnet"
+                    Arguments =
+                        $"tool install fantomless-tool --version {version}"
+                },
+                Echo.Off
+            )
+            .UnwrapDefault()
+        |> ignore
+
+let InstallPrettier(version: string) =
+    let isPrettierInstalled =
+        let installedPackages =
+            Process
+                .Execute(
+                    {
+                        Command = "npm"
+                        Arguments = $"list prettier@{version}"
+                    },
+                    Echo.Off
+                )
+                .UnwrapDefault()
+
+        installedPackages.Contains $"prettier@{version}"
+
+    if not(isPrettierInstalled) then
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"install prettier@{version}"
+            },
+            Echo.Off
+        )
+        |> ignore
+
+let InstallPrettierPluginXml(version: string) =
+    let isPrettierPluginXmlInstalled =
+        let installedPackages =
+            Process
+                .Execute(
+                    {
+                        Command = "npm"
+                        Arguments = $"list @prettier/plugin-xml@{version}"
+                    },
+                    Echo.Off
+                )
+                .UnwrapDefault()
+
+        installedPackages.Contains $"@prettier/plugin-xml@{version}"
+
+    if not(isPrettierPluginXmlInstalled) then
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"install @prettier/plugin-xml@{version}"
+            },
+            Echo.Off
+        )
+        |> ignore
+
+let StyleFSharpFiles(rootDir: DirectoryInfo) =
+    InstallFantomlessTool(fantomlessToolVersion)
 
     Process
         .Execute(
@@ -105,40 +136,8 @@ let StyleCSharpFiles(rootDir: DirectoryInfo) =
     |> ignore
 
 let StyleXamlFiles() =
-    let isPrettierInstalled =
-        let installedPackages =
-            Process
-                .Execute(
-                    {
-                        Command = "npm"
-                        Arguments = $"list prettier@{prettierVersion}"
-                    },
-                    Echo.Off
-                )
-                .UnwrapDefault()
-
-        installedPackages.Contains $"prettier@{prettierVersion}"
-
-    if not(isPrettierInstalled) then
-        InstallPrettier(prettierVersion)
-
-    let isPrettierPluginXmlInstalled =
-        let installedPackages =
-            Process
-                .Execute(
-                    {
-                        Command = "npm"
-                        Arguments =
-                            $"list @prettier/plugin-xml@{pluginXmlVersion}"
-                    },
-                    Echo.Off
-                )
-                .UnwrapDefault()
-
-        installedPackages.Contains $"@prettier/plugin-xml@{pluginXmlVersion}"
-
-    if not(isPrettierPluginXmlInstalled) then
-        InstallPrettierPluginXml(pluginXmlVersion)
+    InstallPrettier(prettierVersion)
+    InstallPrettierPluginXml(pluginXmlVersion)
 
     Process
         .Execute(
