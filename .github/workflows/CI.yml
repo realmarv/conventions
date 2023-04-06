@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
       # workaround for https://github.com/actions/runner/issues/2033
       - name: ownership workaround
-        run:
+        run: git config --system --add safe.directory '*'
       - name: Print versions
         run: |
           git --version
@@ -29,7 +29,5 @@ jobs:
           npm --version
       - name: Install dotnet sdk
         run: sudo apt install --yes dotnet6
-      - name: Install prettier
-        run: npm install prettier@2.8.3
       - name: Check style of our F#, TypeScript and YML code
         run: sudo dotnet fsi scripts/styleChecker.fsx
