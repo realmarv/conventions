@@ -59,28 +59,59 @@ let InstallFantomlessTool(version: string) =
             .UnwrapDefault()
         |> ignore
 
+let UnwrapPrettierResult(processResult: ProcessResult) : string =
+    let errMsg =
+        sprintf
+            "Error when running '%s %s'"
+            processResult.Details.Command
+            processResult.Details.Args
+
+    match processResult.Result with
+    | Success output ->
+        Console.WriteLine output
+        output
+    | Error(_, output) ->
+        if processResult.Details.Echo = Echo.Off then
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
+
+        Console.Error.WriteLine errMsg
+        raise <| ProcessFailed errMsg
+    | WarningsOrAmbiguous output ->
+        if processResult.Details.Echo = Echo.Off then
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
+
+        let fullErrMsg = sprintf "%s (with warnings?)" errMsg
+        Console.Error.WriteLine fullErrMsg
+        fullErrMsg
+
 let InstallPrettier(version: string) =
     let isPrettierInstalled =
         let installedPackages =
-            Process
-                .Execute(
+            UnwrapPrettierResult(
+                Process.Execute(
                     {
                         Command = "npm"
                         Arguments = $"list prettier@{version}"
                     },
                     Echo.All
                 )
-                .UnwrapDefault()
+            )
 
         installedPackages.Contains $"prettier@{version}"
 
     if not(isPrettierInstalled) then
-        Process.Execute(
-            {
-                Command = "npm"
-                Arguments = $"install prettier@{version}"
-            },
-            Echo.Off
+        UnwrapPrettierResult(
+            Process.Execute(
+                {
+                    Command = "npm"
+                    Arguments = $"install prettier@{version}"
+                },
+                Echo.Off
+            )
         )
         |> ignore
 
