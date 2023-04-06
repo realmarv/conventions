@@ -118,15 +118,15 @@ let InstallPrettier(version: string) =
 let InstallPrettierPluginXml(version: string) =
     let isPrettierPluginXmlInstalled =
         let installedPackages =
-            UnwrapPrettierResult(
-                Process.Execute(
+            Process
+                .Execute(
                     {
                         Command = "npm"
                         Arguments = $"list @prettier/plugin-xml@{version}"
                     },
                     Echo.Off
                 )
-            )
+                .UnwrapDefault()
 
         installedPackages.Contains $"@prettier/plugin-xml@{version}"
 
