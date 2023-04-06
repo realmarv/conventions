@@ -59,7 +59,16 @@ let InstallFantomlessTool(version: string) =
             .UnwrapDefault()
         |> ignore
 
-let UnwrapPrettierResult(processResult: ProcessResult) : string =
+let IsProcessSuccessful(processResult: ProcessResult) : bool =
+    match processResult.Result with
+    | Success output -> true
+    | _ -> false
+
+let UnwrapProcessResult
+    (suggestion: string)
+    (raiseError: bool)
+    (processResult: ProcessResult)
+    : string =
     let errMsg =
         sprintf
             "Error when running '%s %s'"
@@ -69,7 +78,6 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
     match processResult.Result with
     | Success output ->
         Console.WriteLine output
-        printfn "HERE1"
         output
     | Error(_, output) ->
         if processResult.Details.Echo = Echo.Off then
@@ -77,9 +85,13 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
             Console.WriteLine()
             Console.Out.Flush()
 
-        Console.Error.WriteLine errMsg
-        printfn "HERE2"
-        raise <| ProcessFailed errMsg
+        let fullErrMsg = errMsg + Environment.NewLine + suggestion
+        Console.Error.WriteLine fullErrMsg
+
+        if raiseError then
+            raise <| ProcessFailed errMsg
+        else
+            fullErrMsg
     | WarningsOrAmbiguous output ->
         if processResult.Details.Echo = Echo.Off then
             output.PrintToConsole()
@@ -88,13 +100,7 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
 
         let fullErrMsg = sprintf "%s (with warnings?)" errMsg
         Console.Error.WriteLine fullErrMsg
-        printfn "HERE3"
         fullErrMsg
-
-let IsProcessSuccessful(processResult: ProcessResult) : bool =
-    match processResult.Result with
-    | Success output -> true
-    | _ -> false
 
 let InstallPrettier(version: string) =
     let isPrettierInstalled =
@@ -108,15 +114,14 @@ let InstallPrettier(version: string) =
         |> IsProcessSuccessful
 
     if not(isPrettierInstalled) then
-        UnwrapPrettierResult(
-            Process.Execute(
-                {
-                    Command = "npm"
-                    Arguments = $"install prettier@{version}"
-                },
-                Echo.Off
-            )
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"install prettier@{version}"
+            },
+            Echo.Off
         )
+        |> UnwrapProcessResult "" true
         |> ignore
 
 let InstallPrettierPluginXml(version: string) =
@@ -211,39 +216,16 @@ let RunPrettier(arguments: string) =
         .UnwrapDefault()
     |> ignore
 
-    let processResult =
-        Process.Execute(
-            {
-                Command = "npx"
-                Arguments = $"prettier {arguments}"
-            },
-            Echo.Off
-        )
+    Process.Execute(
+        {
+            Command = "npx"
+            Arguments = $"prettier {arguments}"
+        },
+        Echo.Off
+    )
+    |> UnwrapProcessResult "" true
+    |> ignore
 
-    let errMsg =
-        sprintf
-            "Error when running '%s %s'"
-            processResult.Details.Command
-            processResult.Details.Args
-
-    match processResult.Result with
-    | Success output -> Console.WriteLine output
-    | Error(_, output) ->
-        if processResult.Details.Echo = Echo.Off then
-            output.PrintToConsole()
-            Console.WriteLine()
-            Console.Out.Flush()
-
-        Console.Error.WriteLine errMsg
-        raise <| ProcessFailed errMsg
-    | WarningsOrAmbiguous output ->
-        if processResult.Details.Echo = Echo.Off then
-            output.PrintToConsole()
-            Console.WriteLine()
-            Console.Out.Flush()
-
-        let fullErrMsg = sprintf "%s (with warnings?)" errMsg
-        Console.Error.WriteLine fullErrMsg
 
     // Since after installing commitlint dependencies package.json file changes, we need to
     // run the following command to ignore package.json file
@@ -305,33 +287,6 @@ let GitRestore() =
         .UnwrapDefault()
     |> ignore
 
-let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
-    let errMsg =
-        sprintf
-            "Error when running '%s %s'"
-            processResult.Details.Command
-            processResult.Details.Args
-
-    match processResult.Result with
-    | Success output -> Console.WriteLine output
-    | Error(_, output) ->
-        if processResult.Details.Echo = Echo.Off then
-            output.PrintToConsole()
-            Console.WriteLine()
-            Console.Out.Flush()
-
-        let fullErrMsg = errMsg + Environment.NewLine + suggestion
-        Console.Error.WriteLine fullErrMsg
-
-    | WarningsOrAmbiguous output ->
-        if processResult.Details.Echo = Echo.Off then
-            output.PrintToConsole()
-            Console.WriteLine()
-            Console.Out.Flush()
-
-        let fullErrMsg = sprintf "%s (with warnings?)" errMsg
-        Console.Error.WriteLine fullErrMsg
-
 let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
         "Please style your F# code using: `dotnet fantomless --recurse .`"
@@ -342,7 +297,7 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
             StyleFSharpFiles rootDir
             let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
+            UnwrapProcessResult suggestion false processResult |> ignore
             IsProcessSuccessful processResult
 
         else
@@ -361,7 +316,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
             InstallPrettier prettierVersion
             StyleTypeScriptFiles()
             let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
+            UnwrapProcessResult suggestion false processResult |> ignore
             IsProcessSuccessful processResult
 
         else
@@ -380,7 +335,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
             InstallPrettier prettierVersion
             StyleYmlFiles()
             let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
+            UnwrapProcessResult suggestion false processResult |> ignore
             IsProcessSuccessful processResult
         else
             true
@@ -397,7 +352,7 @@ let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
         if ContainsFiles rootDir "*.cs" then
             StyleCSharpFiles rootDir
             let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
+            UnwrapProcessResult suggestion false processResult |> ignore
             IsProcessSuccessful processResult
         else
             true
@@ -416,7 +371,7 @@ let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
         if ContainsFiles rootDir "*.xaml" then
             StyleXamlFiles()
             let processResult = GitDiff()
-            PrintProcessResult processResult suggestion
+            UnwrapProcessResult suggestion false processResult |> ignore
             IsProcessSuccessful processResult
         else
             true
