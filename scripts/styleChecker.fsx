@@ -98,15 +98,14 @@ let IsProcessSuccessful(processResult: ProcessResult) : bool =
 
 let InstallPrettier(version: string) =
     let isPrettierInstalled =
-        IsProcessSuccessful(
-            Process.Execute(
-                {
-                    Command = "npm"
-                    Arguments = $"list prettier@{version}"
-                },
-                Echo.All
-            )
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"list prettier@{version}"
+            },
+            Echo.All
         )
+        |> IsProcessSuccessful
 
     if not(isPrettierInstalled) then
         UnwrapPrettierResult(
@@ -122,15 +121,14 @@ let InstallPrettier(version: string) =
 
 let InstallPrettierPluginXml(version: string) =
     let isPrettierPluginXmlInstalled =
-        IsProcessSuccessful(
-            Process.Execute(
-                {
-                    Command = "npm"
-                    Arguments = $"list @prettier/plugin-xml@{version}"
-                },
-                Echo.Off
-            )
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"list @prettier/plugin-xml@{version}"
+            },
+            Echo.Off
         )
+        |> IsProcessSuccessful
 
     if not(isPrettierPluginXmlInstalled) then
         Process
