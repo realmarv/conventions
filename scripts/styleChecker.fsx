@@ -67,7 +67,7 @@ let StyleXamlFiles() =
             {
                 Command = "npm"
                 Arguments =
-                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml"
+                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml@v2.2.0"
             },
             Echo.Off
         )
