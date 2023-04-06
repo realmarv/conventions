@@ -29,5 +29,7 @@ jobs:
           npm --version
       - name: Install dotnet sdk
         run: sudo apt install --yes dotnet6
+      - name: Install prettier
+        run: npm install prettier@2.8.3
       - name: Check style of our F#, TypeScript and YML code
         run: sudo dotnet fsi scripts/styleChecker.fsx
