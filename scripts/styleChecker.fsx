@@ -304,8 +304,9 @@ let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
 
 let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
-        "Please style your XAML code using:" + Environment.NewLine +
-        "`./node_modules/.bin/prettier --xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml`"
+        "Please style your XAML code using:"
+        + Environment.NewLine
+        + "`./node_modules/.bin/prettier --xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml`"
 
     GitRestore()
 
