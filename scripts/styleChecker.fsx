@@ -113,13 +113,15 @@ let RunPrettier(arguments: string) =
 
     // We need this step so we can change the files using `npx prettier --write` in the next step.
     // Otherwise we get permission denied error in the CI.
-    Process.Execute(
-        {
-            Command = "chmod"
-            Arguments = "777 -R ."
-        },
-        Echo.Off
-    )
+    Process
+        .Execute(
+            {
+                Command = "chmod"
+                Arguments = "777 -R ."
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
     |> ignore
 
     let processResult =
@@ -182,13 +184,15 @@ let GitDiff() : ProcessResult =
 
     // Since we changed file modes in the prettier step we need the following command to
     // make git ignore mode changes in files and doesn't include them in the git diff command.
-    Process.Execute(
-        {
-            Command = "git"
-            Arguments = "config core.fileMode false"
-        },
-        Echo.Off
-    )
+    Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments = "config core.fileMode false"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
     |> ignore
 
     let processResult =
@@ -203,23 +207,27 @@ let GitDiff() : ProcessResult =
     processResult
 
 let GitRestore() =
-    Process.Execute(
-        {
-            Command = "git"
-            Arguments = "restore ."
-        },
-        Echo.Off
-    )
+    Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments = "restore ."
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
     |> ignore
 
 let InstallPrettier(version: string) =
-    Process.Execute(
-        {
-            Command = "npm"
-            Arguments = $"install prettier@{version}"
-        },
-        Echo.Off
-    )
+    Process
+        .Execute(
+            {
+                Command = "npm"
+                Arguments = $"install prettier@{version}"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
     |> ignore
 
 let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
