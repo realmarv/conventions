@@ -31,8 +31,7 @@ let InstallFantomlessTool(version: string) =
         .Execute(
             {
                 Command = "dotnet"
-                Arguments =
-                    $"tool install fantomless-tool --version {version}"
+                Arguments = $"tool install fantomless-tool --version {version}"
             },
             Echo.Off
         )
@@ -52,10 +51,13 @@ let StyleFSharpFiles(rootDir: DirectoryInfo) =
                 )
                 .UnwrapDefault()
 
-        installedPackages.Split Environment.NewLine 
-        |> Seq.map (fun line -> line.Contains "fantomless-tool" && line.Contains fantomlessToolVersion)
+        installedPackages.Split Environment.NewLine
+        |> Seq.map(fun line ->
+            line.Contains "fantomless-tool"
+            && line.Contains fantomlessToolVersion
+        )
         |> Seq.contains true
-    
+
     if not(isFantomlessInstalled) then
         InstallFantomlessTool(fantomlessToolVersion)
 
