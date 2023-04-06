@@ -91,20 +91,22 @@ let UnwrapPrettierResult(processResult: ProcessResult) : string =
         printfn "HERE3"
         fullErrMsg
 
+let IsProcessSuccessful(processResult: ProcessResult) : bool =
+    match processResult.Result with
+    | Success output -> true
+    | _ -> false
+
 let InstallPrettier(version: string) =
     let isPrettierInstalled =
-        let installedPackages =
-            UnwrapPrettierResult(
-                Process.Execute(
-                    {
-                        Command = "npm"
-                        Arguments = $"list prettier@{version}"
-                    },
-                    Echo.All
-                )
+        IsProcessSuccessful(
+            Process.Execute(
+                {
+                    Command = "npm"
+                    Arguments = $"list prettier@{version}"
+                },
+                Echo.All
             )
-
-        installedPackages.Contains $"prettier@{version}"
+        )
 
     if not(isPrettierInstalled) then
         UnwrapPrettierResult(
@@ -120,18 +122,15 @@ let InstallPrettier(version: string) =
 
 let InstallPrettierPluginXml(version: string) =
     let isPrettierPluginXmlInstalled =
-        let installedPackages =
-            Process
-                .Execute(
-                    {
-                        Command = "npm"
-                        Arguments = $"list @prettier/plugin-xml@{version}"
-                    },
-                    Echo.Off
-                )
-                .UnwrapDefault()
-
-        installedPackages.Contains $"@prettier/plugin-xml@{version}"
+        IsProcessSuccessful(
+            Process.Execute(
+                {
+                    Command = "npm"
+                    Arguments = $"list @prettier/plugin-xml@{version}"
+                },
+                Echo.Off
+            )
+        )
 
     if not(isPrettierPluginXmlInstalled) then
         Process
@@ -334,11 +333,6 @@ let PrintProcessResult (processResult: ProcessResult) (suggestion: string) =
 
         let fullErrMsg = sprintf "%s (with warnings?)" errMsg
         Console.Error.WriteLine fullErrMsg
-
-let IsProcessSuccessful(processResult: ProcessResult) : bool =
-    match processResult.Result with
-    | Success output -> true
-    | _ -> false
 
 let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
