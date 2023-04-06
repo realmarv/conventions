@@ -105,11 +105,37 @@ let StyleCSharpFiles(rootDir: DirectoryInfo) =
     |> ignore
 
 let StyleXamlFiles() =
-    let isPrettierInstalled = false
-    let isPrettierPluginXmlInstalled = false
+    let isPrettierInstalled =
+        let installedPackages =
+            Process
+                .Execute(
+                    {
+                        Command = "npm"
+                        Arguments = $"list prettier@{prettierVersion}"
+                    },
+                    Echo.Off
+                )
+                .UnwrapDefault()
+
+        installedPackages.Contains $"prettier@{prettierVersion}"
 
     if not(isPrettierInstalled) then
         InstallPrettier(prettierVersion)
+
+    let isPrettierPluginXmlInstalled =
+        let installedPackages =
+            Process
+                .Execute(
+                    {
+                        Command = "npm"
+                        Arguments =
+                            $"list @prettier/plugin-xml@{pluginXmlVersion}"
+                    },
+                    Echo.Off
+                )
+                .UnwrapDefault()
+
+        installedPackages.Contains $"@prettier/plugin-xml@{pluginXmlVersion}"
 
     if not(isPrettierPluginXmlInstalled) then
         InstallPrettierPluginXml(pluginXmlVersion)
