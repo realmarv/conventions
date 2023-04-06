@@ -66,7 +66,8 @@ let StyleXamlFiles() =
         .Execute(
             {
                 Command = "npm"
-                Arguments = "install --save-dev prettier @prettier/plugin-xml"
+                Arguments =
+                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml"
             },
             Echo.Off
         )
