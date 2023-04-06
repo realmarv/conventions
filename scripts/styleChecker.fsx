@@ -68,7 +68,7 @@ let InstallPrettier(version: string) =
                         Command = "npm"
                         Arguments = $"list prettier@{version}"
                     },
-                    Echo.Off
+                    Echo.All
                 )
                 .UnwrapDefault()
 
