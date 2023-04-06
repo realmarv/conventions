@@ -38,6 +38,26 @@ let InstallFantomlessTool(version: string) =
         .UnwrapDefault()
     |> ignore
 
+let InstallPrettier(version: string) =
+    Process.Execute(
+        {
+            Command = "npm"
+            Arguments = $"install prettier@{version}"
+        },
+        Echo.Off
+    )
+    |> ignore
+
+let InstallPrettierPluginXml(version: string) =
+    Process.Execute(
+        {
+            Command = "npm"
+            Arguments = $"install @prettier/plugin-xml@{version}"
+        },
+        Echo.Off
+    )
+    |> ignore
+
 let StyleFSharpFiles(rootDir: DirectoryInfo) =
     let isFantomlessInstalled =
         let installedPackages: string =
@@ -85,6 +105,15 @@ let StyleCSharpFiles(rootDir: DirectoryInfo) =
     |> ignore
 
 let StyleXamlFiles() =
+    let isPrettierInstalled = false
+    let isPrettierPluginXmlInstalled = false
+
+    if not(isPrettierInstalled) then
+        InstallPrettier(prettierVersion)
+
+    if not(isPrettierPluginXmlInstalled) then
+        InstallPrettierPluginXml(pluginXmlVersion)
+
     Process
         .Execute(
             {
@@ -212,18 +241,6 @@ let GitRestore() =
             {
                 Command = "git"
                 Arguments = "restore ."
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-let InstallPrettier(version: string) =
-    Process
-        .Execute(
-            {
-                Command = "npm"
-                Arguments = $"install prettier@{version}"
             },
             Echo.Off
         )
