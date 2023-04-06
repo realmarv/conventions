@@ -118,26 +118,28 @@ let InstallPrettier(version: string) =
 let InstallPrettierPluginXml(version: string) =
     let isPrettierPluginXmlInstalled =
         let installedPackages =
-            Process
-                .Execute(
+            UnwrapPrettierResult(
+                Process.Execute(
                     {
                         Command = "npm"
                         Arguments = $"list @prettier/plugin-xml@{version}"
                     },
                     Echo.Off
                 )
-                .UnwrapDefault()
+            )
 
         installedPackages.Contains $"@prettier/plugin-xml@{version}"
 
     if not(isPrettierPluginXmlInstalled) then
-        Process.Execute(
-            {
-                Command = "npm"
-                Arguments = $"install @prettier/plugin-xml@{version}"
-            },
-            Echo.Off
-        )
+        Process
+            .Execute(
+                {
+                    Command = "npm"
+                    Arguments = $"install @prettier/plugin-xml@{version}"
+                },
+                Echo.Off
+            )
+            .UnwrapDefault()
         |> ignore
 
 let StyleFSharpFiles(rootDir: DirectoryInfo) =
