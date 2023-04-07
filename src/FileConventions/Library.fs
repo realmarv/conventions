@@ -152,24 +152,40 @@ let WrapParagraph (paragraph: string) (count: int) : string =
     let SplitByRegex
         (regexPattern: string)
         (ignoreFunction: string -> bool)
-        (texts: Seq<string>)
+        (texts: seq<string>)
         =
         texts
         |> Seq.map(fun text ->
             if ignoreFunction text then
                 [| text |]
             else
-                Regex.Split(word, regexPattern)
+                Regex.Split(text, regexPattern)
         )
         |> Seq.concat
 
     let words =
         [| paragraph |]
-        |> SplitByRegex codeBlockRegex (fun text -> false)
+        |> SplitByRegex
+            codeBlockRegex
+            (fun text ->
+                printfn "%A" text
+                false
+            )
         |> SplitByRegex
             referenceRegex
             (fun text -> Regex.IsMatch(text, codeBlockRegex))
-        |> Array.toList
+        |> SplitByRegex
+            "\s"
+            (fun text ->
+                printfn "text:%A" text 
+                Regex.IsMatch(text, codeBlockRegex)
+                || Regex.IsMatch(text, referenceRegex)
+            )
+        |> Seq.toList
+
+    printfn "%A" words
+    printfn "%A" words.Tail
+    printfn "%A" words.Head
 
     words.Tail
     |> splitIntoLines [] words.Head
