@@ -114,13 +114,13 @@ let WrapParagraph (paragraph: string) (count: int) : string =
             Environment.NewLine + "```" + Environment.NewLine
         )
 
-    paragraph <- modifyCodeBlocks(paragraph)
+    let newParagraph = modifyCodeBlocks(paragraph)
 
     let rec splitIntoLines
         (acc: string list)
         (currLine: string)
-        (words: string list)
         (insideCodeBlock: bool)
+        (words: string list)
         =
         match words with
         | [] -> currLine :: acc
@@ -130,7 +130,7 @@ let WrapParagraph (paragraph: string) (count: int) : string =
                 let newAcc = "```" :: currLine.Trim() :: acc
                 let newLine = rest.[0]
                 let newWords = words.Tail
-                splitIntoLines newAcc newLine newWords
+                splitIntoLines newAcc newLine newInsideCodeBlock newWords
             else
                 let newLineCharacterCount = currLine.Length + word.Length + 1
 
@@ -146,11 +146,11 @@ let WrapParagraph (paragraph: string) (count: int) : string =
                     else
                         currLine + " " + word
 
-                splitIntoLines newAcc newLine rest
+                splitIntoLines newAcc newLine insideCodeBlock rest
 
-    let words = paragraph.Split([| ' ' |]) |> Array.toList
+    let words = newParagraph.Split([| ' ' |]) |> Array.toList
 
     words.Tail
-    |> splitIntoLines [] words.Head
+    |> splitIntoLines [] words.Head (words.Tail = "```")
     |> List.rev
     |> String.concat Environment.NewLine
