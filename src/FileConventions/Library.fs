@@ -106,29 +106,47 @@ let EolAtEof(fileInfo: FileInfo) =
             True
 
 let WrapParagraph (paragraph: string) (count: int) : string =
+
+    let modifyCodeBlocks(text: string) =
+        Regex.Replace(
+            text,
+            @"\s*```\s*",
+            Environment.NewLine + "```" + Environment.NewLine
+        )
+
+    paragraph <- modifyCodeBlocks(paragraph)
+
     let rec splitIntoLines
         (acc: string list)
         (currLine: string)
         (words: string list)
+        (insideCodeBlock: bool)
         =
         match words with
         | [] -> currLine :: acc
         | word :: rest ->
-            let newLineCharacterCount = currLine.Length + word.Length + 1
+            if word = "```" then
+                let newInsideCodeBlock = not(insideCodeBlock)
+                let newAcc = "```" :: currLine.Trim() :: acc
+                let newLine = rest.[0]
+                let newWords = words.Tail
+                splitIntoLines newAcc newLine newWords
+            else
+                let newLineCharacterCount = currLine.Length + word.Length + 1
 
-            let newAcc =
-                if newLineCharacterCount > count then
-                    currLine.Trim() :: acc
-                else
-                    acc
+                let newAcc =
+                    if newLineCharacterCount > count then
+                        currLine.Trim() :: acc
+                    else
+                        acc
 
-            let newLine =
-                if newLineCharacterCount > count then
-                    word
-                else
-                    currLine + " " + word
+                let newLine =
+                    if newLineCharacterCount > count then
+                        word
+                    else
+                        currLine + " " + word
 
-            splitIntoLines newAcc newLine rest
+                splitIntoLines newAcc newLine rest
 
     let words = paragraph.Split([| ' ' |]) |> Array.toList
 
