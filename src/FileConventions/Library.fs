@@ -109,6 +109,8 @@ let WrapParagraph (paragraph: string) (count: int) : string =
 
     let codeBlockRegex = "\s*(```[\s\S]*```)\s*"
 
+    let referenceRegex = "(^\[\d*\].*)"
+
     let rec splitIntoLines
         (acc: string list)
         (currLine: string)
@@ -118,8 +120,9 @@ let WrapParagraph (paragraph: string) (count: int) : string =
         | [] -> currLine :: acc
         | word :: rest ->
             let wordIsCodeBlock = Regex.IsMatch(word, codeBlockRegex)
+            let wordIsReference = Regex.IsMatch(word, referenceRegex)
 
-            if wordIsCodeBlock then
+            if wordIsCodeBlock || wordIsReference then
                 let newAcc = word :: currLine.Trim() :: acc
 
                 if rest.IsEmpty then
@@ -146,18 +149,27 @@ let WrapParagraph (paragraph: string) (count: int) : string =
 
                 splitIntoLines newAcc newLine rest
 
-    let words =
-        Regex.Split(paragraph, codeBlockRegex)
-        |> Array.map(fun word ->
-            if Regex.IsMatch(word, codeBlockRegex) then
-                [| word |]
+    let SplitByRegex
+        (regexPattern: string)
+        (ignoreFunction: string -> bool)
+        (texts: Seq<string>)
+        =
+        texts
+        |> Seq.map(fun text ->
+            if ignoreFunction text then
+                [| text |]
             else
-                word.Split([| ' ' |])
-
+                Regex.Split(word, regexPattern)
         )
-        |> Array.concat
-        |> Array.toList
+        |> Seq.concat
 
+    let words =
+        [| paragraph |]
+        |> SplitByRegex codeBlockRegex (fun text -> false)
+        |> SplitByRegex
+            referenceRegex
+            (fun text -> Regex.IsMatch(text, codeBlockRegex))
+        |> Array.toList
 
     words.Tail
     |> splitIntoLines [] words.Head
