@@ -114,14 +114,16 @@ let WrapParagraph (paragraph: string) (count: int) : string =
         match words with
         | [] -> currLine :: acc
         | word :: rest ->
+            let newLineCharacterCount = currLine.Length + word.Length + 1
+
             let newAcc =
-                if currLine.Length + word.Length + 1 > count then
+                if newLineCharacterCount > count then
                     currLine.Trim() :: acc
                 else
                     acc
 
             let newLine =
-                if currLine.Length + word.Length + 1 > count then
+                if newLineCharacterCount > count then
                     word
                 else
                     currLine + " " + word
