@@ -293,3 +293,19 @@ let WrapParagraphTest2() =
         WrapParagraph paragraph characterCount,
         Is.EqualTo expectedResult
     )
+
+[<Test>]
+let WrapParagraphTest3() =
+    let characterCount = 64
+
+    let paragraph =
+        "This is short line referring to [1]."
+        + Environment.NewLine
+        + "[1] This is a very very very very long line with more than 64 characters"
+    
+    let expectedResult = paragraph
+
+    Assert.That(
+        WrapParagraph paragraph characterCount,
+        Is.EqualTo expectedResult
+    )
