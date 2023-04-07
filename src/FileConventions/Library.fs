@@ -106,7 +106,31 @@ let EolAtEof(fileInfo: FileInfo) =
             True
 
 let WrapParagraph (paragraph: string) (count: int) : string =
-    printfn
-        $"This function wraps \"{paragraph}\" into a certain character count ({count}) per line."
+    let rec splitIntoLines
+        (acc: string list)
+        (currLine: string)
+        (words: string list)
+        =
+        match words with
+        | [] -> currLine :: acc
+        | word :: rest ->
+            let newAcc =
+                if currLine.Length + word.Length + 1 > count then
+                    currLine.Trim() :: acc
+                else
+                    acc
 
-    ""
+            let newLine =
+                if currLine.Length + word.Length + 1 > count then
+                    word
+                else
+                    currLine + " " + word
+
+            splitIntoLines newAcc newLine rest
+
+    let words = paragraph.Split([| ' ' |]) |> Array.toList
+
+    words.Tail
+    |> splitIntoLines [] words.Head
+    |> List.rev
+    |> String.concat Environment.NewLine
