@@ -107,30 +107,28 @@ let EolAtEof(fileInfo: FileInfo) =
 
 let WrapParagraph (paragraph: string) (count: int) : string =
 
-    let modifyCodeBlocks(text: string) =
-        Regex.Replace(
-            text,
-            @"\s*```\s*",
-            Environment.NewLine + "```" + Environment.NewLine
-        )
-
-    let newParagraph = modifyCodeBlocks(paragraph)
+    let codeBlockRegex = "\s*(```[\s\S]*```)\s*"
 
     let rec splitIntoLines
         (acc: string list)
         (currLine: string)
-        (insideCodeBlock: bool)
         (words: string list)
         =
         match words with
         | [] -> currLine :: acc
         | word :: rest ->
-            if word = "```" then
-                let newInsideCodeBlock = not(insideCodeBlock)
-                let newAcc = "```" :: currLine.Trim() :: acc
-                let newLine = rest.[0]
-                let newWords = words.Tail
-                splitIntoLines newAcc newLine newInsideCodeBlock newWords
+            let wordIsCodeBlock = Regex.IsMatch(word, codeBlockRegex)
+
+            if wordIsCodeBlock then
+                let newAcc = word :: currLine.Trim() :: acc
+
+                if rest.IsEmpty then
+                    splitIntoLines newAcc "" rest
+                else
+                    let newLine = rest.Head
+                    let newRest = rest.Tail
+                    splitIntoLines newAcc newLine newRest
+
             else
                 let newLineCharacterCount = currLine.Length + word.Length + 1
 
@@ -146,11 +144,23 @@ let WrapParagraph (paragraph: string) (count: int) : string =
                     else
                         currLine + " " + word
 
-                splitIntoLines newAcc newLine insideCodeBlock rest
+                splitIntoLines newAcc newLine rest
 
-    let words = newParagraph.Split([| ' ' |]) |> Array.toList
+    let words =
+        Regex.Split(paragraph, codeBlockRegex)
+        |> Array.map(fun word ->
+            if Regex.IsMatch(word, codeBlockRegex) then
+                [| word |]
+            else
+                word.Split([| ' ' |])
+
+        )
+        |> Array.concat
+        |> Array.toList
+
 
     words.Tail
-    |> splitIntoLines [] words.Head (words.Tail = "```")
+    |> splitIntoLines [] words.Head
     |> List.rev
     |> String.concat Environment.NewLine
+    |> (fun wrappedText -> wrappedText.Trim())
