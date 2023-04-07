@@ -104,3 +104,9 @@ let EolAtEof(fileInfo: FileInfo) =
                 False
         else
             True
+
+let WrapParagraph (paragraph: string) (count: int) : string =
+    printfn
+        $"This function wraps \"{paragraph}\" into a certain character count ({count}) per line."
+
+    ""
