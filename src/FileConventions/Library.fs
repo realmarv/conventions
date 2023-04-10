@@ -105,6 +105,20 @@ let EolAtEof(fileInfo: FileInfo) =
         else
             True
 
+let IsFooterReference(line: string) : bool =
+    line.[0] = '[' && line.IndexOf "] " > 0
+
+let IsFixesOrClosesSentence(line: string) : bool =
+    line.IndexOf "Fixes " = 0 || line.IndexOf "Closes " = 0
+
+let IsCoAuthoredByTag(line: string) : bool =
+    line.IndexOf "Co-authored-by: " = 0
+
+let IsFooterNote(line: string) : bool =
+    IsFooterReference line
+    || IsCoAuthoredByTag line
+    || IsFixesOrClosesSentence line
+
 type Word =
     | CodeBlock
     | FooterNote
@@ -176,4 +190,4 @@ let WrapParagraph (paragraph: string) (maxCharsPerLine: int) : string =
             wrappedText <- wrappedText + currentLine + Environment.NewLine
             currentLine <- word.Text
 
-    wrappedText + Environment.NewLine + currentLine
+    (wrappedText + currentLine).Trim()
