@@ -167,7 +167,12 @@ let WrapParagraph (paragraph: string) (count: int) : string =
 
     let words =
         [| paragraph |]
-        |> SplitByRegex codeBlockRegex (fun text -> false)
+        |> SplitByRegex
+            codeBlockRegex
+            (fun text ->
+                printfn "%A" text
+                false
+            )
         |> SplitByRegex
             splitReferenceRegex
             (fun text -> Regex.IsMatch(text, codeBlockRegex))
