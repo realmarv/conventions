@@ -191,3 +191,7 @@ let WrapParagraph (paragraph: string) (maxCharsPerLine: int) : string =
             currentLine <- word.Text
 
     (wrappedText + currentLine).Trim()
+
+let WrapText (text: string) (maxCharsPerLine: int) : string =
+    printfn "%A %A" text maxCharsPerLine
+    ""
