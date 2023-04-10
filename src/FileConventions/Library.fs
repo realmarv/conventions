@@ -109,7 +109,8 @@ let WrapParagraph (paragraph: string) (count: int) : string =
 
     let codeBlockRegex = "\s*(```[\s\S]*```)\s*"
 
-    let referenceRegex = "(^\[\d*\].*)"
+    let referenceRegex = "(\[\d*\].*)"
+    let splitReferenceRegex = "\n(\[\d*\].*)"
 
     let rec splitIntoLines
         (acc: string list)
@@ -162,33 +163,28 @@ let WrapParagraph (paragraph: string) (count: int) : string =
                 Regex.Split(text, regexPattern)
         )
         |> Seq.concat
+        |> Seq.filter(fun word -> word <> "")
 
     let words =
         [| paragraph |]
+        |> SplitByRegex codeBlockRegex (fun text -> false)
         |> SplitByRegex
-            codeBlockRegex
-            (fun text ->
-                printfn "%A" text
-                false
-            )
-        |> SplitByRegex
-            referenceRegex
+            splitReferenceRegex
             (fun text -> Regex.IsMatch(text, codeBlockRegex))
         |> SplitByRegex
             "\s"
             (fun text ->
-                printfn "text==>%A<==" text 
                 Regex.IsMatch(text, codeBlockRegex)
                 || Regex.IsMatch(text, referenceRegex)
             )
+
         |> Seq.toList
 
-    printfn "%A" words
-    printfn "%A" words.Tail
-    printfn "%A" words.Head
+    let output =
+        words.Tail
+        |> splitIntoLines [] words.Head
+        |> List.rev
+        |> String.concat Environment.NewLine
+        |> (fun wrappedText -> wrappedText.Trim())
 
-    words.Tail
-    |> splitIntoLines [] words.Head
-    |> List.rev
-    |> String.concat Environment.NewLine
-    |> (fun wrappedText -> wrappedText.Trim())
+    output
