@@ -177,7 +177,7 @@ let WrapParagraph (paragraph: string) (count: int) : string =
         |> SplitByRegex
             "\s"
             (fun text ->
-                printfn "text:%A" text 
+                printfn "text==>%A<==" text 
                 Regex.IsMatch(text, codeBlockRegex)
                 || Regex.IsMatch(text, referenceRegex)
             )
