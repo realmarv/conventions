@@ -193,5 +193,8 @@ let WrapParagraph (paragraph: string) (maxCharsPerLine: int) : string =
     (wrappedText + currentLine).Trim()
 
 let WrapText (text: string) (maxCharsPerLine: int) : string =
-    printfn "%A %A" text maxCharsPerLine
-    ""
+    let wrappedParagraphs =
+        text.Split($"{Environment.NewLine}{Environment.NewLine}")
+        |> Seq.map(fun paragraph -> WrapParagraph paragraph maxCharsPerLine)
+    
+    String.Join($"{Environment.NewLine}{Environment.NewLine}", wrappedParagraphs)
