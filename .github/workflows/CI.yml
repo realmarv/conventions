@@ -5,7 +5,6 @@ on: [push, pull_request]
 jobs:
   file-conventions-tests:
     name: Run FileConventions-lib unit tests
-    needs: build
     runs-on: ubuntu-22.04
     container:
       image: "ubuntu:22.04"
