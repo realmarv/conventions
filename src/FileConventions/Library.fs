@@ -181,6 +181,8 @@ let SplitIntoWords(text: string) =
 let WrapText (text: string) (maxCharsPerLine: int) : string =
     let words = SplitIntoWords text
 
+    printfn "words:%A" words
+
     let mutable currentLine = ""
     let mutable wrappedText = ""
 
