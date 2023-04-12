@@ -145,7 +145,7 @@ let SplitIntoWords(text: string) =
             else
                 {
                     Text = item
-                    Type = CodeBlock
+                    Type = PlainText
                 }
         )
         |> Seq.map(fun paragraph ->
