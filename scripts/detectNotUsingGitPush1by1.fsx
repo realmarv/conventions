@@ -830,6 +830,8 @@ let prCommits =
     let parsedPrCommitsJsonObj = PRCommitsType.Parse prCommitsJsonString
     parsedPrCommitsJsonObj |> Seq.map(fun commit -> commit.Sha)
 
+printfn "prCommits:%A" prCommits
+
 let notUsingGitPush1by1 =
     prCommits
     |> Seq.map(fun commit ->
