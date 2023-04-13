@@ -19,7 +19,6 @@ if String.IsNullOrEmpty githubEventPath then
 
     Environment.Exit 2
 
-let accessToken = Environment.GetEnvironmentVariable "ACCESS_TOKEN"
 (*
 To save your GitHub access token as an environment variable in GitHub
 Actions, you can use the secrets feature in GitHub. In your GitHub Actions
@@ -38,6 +37,7 @@ jobs:
       ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 *)
+let accessToken = Environment.GetEnvironmentVariable "ACCESS_TOKEN"
 
 type githubEventType =
     JsonProvider<"""
