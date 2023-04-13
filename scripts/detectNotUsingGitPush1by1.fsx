@@ -19,6 +19,26 @@ if String.IsNullOrEmpty githubEventPath then
 
     Environment.Exit 2
 
+(*
+To save your GitHub access token as an environment variable in GitHub
+Actions, you can use the secrets feature in GitHub. In your GitHub Actions
+workflow file, you can reference the secret as an environment variable using
+the syntax ${{ secrets.GITHUB_TOKEN }}. For example:
+
+```
+name: My Workflow
+
+on: [push, pull_request]
+
+jobs:
+  my_job:
+    runs-on: ubuntu-latest
+    env:
+      ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+*)
+let accessToken = Environment.GetEnvironmentVariable "ACCESS_TOKEN"
+
 type githubEventType =
     JsonProvider<"""
 {
@@ -779,7 +799,7 @@ type PRCommitsType =
   ]
 """>
 
-let GitHubApiCall(url: string) =
+let GitHubApiCall (url: string) (accessToken: string) =
     let userAgent = ".NET App"
     let xGitHubApiVersion = "2022-11-28"
 
@@ -794,13 +814,23 @@ let GitHubApiCall(url: string) =
     client.DefaultRequestHeaders.Add("User-Agent", userAgent)
     client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", xGitHubApiVersion)
 
+    if not(String.IsNullOrEmpty accessToken) then
+        client.DefaultRequestHeaders.Add(
+            "Authorization",
+            $"token {accessToken}"
+        )
+
     (client.GetStringAsync url).Result
 
 let prCommits =
     let url = parsedJsonObj.PullRequest.Links.Commits.Href
-    let prCommitsJsonString = GitHubApiCall url
+
+    let prCommitsJsonString = GitHubApiCall url accessToken
+
     let parsedPrCommitsJsonObj = PRCommitsType.Parse prCommitsJsonString
     parsedPrCommitsJsonObj |> Seq.map(fun commit -> commit.Sha)
+
+printfn "prCommits:%A" prCommits
 
 let notUsingGitPush1by1 =
     prCommits
@@ -812,7 +842,7 @@ let notUsingGitPush1by1 =
                 gitRepo
                 commit
 
-        let json = GitHubApiCall url
+        let json = GitHubApiCall url accessToken
 
         json.Contains "\"check_suites\":[]"
     )
