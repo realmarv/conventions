@@ -401,6 +401,51 @@ export abstract class Plugins {
         ];
     }
 
+    public static bodyParagraphLineMinLength(
+        bodyStr: string | null,
+        paragraphLineMinLength: number
+    ) {
+        let offence = false;
+
+        if (bodyStr !== null) {
+            let paragraphs = bodyStr.split(/\r?\n\r?\n/);
+            for (let paragraph of paragraphs) {
+                let lines = paragraph.split(/\r?\n/);
+                let inBigBlock = false;
+                for (let line of lines) {
+                    if (Helpers.isBigBlock(line)) {
+                        inBigBlock = !inBigBlock;
+                        continue;
+                    }
+                    if (inBigBlock) {
+                        continue;
+                    }
+                    if (line.length < paragraphLineMinLength) {
+                        let isUrl = Helpers.isValidUrl(line);
+
+                        let lineIsFooterNote = Helpers.isFooterNote(line);
+
+                        if (
+                            !isUrl &&
+                            !lineIsFooterNote &&
+                            line !== lines[lines.length - 1]
+                        ) {
+                            offence = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return [
+            !offence,
+            `Please do not subceed ${paragraphLineMinLength} characters in the lines of the commit message's body; we recommend this script (for editing the last commit message): \n` +
+                "https://github.com/nblockchain/conventions/blob/master/scripts/wrapLatestCommitMsg.fsx" +
+                Helpers.errMessageSuffix,
+        ];
+    }
+
     public static trailingWhitespace(rawStr: string) {
         let offence = false;
 
