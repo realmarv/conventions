@@ -209,7 +209,7 @@ let private WrapParagraph (text: string) (maxCharsPerLine: int) : string =
                     rest
             | _, _ ->
                 processWords
-                    ""
+                    String.Empty
                     (wrappedText
                      + currentLine
                      + Environment.NewLine
@@ -217,7 +217,7 @@ let private WrapParagraph (text: string) (maxCharsPerLine: int) : string =
                      + Environment.NewLine)
                     rest
 
-    processWords "" "" words
+    processWords String.Empty String.Empty words
 
 let WrapText (text: string) (maxCharsPerLine: int) : string =
     let wrappedParagraphs =
