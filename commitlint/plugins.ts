@@ -408,20 +408,29 @@ export abstract class Plugins {
         let offence = false;
 
         if (bodyStr !== null) {
+            bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
+
             let paragraphs = bodyStr.split(/\r?\n\r?\n/);
             for (let paragraph of paragraphs) {
                 let lines = paragraph.split(/\r?\n/);
                 let inBigBlock = false;
-                for (let line of lines) {
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+
                     if (Helpers.isBigBlock(line)) {
                         inBigBlock = !inBigBlock;
                         continue;
                     }
-                    if (inBigBlock) {
+                    if (inBigBlock || i === lines.length - 1) {
                         continue;
                     }
+
+                    let nextLine = lines[i + 1];
+
                     if (line.length < paragraphLineMinLength) {
-                        let isUrl = Helpers.isValidUrl(line);
+                        let isUrl =
+                            Helpers.isValidUrl(line) ||
+                            Helpers.isValidUrl(nextLine);
 
                         let lineIsFooterNote = Helpers.isFooterNote(line);
 
