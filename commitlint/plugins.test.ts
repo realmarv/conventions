@@ -323,6 +323,18 @@ test("body-max-line-length8", () => {
     expect(bodyMaxLineLength8.status).toBe(1);
 });
 
+test("body-paragraph-line-min-length1", () => {
+    let tenChars = "1234 67890";
+    let fortyChars = tenChars + tenChars + tenChars + tenChars;
+    let sixtyChars = fortyChars + tenChars + tenChars;
+    let commitMsgWithFortyCharsInBody =
+        "foo: this is only a title\n\n" + fortyChars + ".\n" + sixtyChars + ".";
+    let bodyParagraphLineMinLength1 = runCommitLintOnMsg(
+        commitMsgWithFortyCharsInBody
+    );
+    expect(bodyParagraphLineMinLength1.status).not.toBe(0);
+});
+
 test("commit-hash-alone1", () => {
     let commitMsgWithCommitUrl =
         "foo: this is only a title" +
