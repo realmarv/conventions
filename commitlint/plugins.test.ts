@@ -335,6 +335,18 @@ test("body-paragraph-line-min-length1", () => {
     expect(bodyParagraphLineMinLength1.status).not.toBe(0);
 });
 
+test("body-paragraph-line-min-length2", () => {
+    let commitMsgWithCommitUrlAtTheEndOfBodyParagraph =
+        "foo: this is only a title\n\n" +
+        "Foo bar:\n" +
+        "https://github.com/username/repo/commit/1234567891234567891234567891234567891234";
+    let bodyParagraphLineMinLength2 = runCommitLintOnMsg(
+        commitMsgWithCommitUrlAtTheEndOfBodyParagraph
+    );
+
+    expect(bodyParagraphLineMinLength2.status).toBe(0);
+});
+
 test("commit-hash-alone1", () => {
     let commitMsgWithCommitUrl =
         "foo: this is only a title" +
