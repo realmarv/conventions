@@ -213,8 +213,9 @@ module.exports = {
                 "body-paragraph-line-min-length": (
                     { body }: { body: any },
                     _: any,
-                    boundary: Int32List
+                    boundary
                 ) => {
+                    console.log("=boundary=>" + boundary + "<=boundary=")
                     let [minLineLength, maxLineLength] = boundary;
                     let bodyStr = Helpers.convertAnyToString(body, "body");
                     return Plugins.bodyParagraphLineMinLength(
