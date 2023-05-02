@@ -22,7 +22,7 @@ module.exports = {
         "body-paragraph-line-min-length": [
             RuleConfigSeverity.Error,
             "always",
-            headerMaxLineLength
+            [headerMaxLineLength, bodyMaxLineLength]
         ],
         "empty-wip": [RuleConfigSeverity.Error, "always"],
         "footer-leading-blank": [RuleConfigSeverity.Warning, "always"],
@@ -213,13 +213,14 @@ module.exports = {
                 "body-paragraph-line-min-length": (
                     { body }: { body: any },
                     _: any,
-                    minLineLength: number
+                    boundary: Int32List
                 ) => {
+                    let [minLineLength, maxLineLength] = boundary;
                     let bodyStr = Helpers.convertAnyToString(body, "body");
                     return Plugins.bodyParagraphLineMinLength(
                         bodyStr,
                         minLineLength, 
-                        bodyMaxLineLength
+                        maxLineLength
                     );
                 },
 
