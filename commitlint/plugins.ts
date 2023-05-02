@@ -410,9 +410,11 @@ export abstract class Plugins {
 
         if (bodyStr !== null) {
             bodyStr = Helpers.removeAllCodeBlocks(bodyStr).trim();
-
+            console.log("=bodyStr=>" + bodyStr + "<=bodyStr");
             let paragraphs = bodyStr.split(/\r?\n\r?\n/);
             for (let paragraph of paragraphs) {
+                console.log("=paragraph=>" + paragraph + "<=paragraph");
+                
                 let lines = paragraph.split(/\r?\n/);
                 let inBigBlock = false;
                 for (let i = 0; i < lines.length - 1; i++) {
