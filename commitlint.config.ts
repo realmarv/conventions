@@ -23,6 +23,7 @@ module.exports = {
             RuleConfigSeverity.Error,
             "always",
             headerMaxLineLength,
+            bodyMaxLineLength
         ],
         "empty-wip": [RuleConfigSeverity.Error, "always"],
         "footer-leading-blank": [RuleConfigSeverity.Warning, "always"],
@@ -213,12 +214,14 @@ module.exports = {
                 "body-paragraph-line-min-length": (
                     { body }: { body: any },
                     _: any,
-                    minLineLength: number
+                    minLineLength: number,
+                    maxLineLength: number
                 ) => {
                     let bodyStr = Helpers.convertAnyToString(body, "body");
                     return Plugins.bodyParagraphLineMinLength(
                         bodyStr,
-                        minLineLength
+                        minLineLength, 
+                        maxLineLength
                     );
                 },
 
