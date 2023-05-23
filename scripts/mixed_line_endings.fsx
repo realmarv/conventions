@@ -3,7 +3,7 @@
 open System
 open System.IO
 
-#r "nuget: YamlDotNet, Version=13.0.2"
+#r "nuget: YamlDotNet, Version=13.1.0"
 #load "../src/FileConventions/Library.fs"
 #load "../src/FileConventions/Helpers.fs"
 
