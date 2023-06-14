@@ -733,7 +733,7 @@ test("header-max-length-with-suggestions12", () => {
 test("proper-issue-refs1", () => {
     let commitMsgWithHashtagRef = "foo: blah blah" + "\n\n" + "Blah blah #123.";
     let properIssueRefs1 = runCommitLintOnMsg(commitMsgWithHashtagRef);
-    console.log("==>" + properIssueRefs1.stdout + "<==")
+    console.log("==>" + properIssueRefs1.stdout + "<==");
     expect(properIssueRefs1.status).not.toBe(0);
 });
 

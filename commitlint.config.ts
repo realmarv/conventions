@@ -130,10 +130,9 @@ module.exports = {
                     return Plugins.preferSlashOverBackslash(headerStr);
                 },
 
-                "proper-issue-refs": (
-                    { raw }: { raw: any },
-                    { body }: { body: any }
-                ) => {
+                "proper-issue-refs": (commit: any) => {
+                    let raw = commit.raw;
+                    let body = commit.body;
                     let rawStr = Helpers.assertNotNull(
                         Helpers.convertAnyToString(raw, "raw"),
                         notNullStringErrorMessage("raw")
