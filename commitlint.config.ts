@@ -130,13 +130,13 @@ module.exports = {
                     return Plugins.preferSlashOverBackslash(headerStr);
                 },
 
-                "proper-issue-refs": ({ raw }: { raw: any }) => {
-                    let rawStr = Helpers.assertNotNull(
-                        Helpers.convertAnyToString(raw, "raw"),
-                        notNullStringErrorMessage("raw")
+                "proper-issue-refs": ({ body }: { body: any }) => {
+                    let bodyStr = Helpers.assertNotNull(
+                        Helpers.convertAnyToString(body, "body"),
+                        notNullStringErrorMessage("body")
                     );
-
-                    return Plugins.properIssueRefs(rawStr);
+                    console.log("=bodyStr=>" + bodyStr + "<=bodyStr=")
+                    return Plugins.properIssueRefs(bodyStr);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
