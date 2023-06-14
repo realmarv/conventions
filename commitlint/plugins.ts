@@ -249,19 +249,27 @@ export abstract class Plugins {
         ];
     }
 
-    public static properIssueRefs(rawStr: string) {
+    public static properIssueRefs(references: any) {
         let offence = false;
 
-        rawStr = rawStr.trim();
-        let lineBreakIndex = rawStr.indexOf("\n");
-
-        if (lineBreakIndex >= 0) {
-            // Extracting bodyStr from rawStr rather than using body directly is a
-            // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
-            let bodyStr = rawStr.substring(lineBreakIndex);
-            bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
-            offence = Helpers.includesHashtagRef(bodyStr);
+        try {
+            console.log("here1")
+            offence = references[0].prefix === "#";
+            console.log("offence:" + offence);
+        } catch (e) {
+            console.log("here2")
+            console.log(e);
         }
+        // rawStr = rawStr.trim();
+        // let lineBreakIndex = rawStr.indexOf("\n");
+
+        // if (lineBreakIndex >= 0) {
+        //     // Extracting bodyStr from rawStr rather than using body directly is a
+        //     // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
+        //     let bodyStr = rawStr.substring(lineBreakIndex);
+        //     bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
+        //     offence = Helpers.includesHashtagRef(bodyStr);
+        // }
 
         return [
             !offence,
