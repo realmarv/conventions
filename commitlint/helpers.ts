@@ -27,6 +27,16 @@ export abstract class Helpers {
         return String(potentialString);
     }
 
+    // public static convertAnyToArray(
+    //     potentialArray: any
+    // ): Array<string> | null {
+    //     if (potentialArray === null || potentialArray === undefined) {
+    //         // otherwise, String(null) might give us the stupid string "null"
+    //         return null;
+    //     }
+    //     return Array(potentialArray);
+    // }
+
     public static assertNotNull(
         text: string | null,
         errorMessage: string

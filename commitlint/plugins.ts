@@ -249,18 +249,11 @@ export abstract class Plugins {
         ];
     }
 
-    public static properIssueRefs(rawStr: string) {
+    public static properIssueRefs(references) {
         let offence = false;
-
-        rawStr = rawStr.trim();
-        let lineBreakIndex = rawStr.indexOf("\n");
-
-        if (lineBreakIndex >= 0) {
-            // Extracting bodyStr from rawStr rather than using body directly is a
-            // workaround for https://github.com/conventional-changelog/commitlint/issues/3412
-            let bodyStr = rawStr.substring(lineBreakIndex);
-            bodyStr = Helpers.removeAllCodeBlocks(bodyStr);
-            offence = Helpers.includesHashtagRef(bodyStr);
+        for (let ref of references) {
+            let rawRef = ref.raw
+            offence = Helpers.includesHashtagRef(rawRef);
         }
 
         return [
