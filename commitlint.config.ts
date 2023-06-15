@@ -143,7 +143,7 @@ module.exports = {
                     // );
                     // console.log("=raw=>" + rawStr + "<=raw=");
                     // console.log("=body=>" + bodyStr + "<=body=");
-                    return Plugins.properIssueRefs("rawStr");
+                    return Plugins.properIssueRefs(references);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {

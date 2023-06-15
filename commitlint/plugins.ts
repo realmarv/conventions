@@ -249,7 +249,7 @@ export abstract class Plugins {
         ];
     }
 
-    public static properIssueRefs(rawStr: string) {
+    public static properIssueRefs(references: any) {
         let offence = false;
 
         // rawStr = rawStr.trim();
