@@ -253,8 +253,10 @@ export abstract class Plugins {
         let offence = false;
 
         try {
+            console.log("here1")
             offence = references[0].prefix === "#";
         } catch (e) {
+            console.log("here2")
             console.log(e);
         }
         // rawStr = rawStr.trim();
