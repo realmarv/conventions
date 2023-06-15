@@ -130,19 +130,19 @@ module.exports = {
                     return Plugins.preferSlashOverBackslash(headerStr);
                 },
 
-                "proper-issue-refs": ({ body, raw }: { body: any, raw: any}) => {
-
-                    let rawStr = Helpers.assertNotNull(
-                        Helpers.convertAnyToString(raw, "raw"),
-                        notNullStringErrorMessage("raw")
-                    );
-                    let bodyStr = Helpers.assertNotNull(
-                        Helpers.convertAnyToString(body, "body"),
-                        notNullStringErrorMessage("body")
-                    );
-                    console.log("=raw=>" + rawStr + "<=raw=");
-                    console.log("=body=>" + bodyStr + "<=body=");
-                    return Plugins.properIssueRefs(rawStr);
+                "proper-issue-refs": ({ references }: { references: any }) => {
+                    console.log("=references=>" + references)
+                    // let rawStr = Helpers.assertNotNull(
+                    //     Helpers.convertAnyToString(raw, "raw"),
+                    //     notNullStringErrorMessage("raw")
+                    // );
+                    // let bodyStr = Helpers.assertNotNull(
+                    //     Helpers.convertAnyToString(body, "body"),
+                    //     notNullStringErrorMessage("body")
+                    // );
+                    // console.log("=raw=>" + rawStr + "<=raw=");
+                    // console.log("=body=>" + bodyStr + "<=body=");
+                    return Plugins.properIssueRefs("rawStr");
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
