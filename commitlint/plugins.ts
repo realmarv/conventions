@@ -252,6 +252,11 @@ export abstract class Plugins {
     public static properIssueRefs(references: any) {
         let offence = false;
 
+        try {
+            offence = references[0].prefix === "#";
+        } catch (e) {
+            console.log(e);
+        }
         // rawStr = rawStr.trim();
         // let lineBreakIndex = rawStr.indexOf("\n");
 
