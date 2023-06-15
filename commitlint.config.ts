@@ -133,6 +133,8 @@ module.exports = {
                 "proper-issue-refs": ({ references }: { references: any }) => {
                     console.log("=references=>" + references);
                     console.log("=>" + references[0].raw);
+                    let refsArray = Helpers.convertAnyToArray(references);
+                    console.log("=refsArray=>" + refsArray);
                     // let rawStr = Helpers.assertNotNull(
                     //     Helpers.convertAnyToString(raw, "raw"),
                     //     notNullStringErrorMessage("raw")
@@ -143,7 +145,7 @@ module.exports = {
                     // );
                     // console.log("=raw=>" + rawStr + "<=raw=");
                     // console.log("=body=>" + bodyStr + "<=body=");
-                    return Plugins.properIssueRefs("rawStr");
+                    return Plugins.properIssueRefs(references);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
