@@ -145,7 +145,7 @@ module.exports = {
                     // );
                     // console.log("=raw=>" + rawStr + "<=raw=");
                     // console.log("=body=>" + bodyStr + "<=body=");
-                    return Plugins.properIssueRefs(references);
+                    return false // Plugins.properIssueRefs(references);
                 },
 
                 "title-uppercase": ({ header }: { header: any }) => {
