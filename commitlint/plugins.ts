@@ -255,6 +255,7 @@ export abstract class Plugins {
         try {
             console.log("here1")
             offence = references[0].prefix === "#";
+            console.log("offence:" + offence);
         } catch (e) {
             console.log("here2")
             console.log(e);
