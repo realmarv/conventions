@@ -251,10 +251,11 @@ export abstract class Plugins {
 
     public static properIssueRefs(references) {
         let offence = false;
-        for (let ref of references) {
-            let rawRef = ref.raw
-            offence = Helpers.includesHashtagRef(rawRef);
-        }
+
+        // for (let ref of references) {
+        //     let rawRef = ref.raw
+        // offence = Helpers.includesHashtagRef(rawRef);
+        // }
 
         return [
             !offence,
