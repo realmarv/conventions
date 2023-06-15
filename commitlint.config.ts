@@ -131,7 +131,8 @@ module.exports = {
                 },
 
                 "proper-issue-refs": ({ references }: { references: any }) => {
-                    console.log("=references=>" + references)
+                    console.log("=references=>" + references);
+                    console.log("=>" + references[0].raw);
                     // let rawStr = Helpers.assertNotNull(
                     //     Helpers.convertAnyToString(raw, "raw"),
                     //     notNullStringErrorMessage("raw")
