@@ -132,7 +132,6 @@ module.exports = {
 
                 "proper-issue-refs": ({ references }: { references: any }) => {
                     console.log("=1=>" + String(references[0].raw))
-                    console.log("=2=>" + String(references[1].raw))
                     // let rawStr = Helpers.assertNotNull(
                     //     Helpers.convertAnyToString(raw, "raw"),
                     //     notNullStringErrorMessage("raw")
