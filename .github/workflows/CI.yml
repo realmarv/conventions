@@ -41,6 +41,5 @@ jobs:
           npm --version
           npx commitlint --version
           yarn --version
-      - run: tsc foo.ts
-      # - name: Run tests to validate our plugins
-      #   run: yarn jest
+      - name: Run tests to validate our plugins
+        run: yarn jest
