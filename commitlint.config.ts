@@ -130,8 +130,9 @@ module.exports = {
                     return Plugins.preferSlashOverBackslash(headerStr);
                 },
 
-                "proper-issue-refs": ({ body }: { body: any }) => {
-                    console.log(String(body))
+                "proper-issue-refs": ({ references }: { references: any }) => {
+                    console.log("=1=>" + String(references[0]))
+                    console.log("=2=>" + String(references[1]))
                     // let rawStr = Helpers.assertNotNull(
                     //     Helpers.convertAnyToString(raw, "raw"),
                     //     notNullStringErrorMessage("raw")
