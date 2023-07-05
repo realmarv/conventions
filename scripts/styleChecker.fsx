@@ -60,8 +60,8 @@ let InstallFantomlessTool(version: string) =
         |> ignore
 
 let UnwrapProcessResult
-    (suggestion: string)
-    (raiseError: bool)
+    (maybeSuggestion: Option<string>)
+    (ignoreErrorExitCode: bool)
     (processResult: ProcessResult)
     : string =
     let errMsg =
@@ -80,13 +80,18 @@ let UnwrapProcessResult
             Console.WriteLine()
             Console.Out.Flush()
 
-        let fullErrMsg = errMsg + Environment.NewLine + suggestion
+        let fullErrMsg =
+            match maybeSuggestion with
+            | Some suggestion -> errMsg + Environment.NewLine + suggestion
+            | None -> errMsg
+
         Console.Error.WriteLine fullErrMsg
 
-        if raiseError then
-            raise <| ProcessFailed errMsg
-        else
+        if ignoreErrorExitCode then
             fullErrMsg
+        else
+            raise <| ProcessFailed errMsg
+
     | WarningsOrAmbiguous output ->
         if processResult.Details.Echo = Echo.Off then
             output.PrintToConsole()
@@ -121,11 +126,11 @@ let InstallPrettier(version: string) =
             },
             Echo.Off
         )
-        |> UnwrapProcessResult "" true
+        |> UnwrapProcessResult None false
         |> ignore
 
 let StyleFSharpFiles(rootDir: DirectoryInfo) =
-    InstallFantomlessTool(fantomlessToolVersion)
+    InstallFantomlessTool fantomlessToolVersion
 
     Process
         .Execute(
@@ -174,8 +179,8 @@ let InstallPrettierPluginXml(version: string) =
         |> ignore
 
 let StyleXamlFiles() =
-    InstallPrettier(prettierVersion)
-    InstallPrettierPluginXml(pluginXmlVersion)
+    InstallPrettier prettierVersion
+    InstallPrettierPluginXml pluginXmlVersion
 
     Process
         .Execute(
@@ -189,12 +194,21 @@ let StyleXamlFiles() =
         .UnwrapDefault()
     |> ignore
 
+    let pattern = $"**{Path.DirectorySeparatorChar}*.xaml"
+
     Process
         .Execute(
             {
-                Command = "./node_modules/.bin/prettier"
+                Command =
+                    Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "node_modules",
+                        ".bin",
+                        "prettier"
+                    )
+
                 Arguments =
-                    "--xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml'"
+                    $"--xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write {pattern}"
             },
             Echo.Off
         )
@@ -223,7 +237,7 @@ let RunPrettier(arguments: string) =
         },
         Echo.Off
     )
-    |> UnwrapProcessResult "" true
+    |> UnwrapProcessResult None false
     |> ignore
 
 
@@ -241,10 +255,16 @@ let RunPrettier(arguments: string) =
     |> ignore
 
 let StyleTypeScriptFiles() =
-    RunPrettier "--quote-props=consistent --write ./**/*.ts"
+    let pattern =
+        $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.ts"
+
+    RunPrettier $"--quote-props=consistent --write {pattern}"
 
 let StyleYmlFiles() =
-    RunPrettier "--quote-props=consistent --write ./**/*.yml"
+    let pattern =
+        $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.yml"
+
+    RunPrettier $"--quote-props=consistent --write {pattern}"
 
 let ContainsFiles (rootDir: DirectoryInfo) (searchPattern: string) =
     Helpers.GetFiles rootDir searchPattern |> Seq.length > 0
@@ -289,7 +309,7 @@ let GitRestore() =
 
 let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
-        "Please style your F# code using: `dotnet fantomless --recurse .`"
+        Some "Please style your F# code using: `dotnet fantomless --recurse .`"
 
     GitRestore()
 
@@ -297,7 +317,7 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
             StyleFSharpFiles rootDir
             let processResult = GitDiff()
-            UnwrapProcessResult suggestion false processResult |> ignore
+            UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
 
         else
@@ -306,8 +326,12 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
     success
 
 let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
+    let pattern =
+        $".{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.ts"
+
     let suggestion =
-        "Please style your TypeScript code using: `npx prettier --quote-props=consistent --write ./**/*.ts`"
+        Some
+            $"Please style your TypeScript code using: `npx prettier --quote-props=consistent --write {pattern}`"
 
     GitRestore()
 
@@ -316,7 +340,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
             InstallPrettier prettierVersion
             StyleTypeScriptFiles()
             let processResult = GitDiff()
-            UnwrapProcessResult suggestion false processResult |> ignore
+            UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
 
         else
@@ -325,8 +349,12 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
     success
 
 let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
+    let pattern =
+        $".{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.yml"
+
     let suggestion =
-        "Please style your YML code using: `npx prettier --quote-props=consistent --write ./**/*.yml`"
+        Some
+            $"Please style your YML code using: `npx prettier --quote-props=consistent --write {pattern}`"
 
     GitRestore()
 
@@ -335,7 +363,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
             InstallPrettier prettierVersion
             StyleYmlFiles()
             let processResult = GitDiff()
-            UnwrapProcessResult suggestion false processResult |> ignore
+            UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
         else
             true
@@ -344,7 +372,8 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
 
 let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
     let suggestion =
-        "Please style your C# code using: `dotnet format whitespace . --folder"
+        Some
+            "Please style your C# code using: `dotnet format whitespace . --folder"
 
     GitRestore()
 
@@ -352,7 +381,7 @@ let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
         if ContainsFiles rootDir "*.cs" then
             StyleCSharpFiles rootDir
             let processResult = GitDiff()
-            UnwrapProcessResult suggestion false processResult |> ignore
+            UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
         else
             true
@@ -360,10 +389,15 @@ let CheckStyleOfCSharpFiles(rootDir: DirectoryInfo) : bool =
     success
 
 let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
+    let prettierPath = Path.Combine(".", "node_modules", ".bin", "prettier")
+
+    let pattern = $"**{Path.DirectorySeparatorChar}*.xaml"
+
     let suggestion =
         "Please style your XAML code using:"
         + Environment.NewLine
-        + "`./node_modules/.bin/prettier --xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write '**/*.xaml`"
+        + $"`{prettierPath} --xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write {pattern}`"
+        |> Some
 
     GitRestore()
 
@@ -371,7 +405,7 @@ let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
         if ContainsFiles rootDir "*.xaml" then
             StyleXamlFiles()
             let processResult = GitDiff()
-            UnwrapProcessResult suggestion false processResult |> ignore
+            UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
         else
             true
