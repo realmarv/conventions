@@ -59,6 +59,17 @@ let InstallFantomlessTool(version: string) =
             .UnwrapDefault()
         |> ignore
 
+        Process
+            .Execute(
+                {
+                    Command = "dotnet"
+                    Arguments = "tool restore"
+                },
+                Echo.Off
+            )
+            .UnwrapDefault()
+        |> ignore
+
 let UnwrapProcessResult
     (maybeSuggestion: Option<string>)
     (ignoreErrorExitCode: bool)
