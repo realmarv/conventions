@@ -399,7 +399,12 @@ export abstract class Plugins {
 
                         let lineIsFooterNote = Helpers.isFooterNote(line);
 
-                        if (!isUrl && !lineIsFooterNote) {
+                        let commitHashAtTheEndMatch = line.match(`([0-9a-f]{5,40})\.?$`);
+                        let endsWithCommitHashButRestIsNotTooLong =
+                            commitHashAtTheEndMatch !== null
+                            && commitHashAtTheEndMatch.index < bodyMaxLineLength;
+
+                        if (!isUrl && !lineIsFooterNote && !endsWithCommitHashButRestIsNotTooLong) {
                             offence = true;
                             break;
                         }
