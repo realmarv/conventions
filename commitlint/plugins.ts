@@ -187,12 +187,12 @@ export abstract class Plugins {
 
         rawStr = rawStr.trim();
         let lineBreakIndex = rawStr.indexOf("\n");
-
+        console.log("rawStr:" + rawStr);
         if (lineBreakIndex >= 0) {
             // Extracting bodyStr from rawStr rather than using body directly is a
             // workaround for https://github.com/conventional-changelog/conventional-changelog/issues/1016
             let bodyStr = rawStr.substring(lineBreakIndex).trim();
-
+            console.log("bodyStr:" + bodyStr);
             let lines = bodyStr.split(/\r?\n/);
             let bodyReferences = new Set();
             let references = new Set();
@@ -233,7 +233,7 @@ export abstract class Plugins {
             errorMessage =
                 "A footer reference can not be empty, please make sure that you've provided the reference and there is no EOL between the reference number and the reference.";
         }
-
+        console.log("offense:" + offence)
         return [!offence, errorMessage + Helpers.errMessageSuffix];
     }
 

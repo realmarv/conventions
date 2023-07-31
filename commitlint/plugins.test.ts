@@ -559,6 +559,7 @@ test("footer-refs-validity2", () => {
         "\n\n" +
         "[1] http://foo.bar/baz";
     let footerRefsValidity2 = runCommitLintOnMsg(commmitMsgWithWrongFooter);
+    console.log("==>" + footerRefsValidity2.stdout);
     expect(footerRefsValidity2.status).not.toBe(0);
 });
 
