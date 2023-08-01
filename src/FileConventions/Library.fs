@@ -383,3 +383,7 @@ let NonVerboseFlags(fileInfo: FileInfo) =
         |> Seq.length
 
     numInvalidFlags > 0
+
+let DefiningEmptyStringsWithDoubleQuotes(fileInfo: FileInfo) =
+    printfn "File Path: %s" fileInfo.FullName
+    false

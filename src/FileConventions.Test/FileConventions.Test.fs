@@ -549,3 +549,29 @@ let NonVerboseFlagsInGitHubCI6() =
         ))
 
     Assert.That(NonVerboseFlags fileInfo, Is.EqualTo false)
+
+
+[<Test>]
+let DefiningEmptyStringsWithDoubleQuotes1() =
+    let fileInfo =
+        (FileInfo(
+            Path.Combine(
+                dummyFilesDirectory.FullName,
+                "DummyScriptWithConventionalEmptyString.fsx"
+            )
+        ))
+
+    Assert.That(DefiningEmptyStringsWithDoubleQuotes fileInfo, Is.EqualTo false)
+
+
+[<Test>]
+let DefiningEmptyStringsWithDoubleQuotes2() =
+    let fileInfo =
+        (FileInfo(
+            Path.Combine(
+                dummyFilesDirectory.FullName,
+                "DummyScriptWithNonConventionalEmptyString.fsx"
+            )
+        ))
+
+    Assert.That(DefiningEmptyStringsWithDoubleQuotes fileInfo, Is.EqualTo true)
