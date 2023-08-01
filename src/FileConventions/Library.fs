@@ -387,3 +387,7 @@ let NonVerboseFlags(fileInfo: FileInfo) =
 let DefiningEmptyStringsWithDoubleQuotes(fileInfo: FileInfo) =
     let fileText = File.ReadAllText fileInfo.FullName
     fileText.Contains "\"\""
+
+let ProjFilesNamingConvention(fileInfo: FileInfo) =
+    printfn "%s" fileInfo.FullName
+    false
