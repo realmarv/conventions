@@ -385,5 +385,5 @@ let NonVerboseFlags(fileInfo: FileInfo) =
     numInvalidFlags > 0
 
 let DefiningEmptyStringsWithDoubleQuotes(fileInfo: FileInfo) =
-    printfn "File Path: %s" fileInfo.FullName
-    false
+    let fileText = File.ReadAllText fileInfo.FullName
+    fileText.Contains "\"\""
