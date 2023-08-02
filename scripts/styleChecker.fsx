@@ -15,60 +15,8 @@ let fantomlessToolVersion = "4.7.997-prerelease"
 let prettierVersion = "2.8.3"
 let pluginXmlVersion = "v2.2.0"
 
-let InstallFantomlessTool(version: string) =
-    let isFantomlessInstalled =
-        let installedPackages: string =
-            Process
-                .Execute(
-                    {
-                        Command = "dotnet"
-                        Arguments = "tool list"
-                    },
-                    Echo.Off
-                )
-                .UnwrapDefault()
+Helpers.InstallFantomlessTool(fantomlessToolVersion)
 
-        installedPackages.Split Environment.NewLine
-        |> Seq.map(fun line ->
-            line.Contains "fantomless-tool"
-            && line.Contains fantomlessToolVersion
-        )
-        |> Seq.contains true
-
-    if not(isFantomlessInstalled) then
-        Process
-            .Execute(
-                {
-                    Command = "dotnet"
-                    Arguments = "new tool-manifest --force"
-                },
-                Echo.Off
-            )
-            .UnwrapDefault()
-        |> ignore
-
-        Process
-            .Execute(
-                {
-                    Command = "dotnet"
-                    Arguments =
-                        $"tool install fantomless-tool --version {version}"
-                },
-                Echo.Off
-            )
-            .UnwrapDefault()
-        |> ignore
-
-    Process
-        .Execute(
-            {
-                Command = "dotnet"
-                Arguments = "tool restore"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
 
 let UnwrapProcessResult
     (maybeSuggestion: Option<string>)
