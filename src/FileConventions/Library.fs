@@ -448,13 +448,15 @@ let StyleXamlFiles (prettierVersion: string) (pluginXmlVersion: string) =
         .UnwrapDefault()
     |> ignore
 
-let StyleTypeScriptFiles() =
+let StyleTypeScriptFiles (prettierVersion: string) =
+    InstallPrettier prettierVersion
     let pattern =
         $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.ts"
 
     RunPrettier $"--quote-props=consistent --write {pattern}"
 
-let StyleYmlFiles() =
+let StyleYmlFiles (prettierVersion: string) =
+    InstallPrettier prettierVersion
     let pattern =
         $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.yml"
 

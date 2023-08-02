@@ -88,8 +88,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.ts" then
-            InstallPrettier prettierVersion
-            StyleTypeScriptFiles()
+            StyleTypeScriptFiles prettierVersion
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
@@ -111,8 +110,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.yml" then
-            InstallPrettier prettierVersion
-            StyleYmlFiles()
+            StyleYmlFiles prettierVersion
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
