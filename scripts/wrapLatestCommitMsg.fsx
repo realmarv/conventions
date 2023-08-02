@@ -4,6 +4,7 @@ open System.IO
 open System
 open System.Text.RegularExpressions
 
+#load "../src/FileConventions/Helpers.fs"
 #load "../src/FileConventions/Library.fs"
 
 #r "nuget: Fsdk, Version=0.6.0--date20230214-0422.git-1ea6f62"
