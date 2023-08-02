@@ -385,7 +385,7 @@ let NonVerboseFlags(fileInfo: FileInfo) =
     numInvalidFlags > 0
 
 
-let StyleFSharpFiles(rootDir: DirectoryInfo, fantomlessToolVersion: string) =
+let StyleFSharpFiles (rootDir: DirectoryInfo) (fantomlessToolVersion: string) =
     InstallFantomlessTool fantomlessToolVersion
 
     Process
