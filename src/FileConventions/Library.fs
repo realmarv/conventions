@@ -5,6 +5,9 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
+open Fsdk
+open Fsdk.Process
+
 open Helpers
 
 let HasCorrectShebang(fileInfo: FileInfo) =
