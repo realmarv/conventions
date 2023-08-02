@@ -163,7 +163,7 @@ let UnwrapProcessResult
 
 let IsProcessSuccessful(processResult: ProcessResult) : bool =
     match processResult.Result with
-    | Success output -> true
+    | Success _ -> true
     | _ -> false
 
 let InstallPrettier(version: string) =
