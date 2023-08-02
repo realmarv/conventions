@@ -4,13 +4,8 @@
 #load "../src/FileConventions/Helpers.fs"
 #load "../src/FileConventions/Library.fs"
 
-open System
 open System.IO
 
-open Fsdk
-open Fsdk.Process
-
-open Helpers
 open FileConventions
 
 let fantomlessToolVersion = "4.7.997-prerelease"
