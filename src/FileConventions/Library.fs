@@ -5,6 +5,8 @@ open System.IO
 open System.Linq
 open System.Text.RegularExpressions
 
+open Helpers
+
 let HasCorrectShebang(fileInfo: FileInfo) =
     let fileText = File.ReadLines fileInfo.FullName
 
@@ -378,3 +380,79 @@ let NonVerboseFlags(fileInfo: FileInfo) =
         |> Seq.length
 
     numInvalidFlags > 0
+
+
+let StyleFSharpFiles(rootDir: DirectoryInfo, fantomlessToolVersion: string) =
+    InstallFantomlessTool fantomlessToolVersion
+
+    Process
+        .Execute(
+            {
+                Command = "dotnet"
+                Arguments = $"fantomless --recurse {rootDir.FullName}"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+let StyleCSharpFiles(rootDir: DirectoryInfo) =
+    Process
+        .Execute(
+            {
+                Command = "dotnet"
+                Arguments = $"format whitespace {rootDir.FullName} --folder"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+let StyleXamlFiles (prettierVersion: string) (pluginXmlVersion: string) =
+    InstallPrettier prettierVersion
+    InstallPrettierPluginXml pluginXmlVersion
+
+    Process
+        .Execute(
+            {
+                Command = "npm"
+                Arguments =
+                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml@{pluginXmlVersion}"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+    let pattern = $"**{Path.DirectorySeparatorChar}*.xaml"
+
+    Process
+        .Execute(
+            {
+                Command =
+                    Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "node_modules",
+                        ".bin",
+                        "prettier"
+                    )
+
+                Arguments =
+                    $"--xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write {pattern}"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+let StyleTypeScriptFiles() =
+    let pattern =
+        $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.ts"
+
+    RunPrettier $"--quote-props=consistent --write {pattern}"
+
+let StyleYmlFiles() =
+    let pattern =
+        $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.yml"
+
+    RunPrettier $"--quote-props=consistent --write {pattern}"

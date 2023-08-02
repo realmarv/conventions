@@ -2,6 +2,7 @@
 
 #r "nuget: Fsdk, Version=0.6.0--date20230214-0422.git-1ea6f62"
 #load "../src/FileConventions/Helpers.fs"
+#load "../src/FileConventions/Library.fs"
 
 open System
 open System.IO
@@ -14,81 +15,6 @@ open Helpers
 let fantomlessToolVersion = "4.7.997-prerelease"
 let prettierVersion = "2.8.3"
 let pluginXmlVersion = "v2.2.0"
-
-let StyleFSharpFiles(rootDir: DirectoryInfo) =
-    InstallFantomlessTool fantomlessToolVersion
-
-    Process
-        .Execute(
-            {
-                Command = "dotnet"
-                Arguments = $"fantomless --recurse {rootDir.FullName}"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-let StyleCSharpFiles(rootDir: DirectoryInfo) =
-    Process
-        .Execute(
-            {
-                Command = "dotnet"
-                Arguments = $"format whitespace {rootDir.FullName} --folder"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-let StyleXamlFiles() =
-    InstallPrettier prettierVersion
-    InstallPrettierPluginXml pluginXmlVersion
-
-    Process
-        .Execute(
-            {
-                Command = "npm"
-                Arguments =
-                    $"install --save-dev prettier@{prettierVersion} @prettier/plugin-xml@{pluginXmlVersion}"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-    let pattern = $"**{Path.DirectorySeparatorChar}*.xaml"
-
-    Process
-        .Execute(
-            {
-                Command =
-                    Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "node_modules",
-                        ".bin",
-                        "prettier"
-                    )
-
-                Arguments =
-                    $"--xml-whitespace-sensitivity ignore --tab-width 4 --prose-wrap preserve --write {pattern}"
-            },
-            Echo.Off
-        )
-        .UnwrapDefault()
-    |> ignore
-
-let StyleTypeScriptFiles() =
-    let pattern =
-        $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.ts"
-
-    RunPrettier $"--quote-props=consistent --write {pattern}"
-
-let StyleYmlFiles() =
-    let pattern =
-        $"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}**{Path.DirectorySeparatorChar}*.yml"
-
-    RunPrettier $"--quote-props=consistent --write {pattern}"
 
 let ContainsFiles (rootDir: DirectoryInfo) (searchPattern: string) =
     Helpers.GetFiles rootDir searchPattern |> Seq.length > 0
@@ -139,7 +65,7 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
-            StyleFSharpFiles rootDir
+            StyleFSharpFiles rootDir fantomlessToolVersion
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
@@ -227,7 +153,7 @@ let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.xaml" then
-            StyleXamlFiles()
+            StyleXamlFiles prettierVersion pluginXmlVersion
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
