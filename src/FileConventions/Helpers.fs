@@ -66,7 +66,7 @@ let AssertNoInvalidFiles (invalidFiles: seq<FileInfo>) (message: string) =
 let InstallFantomlessTool(version: string) =
     let isFantomlessInstalled =
         let installedPackages: string =
-            Process
+            Fsdk.Process
                 .Execute(
                     {
                         Command = "dotnet"
@@ -84,7 +84,7 @@ let InstallFantomlessTool(version: string) =
         |> Seq.contains true
 
     if not(isFantomlessInstalled) then
-        Process
+        Fsdk.Process
             .Execute(
                 {
                     Command = "dotnet"
@@ -95,7 +95,7 @@ let InstallFantomlessTool(version: string) =
             .UnwrapDefault()
         |> ignore
 
-        Process
+        Fsdk.Process
             .Execute(
                 {
                     Command = "dotnet"
@@ -107,7 +107,7 @@ let InstallFantomlessTool(version: string) =
             .UnwrapDefault()
         |> ignore
 
-    Process
+    Fsdk.Process
         .Execute(
             {
                 Command = "dotnet"
