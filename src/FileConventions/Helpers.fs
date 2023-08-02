@@ -79,7 +79,7 @@ let InstallFantomlessTool(version: string) =
         installedPackages.Split Environment.NewLine
         |> Seq.map(fun line ->
             line.Contains "fantomless-tool"
-            && line.Contains fantomlessToolVersion
+            && line.Contains version
         )
         |> Seq.contains true
 
