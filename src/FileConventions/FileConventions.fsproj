@@ -6,8 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <PackageReference Include="Fsdk" Version="0.6.0--date20230705-0933.git-7acb7a5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="Helpers.fs" />
+    <Compile Include="Library.fs" />
   </ItemGroup>
 
 </Project>
