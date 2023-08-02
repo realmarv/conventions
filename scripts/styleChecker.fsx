@@ -11,7 +11,7 @@ open Fsdk
 open Fsdk.Process
 
 open Helpers
-open Library
+open FileConventions
 
 let fantomlessToolVersion = "4.7.997-prerelease"
 let prettierVersion = "2.8.3"
