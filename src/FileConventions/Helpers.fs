@@ -117,3 +117,135 @@ let InstallFantomlessTool(version: string) =
         )
         .UnwrapDefault()
     |> ignore
+
+let UnwrapProcessResult
+    (maybeSuggestion: Option<string>)
+    (ignoreErrorExitCode: bool)
+    (processResult: ProcessResult)
+    : string =
+    let errMsg =
+        sprintf
+            "Error when running '%s %s'"
+            processResult.Details.Command
+            processResult.Details.Args
+
+    match processResult.Result with
+    | Success output ->
+        Console.WriteLine output
+        output
+    | Error(_, output) ->
+        if processResult.Details.Echo = Echo.Off then
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
+
+        let fullErrMsg =
+            match maybeSuggestion with
+            | Some suggestion -> errMsg + Environment.NewLine + suggestion
+            | None -> errMsg
+
+        Console.Error.WriteLine fullErrMsg
+
+        if ignoreErrorExitCode then
+            fullErrMsg
+        else
+            raise <| ProcessFailed errMsg
+
+    | WarningsOrAmbiguous output ->
+        if processResult.Details.Echo = Echo.Off then
+            output.PrintToConsole()
+            Console.WriteLine()
+            Console.Out.Flush()
+
+        let fullErrMsg = sprintf "%s (with warnings?)" errMsg
+        Console.Error.WriteLine fullErrMsg
+        fullErrMsg
+
+let IsProcessSuccessful(processResult: ProcessResult) : bool =
+    match processResult.Result with
+    | Success output -> true
+    | _ -> false
+
+let InstallPrettier(version: string) =
+    let isPrettierInstalled =
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"list prettier@{version}"
+            },
+            Echo.All
+        )
+        |> IsProcessSuccessful
+
+    if not(isPrettierInstalled) then
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"install prettier@{version}"
+            },
+            Echo.Off
+        )
+        |> UnwrapProcessResult None false
+        |> ignore
+
+let InstallPrettierPluginXml(version: string) =
+    let isPrettierPluginXmlInstalled =
+        Process.Execute(
+            {
+                Command = "npm"
+                Arguments = $"list @prettier/plugin-xml@{version}"
+            },
+            Echo.Off
+        )
+        |> IsProcessSuccessful
+
+    if not(isPrettierPluginXmlInstalled) then
+        Process
+            .Execute(
+                {
+                    Command = "npm"
+                    Arguments = $"install @prettier/plugin-xml@{version}"
+                },
+                Echo.Off
+            )
+            .UnwrapDefault()
+        |> ignore
+
+let RunPrettier(arguments: string) =
+
+    // We need this step so we can change the files using `npx prettier --write` in the next step.
+    // Otherwise we get permission denied error in the CI.
+    Process
+        .Execute(
+            {
+                Command = "chmod"
+                Arguments = "777 --recursive ."
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
+
+    Process.Execute(
+        {
+            Command = "npx"
+            Arguments = $"prettier {arguments}"
+        },
+        Echo.Off
+    )
+    |> UnwrapProcessResult None false
+    |> ignore
+
+
+    // Since after installing commitlint dependencies package.json file changes, we need to
+    // run the following command to ignore package.json file
+    Process
+        .Execute(
+            {
+                Command = "git"
+                Arguments = "restore package.json"
+            },
+            Echo.Off
+        )
+        .UnwrapDefault()
+    |> ignore
