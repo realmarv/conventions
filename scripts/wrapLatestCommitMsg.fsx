@@ -4,6 +4,7 @@ open System.IO
 open System
 open System.Text.RegularExpressions
 
+#load "../src/FileConventions/Config.fs"
 #load "../src/FileConventions/Helpers.fs"
 #load "../src/FileConventions/Library.fs"
 
