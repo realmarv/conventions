@@ -394,4 +394,4 @@ let ProjFilesNamingConvention(fileInfo: FileInfo) =
     let fileName = Path.GetFileNameWithoutExtension fileInfo.FullName
     let parentDirectoryName = Path.GetDirectoryName fileInfo.FullName |> Path.GetFileName
     printfn "File name: %s, Parent directory name: %s" fileName parentDirectoryName
-    fileName = parentDirectoryName
+    fileName <> parentDirectoryName
