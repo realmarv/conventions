@@ -63,7 +63,7 @@ let CheckStyleOfFSharpFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.fs" || ContainsFiles rootDir ".fsx" then
-            StyleFSharpFiles rootDir fantomlessToolVersion
+            StyleFSharpFiles rootDir
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
@@ -85,7 +85,7 @@ let CheckStyleOfTypeScriptFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.ts" then
-            StyleTypeScriptFiles prettierVersion
+            StyleTypeScriptFiles()
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
@@ -107,7 +107,7 @@ let CheckStyleOfYmlFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.yml" then
-            StyleYmlFiles prettierVersion
+            StyleYmlFiles()
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult
@@ -149,7 +149,7 @@ let CheckStyleOfXamlFiles(rootDir: DirectoryInfo) : bool =
 
     let success =
         if ContainsFiles rootDir "*.xaml" then
-            StyleXamlFiles prettierVersion pluginXmlVersion
+            StyleXamlFiles()
             let processResult = GitDiff()
             UnwrapProcessResult suggestion true processResult |> ignore
             IsProcessSuccessful processResult

@@ -11,8 +11,8 @@ open FileConventions
 
 let rootDir = Path.Combine(__SOURCE_DIRECTORY__, "..") |> DirectoryInfo
 
-StyleFSharpFiles rootDir fantomlessToolVersion
-StyleTypeScriptFiles prettierVersion
-StyleYmlFiles prettierVersion
+StyleFSharpFiles rootDir
+StyleTypeScriptFiles()
+StyleYmlFiles()
 StyleCSharpFiles rootDir
-StyleXamlFiles prettierVersion pluginXmlVersion
+StyleXamlFiles()

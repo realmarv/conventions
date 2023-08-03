@@ -9,6 +9,7 @@ open Fsdk
 open Fsdk.Process
 
 open Helpers
+open Config
 
 let HasCorrectShebang(fileInfo: FileInfo) =
     let fileText = File.ReadLines fileInfo.FullName
@@ -385,7 +386,7 @@ let NonVerboseFlags(fileInfo: FileInfo) =
     numInvalidFlags > 0
 
 
-let StyleFSharpFiles (rootDir: DirectoryInfo) (fantomlessToolVersion: string) =
+let StyleFSharpFiles (rootDir: DirectoryInfo) =
     InstallFantomlessTool fantomlessToolVersion
 
     Process
@@ -411,7 +412,7 @@ let StyleCSharpFiles(rootDir: DirectoryInfo) =
         .UnwrapDefault()
     |> ignore
 
-let StyleXamlFiles (prettierVersion: string) (pluginXmlVersion: string) =
+let StyleXamlFiles () =
     InstallPrettier prettierVersion
     InstallPrettierPluginXml pluginXmlVersion
 
@@ -448,7 +449,7 @@ let StyleXamlFiles (prettierVersion: string) (pluginXmlVersion: string) =
         .UnwrapDefault()
     |> ignore
 
-let StyleTypeScriptFiles(prettierVersion: string) =
+let StyleTypeScriptFiles() =
     InstallPrettier prettierVersion
 
     let pattern =
@@ -456,7 +457,7 @@ let StyleTypeScriptFiles(prettierVersion: string) =
 
     RunPrettier $"--quote-props=consistent --write {pattern}"
 
-let StyleYmlFiles(prettierVersion: string) =
+let StyleYmlFiles() =
     InstallPrettier prettierVersion
 
     let pattern =
