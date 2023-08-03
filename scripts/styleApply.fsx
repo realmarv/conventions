@@ -4,7 +4,6 @@
 #load "../src/FileConventions/Config.fs"
 #load "../src/FileConventions/Helpers.fs"
 #load "../src/FileConventions/Library.fs"
-#load "config.fs"
 
 open System.IO
 
