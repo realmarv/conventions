@@ -393,4 +393,5 @@ let ProjFilesNamingConvention(fileInfo: FileInfo) =
     assert (regex.IsMatch fileInfo.FullName)
     let fileName = (regex.Match fileInfo.FullName).Groups[0].Value
     let parentDirectoryName = Path.GetDirectoryName fileInfo.FullName
+    printfn "%s %s" fileName parentDirectoryName
     fileName = parentDirectoryName
