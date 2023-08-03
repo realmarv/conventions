@@ -389,7 +389,7 @@ let DefiningEmptyStringsWithDoubleQuotes(fileInfo: FileInfo) =
     fileText.Contains "\"\""
 
 let ProjFilesNamingConvention(fileInfo: FileInfo) =
-    let regex = new Regex ("(.*)\..proj$")
+    let regex = new Regex ("(.*)\..*proj$")
     assert (regex.IsMatch fileInfo.FullName)
     let fileName = (regex.Match fileInfo.FullName).Groups[0].Value
     let parentDirectoryName = Path.GetDirectoryName fileInfo.FullName
