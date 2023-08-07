@@ -403,34 +403,35 @@ let ProjFilesNamingConvention(fileInfo: FileInfo) =
 
     fileName <> parentDirectoryName
 
-let DoesNameSpaceInclude(fileInfo: FileInfo) (word: string) =
+let DoesNameSpaceInclude (fileInfo: FileInfo) (word: string) =
     let fileText = File.ReadLines fileInfo.FullName
-    
-    if fileText.Any() then
-            let firstLine = fileText.First()
 
-            if firstLine.Contains "namespace" then
-                firstLine.Contains word |> not
-            else
-                false
+    if fileText.Any() then
+        let firstLine = fileText.First()
+
+        if firstLine.Contains "namespace" then
+            firstLine.Contains word |> not
         else
             false
+    else
+        false
+
 let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
     assert (fileInfo.FullName.EndsWith(".fs"))
 
     let fileName = Path.GetFileNameWithoutExtension fileInfo.FullName
     let parentDir = Path.GetDirectoryName fileInfo.FullName |> DirectoryInfo
 
-    printfn
-        "File name: %s, Parent directory name: %s"
-        fileName
-        parentDir.Name
+    printfn "File name: %s, Parent directory name: %s" fileName parentDir.Name
 
     if parentDir.Parent.Name = "src" then
         DoesNameSpaceInclude fileInfo parentDir.Name |> not
 
     elif parentDir.Parent.Parent.Name = "src" then
-        DoesNameSpaceInclude fileInfo $"{parentDir.Parent.Name}.{parentDir.Name}" |> not
+        DoesNameSpaceInclude
+            fileInfo
+            $"{parentDir.Parent.Name}.{parentDir.Name}"
+        |> not
 
     else
         false
