@@ -411,6 +411,11 @@ let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
     let parentDirectoryName =
         Path.GetDirectoryName fileInfo.FullName |> Path.GetFileName
 
+    printfn
+        "File name: %s, Parent directory name: %s"
+        fileName
+        parentDirectoryName
+
     if parentDirectoryName = "src" then
         let fileText = File.ReadLines fileInfo.FullName
 
