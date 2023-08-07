@@ -416,14 +416,16 @@ let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
         fileName
         parentDirectoryName
 
-    if parentDirectoryName = "src" then
+    if parentDirectoryName <> "src"
+       && fileInfo.FullName.Contains
+           $"{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}" then
         let fileText = File.ReadLines fileInfo.FullName
 
         if fileText.Any() then
             let firstLine = fileText.First()
 
             if firstLine.Contains "namespace" then
-                firstLine.Contains fileName |> not
+                firstLine.Contains parentDirectoryName |> not
             else
                 false
         else
