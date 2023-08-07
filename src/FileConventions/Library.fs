@@ -410,7 +410,7 @@ let DoesNameSpaceInclude (fileInfo: FileInfo) (word: string) =
         let firstLine = fileText.First()
 
         if firstLine.Contains "namespace" then
-            firstLine.Contains word |> not
+            firstLine.Contains word
         else
             false
     else
