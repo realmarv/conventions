@@ -404,5 +404,23 @@ let ProjFilesNamingConvention(fileInfo: FileInfo) =
     fileName <> parentDirectoryName
 
 let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
-    printfn "%s" fileInfo.FullName
-    false
+    assert (fileInfo.FullName.EndsWith(".fs"))
+
+    let fileName = Path.GetFileNameWithoutExtension fileInfo.FullName
+
+    let parentDirectoryName =
+        Path.GetDirectoryName fileInfo.FullName |> Path.GetFileName
+    
+    if parentDirectoryName = "src" then
+        let fileText = File.ReadLines fileInfo.FullName
+
+        if fileText.Any() then
+            let firstLine = fileText.First()
+            if firstLine.Contains "namespace" then
+                firstLine.Contains fileName |> not
+            else
+                false
+        else
+            false
+    else
+        false
