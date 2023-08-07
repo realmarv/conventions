@@ -414,9 +414,7 @@ let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
         fileName
         parentDir.Name
 
-    if parentDir.Name <> "src"
-       && fileInfo.FullName.Contains
-           $"{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}" then
+    if parentDir.Parent.Name = "src" then
         let fileText = File.ReadLines fileInfo.FullName
 
         if fileText.Any() then
@@ -424,6 +422,18 @@ let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
 
             if firstLine.Contains "namespace" then
                 firstLine.Contains parentDir.Name |> not
+            else
+                false
+        else
+            false
+
+    elif parentDir.Parent.Parent.Name = "src" then
+        let fileText = File.ReadLines fileInfo.FullName
+        if fileText.Any() then
+            let firstLine = fileText.First()
+
+            if firstLine.Contains "namespace" then
+                firstLine.Contains $"{parentDir.Parent.Name}.{parentDir.Name}" |> not
             else
                 false
         else
