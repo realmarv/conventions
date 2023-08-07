@@ -407,16 +407,14 @@ let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
     assert (fileInfo.FullName.EndsWith(".fs"))
 
     let fileName = Path.GetFileNameWithoutExtension fileInfo.FullName
-
-    let parentDirectoryName =
-        Path.GetDirectoryName fileInfo.FullName |> Path.GetFileName
+    let parentDir = Path.GetDirectoryName fileInfo.FullName |> DirectoryInfo
 
     printfn
         "File name: %s, Parent directory name: %s"
         fileName
-        parentDirectoryName
+        parentDir.Name
 
-    if parentDirectoryName <> "src"
+    if parentDir.Name <> "src"
        && fileInfo.FullName.Contains
            $"{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}" then
         let fileText = File.ReadLines fileInfo.FullName
@@ -425,7 +423,7 @@ let NotFollowingNameSpaceConvention(fileInfo: FileInfo) =
             let firstLine = fileText.First()
 
             if firstLine.Contains "namespace" then
-                firstLine.Contains parentDirectoryName |> not
+                firstLine.Contains parentDir.Name |> not
             else
                 false
         else
